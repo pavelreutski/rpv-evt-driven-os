@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-research-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Architecture](https://img.shields.io/badge/arch-x86__64%20%7C%20ARM%20%7C%20RISC--V-lightgrey)
+![Architecture](https://img.shields.io/badge/arch-any%20%7C%20cross-platform-lightgrey)
 
 > An experimental event-driven kernel for deterministic and reactive operating system research.
 
