@@ -89,19 +89,6 @@ This project explores whether an event-driven execution model can:
 
 ## System Architecture
 
-+-------------------------+
-| User Applications       |
-+-------------------------+
-| System API              |
-+-------------------------+
-| Event Dispatcher        |
-+-------------------------+
-| Scheduler / Loop        |
-+-------------------------+
-| Hardware Abstraction    |
-+-------------------------+
-
-
 ### Core Subsystems
 
 - Event Queue (bounded FIFO or lock-free)
@@ -140,8 +127,8 @@ The system may operate as:
 |-----------|------------|
 | Language  | C (minimal assembly for bootstrapping) |
 | Architectures | x86_64, ARMv8, RISC-V |
-| Build System | Make / CMake |
-| Emulator | QEMU |
+| Build System | CMake |
+| Artifacts | Set of cmake object libraries composed into an interface one  |
 
 ---
 
@@ -150,5 +137,5 @@ The system may operate as:
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/project-name.git
-cd project-name
+git clone git@github.com:pavelreutski/rpv-evt-driven-os.git
+cd rpv-evt-driven-os
