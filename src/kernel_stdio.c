@@ -10,7 +10,7 @@
 
 static console_key_t key_Buffer;
 
-static void onKernel_userConKey(evt_data_t *evtData);
+static void onKernel_userConKey(evt_data_t const* evtData);
 
 static void out_console(void **ctx, char const* s);
 static void out_strbuffer(void **ctx, char const* s);
@@ -111,7 +111,7 @@ void _kernel_getKey(console_key_t *key) {
 	memcpy(key, &key_Buffer, sizeof(console_key_t));
 }
 
-static __attribute__((noinline)) void onKernel_userConKey(evt_data_t *evtData) {
+static __attribute__((noinline)) void onKernel_userConKey(evt_data_t const* evtData) {
 	
 	_kernel_raise(SIGIO);
     memcpy(&key_Buffer, (console_key_t *) evtData, sizeof(console_key_t));
