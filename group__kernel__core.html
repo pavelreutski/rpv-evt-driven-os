@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Event driven kernel: Kernel runtime API</title>
+<title>RPV Event driven kernel: Kernel runtime API</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Event driven kernel
+   <div id="projectname">RPV Event driven kernel
    </div>
   </td>
  </tr>
@@ -94,8 +94,7 @@ $(document).ready(function(){initNavTree('group__kernel__core.html',''); initRes
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Kernel runtime API</div></div>
 </div><!--header-->
 <div class="contents">
@@ -193,33 +192,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga436e47cee5d6fe00301ee48f8801b00c" id="r_ga436e47cee5d6fe00301ee48f8801b00c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga436e47cee5d6fe00301ee48f8801b00c">con_ln</a> (void)</td></tr>
-<tr class="memdesc:ga436e47cee5d6fe00301ee48f8801b00c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves cursor to the next line.  <br /></td></tr>
-<tr class="separator:ga436e47cee5d6fe00301ee48f8801b00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga22e99046be0f8a63766d97397d5aa701" id="r_ga22e99046be0f8a63766d97397d5aa701"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga22e99046be0f8a63766d97397d5aa701">con_tab</a> (void)</td></tr>
-<tr class="memdesc:ga22e99046be0f8a63766d97397d5aa701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inserts a horizontal tab.  <br /></td></tr>
-<tr class="separator:ga22e99046be0f8a63766d97397d5aa701"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad8c699e6bca1ab84fa3a362fc82a9a28" id="r_gad8c699e6bca1ab84fa3a362fc82a9a28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#gad8c699e6bca1ab84fa3a362fc82a9a28">con_clear</a> (void)</td></tr>
-<tr class="memdesc:gad8c699e6bca1ab84fa3a362fc82a9a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the console display.  <br /></td></tr>
-<tr class="separator:gad8c699e6bca1ab84fa3a362fc82a9a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabafffa70adf9bfb0d4dc305353c453c4" id="r_gabafffa70adf9bfb0d4dc305353c453c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#gabafffa70adf9bfb0d4dc305353c453c4">con_char</a> (const char code)</td></tr>
-<tr class="memdesc:gabafffa70adf9bfb0d4dc305353c453c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a single character to the console.  <br /></td></tr>
-<tr class="separator:gabafffa70adf9bfb0d4dc305353c453c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ece3036d6d4dab70b2dcfd30f22c379" id="r_ga6ece3036d6d4dab70b2dcfd30f22c379"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga6ece3036d6d4dab70b2dcfd30f22c379">con_string</a> (const char *str)</td></tr>
-<tr class="memdesc:ga6ece3036d6d4dab70b2dcfd30f22c379"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a null-terminated string to the console.  <br /></td></tr>
-<tr class="separator:ga6ece3036d6d4dab70b2dcfd30f22c379"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2e599afd8d199514f3153cb3d751addd" id="r_ga2e599afd8d199514f3153cb3d751addd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga2e599afd8d199514f3153cb3d751addd">con_xy</a> (size_t cx, size_t cy)</td></tr>
-<tr class="memdesc:ga2e599afd8d199514f3153cb3d751addd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the cursor position.  <br /></td></tr>
-<tr class="separator:ga2e599afd8d199514f3153cb3d751addd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f2e01b6cf16d1478b2c1d2171130a36" id="r_ga9f2e01b6cf16d1478b2c1d2171130a36"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga9f2e01b6cf16d1478b2c1d2171130a36">con_getx</a> (void)</td></tr>
-<tr class="memdesc:ga9f2e01b6cf16d1478b2c1d2171130a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the current cursor X position.  <br /></td></tr>
-<tr class="separator:ga9f2e01b6cf16d1478b2c1d2171130a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0c456cbf7f8fd6ad1e22f03d1d9932cb" id="r_ga0c456cbf7f8fd6ad1e22f03d1d9932cb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga0c456cbf7f8fd6ad1e22f03d1d9932cb">con_gety</a> (void)</td></tr>
-<tr class="memdesc:ga0c456cbf7f8fd6ad1e22f03d1d9932cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the current cursor Y position.  <br /></td></tr>
-<tr class="separator:ga0c456cbf7f8fd6ad1e22f03d1d9932cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga390d8503695a6e01040c19215bf67f6a" id="r_ga390d8503695a6e01040c19215bf67f6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga390d8503695a6e01040c19215bf67f6a">set_con</a> (void)</td></tr>
-<tr class="memdesc:ga390d8503695a6e01040c19215bf67f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the console subsystem.  <br /></td></tr>
-<tr class="separator:ga390d8503695a6e01040c19215bf67f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabe50d8683cf9595bdf13e8cdee7b9d39" id="r_gabe50d8683cf9595bdf13e8cdee7b9d39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#gabe50d8683cf9595bdf13e8cdee7b9d39">_kernel_pipeline</a> (void)</td></tr>
 <tr class="memdesc:gabe50d8683cf9595bdf13e8cdee7b9d39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the kernel event pipeline.  <br /></td></tr>
 <tr class="separator:gabe50d8683cf9595bdf13e8cdee7b9d39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,15 +270,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8f9d0333348003b2e852571141f37e17" id="r_ga8f9d0333348003b2e852571141f37e17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga8f9d0333348003b2e852571141f37e17">_shell_start</a> (void)</td></tr>
 <tr class="memdesc:ga8f9d0333348003b2e852571141f37e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the system shell.  <br /></td></tr>
 <tr class="separator:ga8f9d0333348003b2e852571141f37e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:gac543391610764aca26c473628bc099b2" id="r_gac543391610764aca26c473628bc099b2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#gac543391610764aca26c473628bc099b2">MAX_X</a></td></tr>
-<tr class="memdesc:gac543391610764aca26c473628bc099b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum horizontal coordinate of the console.  <br /></td></tr>
-<tr class="separator:gac543391610764aca26c473628bc099b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga540a604f6f6afd2157c3a080fd4e4259" id="r_ga540a604f6f6afd2157c3a080fd4e4259"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__core.html#ga540a604f6f6afd2157c3a080fd4e4259">MAX_Y</a></td></tr>
-<tr class="memdesc:ga540a604f6f6afd2157c3a080fd4e4259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum vertical coordinate of the console.  <br /></td></tr>
-<tr class="separator:ga540a604f6f6afd2157c3a080fd4e4259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Kernel core runtime shell with basic commands and stdio included. </p>
@@ -1616,234 +1579,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="gabafffa70adf9bfb0d4dc305353c453c4" name="gabafffa70adf9bfb0d4dc305353c453c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabafffa70adf9bfb0d4dc305353c453c4">&#9670;&#160;</a></span>con_char()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_char </td>
-          <td>(</td>
-          <td class="paramtype">const char&#160;</td>
-          <td class="paramname"><em>code</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Writes a single character to the console. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">code</td><td>Character to display.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Writes the specified character at the current cursor position and advances the cursor according to implementation rules.</p>
-<dl class="section note"><dt>Note</dt><dd>Control characters may be handled specially.</dd></dl>
-<dl class="section user"><dt>Side Effects:</dt><dd><ul>
-<li>Modifies display buffer.</li>
-<li>Updates cursor position. </li>
-</ul>
-</dd></dl>
-
-</div>
-</div>
-<a id="gad8c699e6bca1ab84fa3a362fc82a9a28" name="gad8c699e6bca1ab84fa3a362fc82a9a28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad8c699e6bca1ab84fa3a362fc82a9a28">&#9670;&#160;</a></span>con_clear()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_clear </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Clears the console display. </p>
-<p>Clears the entire screen buffer and resets the cursor to the origin position (0,0).</p>
-<dl class="section post"><dt>Postcondition</dt><dd><ul>
-<li>Screen buffer is cleared.</li>
-<li>Cursor position is (0,0).</li>
-</ul>
-</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>When concrete console module doesnt support screen buffer clear (e.g. tty) it can be empty implemented. e.g. void <a class="el" href="group__kernel__core.html#gad8c699e6bca1ab84fa3a362fc82a9a28" title="Clears the console display.">con_clear()</a> { }</dd></dl>
-<dl class="section user"><dt>Side Effects:</dt><dd>Modifies the entire display buffer. </dd></dl>
-
-</div>
-</div>
-<a id="ga9f2e01b6cf16d1478b2c1d2171130a36" name="ga9f2e01b6cf16d1478b2c1d2171130a36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9f2e01b6cf16d1478b2c1d2171130a36">&#9670;&#160;</a></span>con_getx()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t con_getx </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieves the current cursor X position. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current horizontal cursor position.</dd></dl>
-<p>Returns a value in the range [0, MAX_X - 1]. </p>
-
-</div>
-</div>
-<a id="ga0c456cbf7f8fd6ad1e22f03d1d9932cb" name="ga0c456cbf7f8fd6ad1e22f03d1d9932cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0c456cbf7f8fd6ad1e22f03d1d9932cb">&#9670;&#160;</a></span>con_gety()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t con_gety </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieves the current cursor Y position. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current vertical cursor position.</dd></dl>
-<p>Returns a value in the range [0, MAX_Y - 1]. </p>
-
-</div>
-</div>
-<a id="ga436e47cee5d6fe00301ee48f8801b00c" name="ga436e47cee5d6fe00301ee48f8801b00c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga436e47cee5d6fe00301ee48f8801b00c">&#9670;&#160;</a></span>con_ln()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_ln </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Moves cursor to the next line. </p>
-<p>Advances the cursor to the beginning of the next line. Scrolling behavior is implementation-defined if the cursor is currently on the last line.</p>
-<dl class="section post"><dt>Postcondition</dt><dd>Cursor X position is reset to 0.</dd></dl>
-<dl class="section user"><dt>Side Effects:</dt><dd>May trigger screen scrolling. </dd></dl>
-
-</div>
-</div>
-<a id="ga6ece3036d6d4dab70b2dcfd30f22c379" name="ga6ece3036d6d4dab70b2dcfd30f22c379"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6ece3036d6d4dab70b2dcfd30f22c379">&#9670;&#160;</a></span>con_string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_string </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Writes a null-terminated string to the console. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>Pointer to null-terminated character string.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section pre"><dt>Precondition</dt><dd>str must not be NULL.</dd></dl>
-<p>Writes characters sequentially starting at the current cursor position. Cursor advancement and wrapping behavior are implementation-defined.</p>
-<dl class="section user"><dt>Side Effects:</dt><dd><ul>
-<li>Modifies display buffer.</li>
-<li>Updates cursor position. </li>
-</ul>
-</dd></dl>
-
-</div>
-</div>
-<a id="ga22e99046be0f8a63766d97397d5aa701" name="ga22e99046be0f8a63766d97397d5aa701"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga22e99046be0f8a63766d97397d5aa701">&#9670;&#160;</a></span>con_tab()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_tab </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Inserts a horizontal tab. </p>
-<p>Advances the cursor to the next tab stop. Tab width is implementation-defined.</p>
-<dl class="section user"><dt>Side Effects:</dt><dd>Modifies cursor position. </dd></dl>
-
-</div>
-</div>
-<a id="ga2e599afd8d199514f3153cb3d751addd" name="ga2e599afd8d199514f3153cb3d751addd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2e599afd8d199514f3153cb3d751addd">&#9670;&#160;</a></span>con_xy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void con_xy </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>cx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>cy</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets the cursor position. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">cx</td><td>Horizontal position (column index). </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">cy</td><td>Vertical position (row index).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section pre"><dt>Precondition</dt><dd><ul>
-<li>cx &lt; MAX_X</li>
-<li>cy &lt; MAX_Y</li>
-</ul>
-</dd></dl>
-<p>Moves the cursor to the specified coordinates. Behavior is undefined if parameters exceed console bounds unless explicitly handled by implementation.</p>
-<dl class="section note"><dt>Note</dt><dd>When console doesnt support coordinates navigation (e.g. tty) it can be empty implemented e.g. void <a class="el" href="group__kernel__core.html#ga2e599afd8d199514f3153cb3d751addd" title="Sets the cursor position.">con_xy(size_t x, size_t y)</a> { }</dd></dl>
-<dl class="section user"><dt>Side Effects:</dt><dd>Modifies internal cursor state. </dd></dl>
-
-</div>
-</div>
 <a id="gad9e0853d6efd9b67b3890e2dd8625907" name="gad9e0853d6efd9b67b3890e2dd8625907"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gad9e0853d6efd9b67b3890e2dd8625907">&#9670;&#160;</a></span>hex_monitor()</h2>
 
@@ -1900,38 +1635,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ga390d8503695a6e01040c19215bf67f6a" name="ga390d8503695a6e01040c19215bf67f6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga390d8503695a6e01040c19215bf67f6a">&#9670;&#160;</a></span>set_con()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void set_con </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initializes the console subsystem. </p>
-<p>Performs required hardware or buffer initialization and prepares the console for output operations.</p>
-<p>Must be called before using any other console function.</p>
-<dl class="section post"><dt>Postcondition</dt><dd><ul>
-<li>Console is ready for output.</li>
-<li>MAX_X and MAX_Y are initialized.</li>
-</ul>
-</dd></dl>
-<dl class="section user"><dt>Side Effects:</dt><dd><ul>
-<li>Initializes internal state.</li>
-<li>May access hardware registers or memory-mapped I/O. </li>
-</ul>
-</dd></dl>
-
-</div>
-</div>
 <a id="ga0f2b628d943d28971ffd2d17130f4ad6" name="ga0f2b628d943d28971ffd2d17130f4ad6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0f2b628d943d28971ffd2d17130f4ad6">&#9670;&#160;</a></span>text_monitor()</h2>
 
@@ -1972,59 +1675,6 @@ Variables</h2></td></tr>
 <li>Produces output on console interface (see <a class="el" href="console_8h_source.html">console.h</a>). </li>
 </ul>
 </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="gac543391610764aca26c473628bc099b2" name="gac543391610764aca26c473628bc099b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac543391610764aca26c473628bc099b2">&#9670;&#160;</a></span>MAX_X</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t MAX_X</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maximum horizontal coordinate of the console. </p>
-<p>Represents the maximum valid X coordinate (column index). Valid cursor X positions range from 0 to (MAX_X - 1).</p>
-<dl class="section note"><dt>Note</dt><dd>Value is implementation-defined and must be initialized during console subsystem / module implementation. Must be initialized. When concrete console module doesnt support X coordinate navigation (e.g. tty) it must be initialized as zero </dd></dl>
-
-</div>
-</div>
-<a id="ga540a604f6f6afd2157c3a080fd4e4259" name="ga540a604f6f6afd2157c3a080fd4e4259"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga540a604f6f6afd2157c3a080fd4e4259">&#9670;&#160;</a></span>MAX_Y</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t MAX_Y</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maximum vertical coordinate of the console. </p>
-<p>Represents the maximum valid Y coordinate (row index). Valid cursor Y positions range from 0 to (MAX_Y - 1).</p>
-<dl class="section note"><dt>Note</dt><dd>Value is implementation-defined and must be initialized during console subsystem / module implementation. Must be initialized When concrete console module doesnt support Y coordinate navigation (e.g. tty) it must be initialized as zero </dd></dl>
 
 </div>
 </div>

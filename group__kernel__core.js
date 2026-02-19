@@ -65,17 +65,6 @@ var group__kernel__core =
     [ "_kernel_vstringFormat", "group__kernel__core.html#ga02118917089a7dc333ebded0a02e2f20", null ],
     [ "_shell_prompt", "group__kernel__core.html#gaee4f6af6188dcfb44dd4263332899095", null ],
     [ "_shell_start", "group__kernel__core.html#ga8f9d0333348003b2e852571141f37e17", null ],
-    [ "con_char", "group__kernel__core.html#gabafffa70adf9bfb0d4dc305353c453c4", null ],
-    [ "con_clear", "group__kernel__core.html#gad8c699e6bca1ab84fa3a362fc82a9a28", null ],
-    [ "con_getx", "group__kernel__core.html#ga9f2e01b6cf16d1478b2c1d2171130a36", null ],
-    [ "con_gety", "group__kernel__core.html#ga0c456cbf7f8fd6ad1e22f03d1d9932cb", null ],
-    [ "con_ln", "group__kernel__core.html#ga436e47cee5d6fe00301ee48f8801b00c", null ],
-    [ "con_string", "group__kernel__core.html#ga6ece3036d6d4dab70b2dcfd30f22c379", null ],
-    [ "con_tab", "group__kernel__core.html#ga22e99046be0f8a63766d97397d5aa701", null ],
-    [ "con_xy", "group__kernel__core.html#ga2e599afd8d199514f3153cb3d751addd", null ],
     [ "hex_monitor", "group__kernel__core.html#gad9e0853d6efd9b67b3890e2dd8625907", null ],
-    [ "set_con", "group__kernel__core.html#ga390d8503695a6e01040c19215bf67f6a", null ],
-    [ "text_monitor", "group__kernel__core.html#ga0f2b628d943d28971ffd2d17130f4ad6", null ],
-    [ "MAX_X", "group__kernel__core.html#gac543391610764aca26c473628bc099b2", null ],
-    [ "MAX_Y", "group__kernel__core.html#ga540a604f6f6afd2157c3a080fd4e4259", null ]
+    [ "text_monitor", "group__kernel__core.html#ga0f2b628d943d28971ffd2d17130f4ad6", null ]
 ];

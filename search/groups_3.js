@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['journal_20subsystem_0',['Kernel system journal subsystem',['../group__kernel__sysj.html',1,'']]]
+  ['file_20i_20o_20subsystem_0',['Kernel file I/O subsystem',['../group__kernel__fio.html',1,'']]],
+  ['full_20profile_1',['Kernel full profile',['../group__kernel__full.html',1,'']]]
 ];

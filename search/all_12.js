@@ -5,7 +5,7 @@ var searchData=
   ['second_2',['second',['../structfildatetime__t.html#a8459fc4e94de7eefc74991e41779c8fc',1,'fildatetime_t']]],
   ['service_5fs_3',['service_s',['../structservice__s.html',1,'']]],
   ['service_5ft_4',['service_t',['../group__kernel__core.html#ga6a14feb9270610ca97df0b09a72d52f0',1,'service.h']]],
-  ['set_5fcon_5',['set_con',['../group__kernel__core.html#ga390d8503695a6e01040c19215bf67f6a',1,'console.h']]],
+  ['set_5fcon_5',['set_con',['../group__kernel__needimpl.html#ga390d8503695a6e01040c19215bf67f6a',1,'console.h']]],
   ['sig_5fblock_6',['SIG_BLOCK',['../group__kernel__core.html#ga927f6ae16379576d638006c7498ac5d7',1,'kernel_signal.h']]],
   ['sig_5fsetmask_7',['SIG_SETMASK',['../group__kernel__core.html#ga37750b78b7ae75fe02ad26e70f6cc845',1,'kernel_signal.h']]],
   ['sig_5funblock_8',['SIG_UNBLOCK',['../group__kernel__core.html#ga5fcd73313a63dac2cc7eb3b654215250',1,'kernel_signal.h']]],

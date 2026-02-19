@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Event driven kernel", "index.html", [
+  [ "RPV Event driven kernel", "index.html", [
     [ "Event Driven Kernel Documentation", "index.html", "index" ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
