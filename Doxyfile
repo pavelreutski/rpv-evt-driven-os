@@ -1,4 +1,5 @@
 PROJECT_NAME           = "Event driven kernel"
+HTML_OUTPUT            = .
 OUTPUT_DIRECTORY       = docs
 
 # Only scan public headers
