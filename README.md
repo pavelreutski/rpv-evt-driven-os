@@ -12,23 +12,19 @@
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Abstract](#abstract)
 - [Research Motivation](#research-motivation)
 - [Design Principles](#design-principles)
-- [System Architecture](#system-architecture)
 - [Event Model](#event-model)
 - [Implementation Details](#implementation-details)
 - [Build Instructions](#build-instructions)
-- [Experimental Evaluation](#experimental-evaluation)
-- [Formalization](#formalization)
-- [Repository Structure](#repository-structure)
-- [Research Questions](#research-questions)
-- [Limitations](#limitations)
-- [Related Work](#related-work)
-- [Citation](#citation)
-- [License](#license)
+- [Clone Repository](#clone-repository)
 
 ---
+
+## Documentation (Doxygen style)
+[Event Driven Kernel pages](https://pavelreutski.github.io/rpv-evt-driven-os/)
 
 ## Abstract
 
@@ -87,17 +83,12 @@ This project explores whether an event-driven execution model can:
 
 ---
 
-## System Architecture
-
 ### Core Subsystems
 
 - Event Queue (bounded FIFO or lock-free)
 - Dispatcher
 - Cooperative Scheduler
 - Interrupt Adaptation Layer
-- Timer Subsystem
-- Memory Allocator
-- IPC Mechanism
 
 ---
 
@@ -108,16 +99,14 @@ The kernel follows a structured event lifecycle:
 1. Event Creation  
 2. Event Enqueue  
 3. Dispatch Resolution  
-4. Handler Execution  
-5. Optional Event Emission  
+4. Handler Execution 
 
 Events are immutable once enqueued.
 
 The system may operate as:
 
 - Single-threaded deterministic loop  
-- Priority-ordered event processing  
-- Experimental multi-queue configuration  
+- Priority-ordered event processing   
 
 ---
 
@@ -126,13 +115,16 @@ The system may operate as:
 | Component | Description |
 |-----------|------------|
 | Language  | C (minimal assembly for bootstrapping) |
-| Architectures | x86_64, ARMv8, RISC-V |
+| Architectures | Any e.g. x86_64, ARMv8, RISC-V etc. |
 | Build System | CMake |
 | Artifacts | Set of cmake object libraries composed into an interface one  |
 
 ---
 
 ## Build Instructions
+
+This is an underlaying midleware component and doesnt build by its own but rather would build as part of a target platform project.
+Its "cmake" frendly hence can be integrated into the target project via FetchContent_Declare(...) and FetchContent_MakeAvailable(...)
 
 ### Clone Repository
 
