@@ -1,0 +1,44 @@
+/**
+ * @mainpage Event Driven Kernel Documentation
+ *
+ * @section intro Introduction
+ * An event driven kernel is a small, modular, embedded kernel designed for
+ * educational and lightweight RTOS applications. It provides:
+ * - Event system with publish/subscribe model producing a reactive like firmwares 
+ * - POSIX-alike signal handling. The concrete behaviour is a bit differ from POSIX one 
+ *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm 
+ * - Shell command execution framework
+ * - Filesystem abstraction and mount management
+ * - Kernel logging and journal subsystem
+ *
+ * @section architecture Kernel Architecture
+ * The kernel is organized into modular subsystems:
+ * - Kernel Core: Events pipeline, and service dispatch
+ * - Event System: Publish/subscribe events for inter-module communication
+ * - Filesystem: Mount, unmount, file operations, and shell commands
+ * - Shell: Interactive command-line interface
+ * - Signal Handling: Signal masks, delivery, and pending signals
+ * - Journal: Kernel log entries and retrieval
+ *
+ * @section usage Usage
+ * Include public headers from `include/` and call the
+ * initialization then action functions for the subsystems you need.
+ *
+ * @section license License
+ * Event driven kernel is released under the MIT License.
+ */
+
+ /**
+  * @defgroup kernel_core Kernel runtime API
+  * @brief Kernel core runtime shell with basic commands and stdio included.
+  */
+ 
+ /**
+  * @defgroup kernel_fio Kernel file I/O subsystem
+  * @brief Kernel filesystem and drive management middleware API extending kernel shell runtime with file mangement commands.
+  */
+ 
+ /**
+  * @defgroup kernel_sysj Kernel system journal subsystem
+  * @brief Kernel system events journal API extending kernel shell runtime with journal manipulation commands.
+  */

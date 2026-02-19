@@ -1,0 +1,33 @@
+PROJECT_NAME           = "Event driven kernel"
+OUTPUT_DIRECTORY       = docs
+
+# Only scan public headers
+INPUT                  = kernel.dox include
+FILE_PATTERNS          = *.h
+RECURSIVE              = YES
+
+# DO NOT extract undocumented items
+EXTRACT_ALL            = NO
+
+# Hide private/internal stuff
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = NO
+EXTRACT_LOCAL_CLASSES  = NO
+
+# C project optimization
+OPTIMIZE_OUTPUT_FOR_C  = YES
+
+# Output
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Clean output
+HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_CLASSES     = YES
+HIDE_SCOPE_NAMES       = YES
+
+# Nice UI
+GENERATE_TREEVIEW      = YES
+SOURCE_BROWSER         = NO
+
+ALIASES += sideeffects="\par Side Effects:"
