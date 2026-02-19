@@ -29,6 +29,23 @@
  */
 
  /**
+  * @defgroup kernel_needimpl APIs called by Kernel which needs implementation on a target platform project
+  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike.
+  *        These APIs require implementation within the concrete target platform project. There are several compile instance profiles available
+  *        each defines the number of APIs need in implementation on a target project
+  */
+
+ /**
+  * @defgroup kernel_lite Kernel lite profile
+  * @brief Kernel lite variant.
+  */
+
+ /**
+  * @defgroup kernel_full Kernel full profile
+  * @brief Kernel full variant
+  */
+
+ /**
   * @defgroup kernel_core Kernel runtime API
   * @brief Kernel core runtime shell with basic commands and stdio included.
   */

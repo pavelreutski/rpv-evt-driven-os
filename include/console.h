@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Maximum horizontal coordinate of the console.
  *
  * @details
@@ -22,7 +22,7 @@
 extern size_t MAX_X;
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Maximum vertical coordinate of the console.
  *
  * @details
@@ -39,7 +39,7 @@ extern size_t MAX_X;
 extern size_t MAX_Y;
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Moves cursor to the next line.
  *
  * @details
@@ -56,7 +56,7 @@ extern size_t MAX_Y;
 void con_ln(void);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Inserts a horizontal tab.
  *
  * @details
@@ -69,7 +69,7 @@ void con_ln(void);
 void con_tab(void);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Clears the console display.
  *
  * @details
@@ -90,7 +90,7 @@ void con_tab(void);
 void con_clear(void);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Writes a single character to the console.
  *
  * @param[in] code Character to display.
@@ -109,7 +109,7 @@ void con_clear(void);
 void con_char(const char code);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Writes a null-terminated string to the console.
  *
  * @param[in] str Pointer to null-terminated character string.
@@ -129,7 +129,7 @@ void con_char(const char code);
 void con_string(const char* str);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Sets the cursor position.
  *
  * @param[in] cx Horizontal position (column index).
@@ -154,7 +154,7 @@ void con_string(const char* str);
 void con_xy(size_t cx, size_t cy);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Retrieves the current cursor X position.
  *
  * @return Current horizontal cursor position.
@@ -165,7 +165,7 @@ void con_xy(size_t cx, size_t cy);
 size_t con_getx(void);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Retrieves the current cursor Y position.
  *
  * @return Current vertical cursor position.
@@ -176,7 +176,7 @@ size_t con_getx(void);
 size_t con_gety(void);
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Initializes the console subsystem.
  *
  * @details

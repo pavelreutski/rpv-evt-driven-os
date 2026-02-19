@@ -1,9 +1,9 @@
-PROJECT_NAME           = "Event driven kernel"
+PROJECT_NAME           = "RPV Event driven kernel"
 HTML_OUTPUT            = .
 OUTPUT_DIRECTORY       = docs
 
 # Only scan public headers
-INPUT                  = kernel.dox include
+INPUT                  = docs.dox include
 FILE_PATTERNS          = *.h
 RECURSIVE              = YES
 

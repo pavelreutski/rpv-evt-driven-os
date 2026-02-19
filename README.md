@@ -69,9 +69,6 @@ This project explores whether an event-driven execution model can:
 - **Event-Centric Execution**  
   All system activity is triggered by explicit events.
 
-- **Non-Blocking Handlers**  
-  Kernel components must not block.
-
 - **Deterministic Dispatch**  
   Event ordering policies are explicitly defined.
 
@@ -98,7 +95,7 @@ The kernel follows a structured event lifecycle:
 
 1. Event Creation  
 2. Event Enqueue  
-3. Dispatch Resolution  
+3. Event Dispatch  
 4. Handler Execution 
 
 Events are immutable once enqueued.
@@ -124,7 +121,8 @@ The system may operate as:
 ## Build Instructions
 
 This is an underlaying midleware component and doesnt build by its own but rather would build as part of a target platform project.
-Its "cmake" frendly hence can be integrated into the target project via FetchContent_Declare(...) and FetchContent_MakeAvailable(...)
+Its "cmake" frendly hence can be integrated into the target project via FetchContent_Declare(...) and FetchContent_MakeAvailable(...).
+Or as a 3rd party project via add_subdirectory(...).
 
 ### Clone Repository
 

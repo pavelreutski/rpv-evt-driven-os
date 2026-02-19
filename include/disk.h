@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Disk I/O status codes.
  *
  * @details
@@ -26,7 +26,7 @@ enum
 };
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Disk descriptor structure.
  *
  * @details
@@ -66,7 +66,7 @@ typedef struct
 } disk_t;
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Initializes the disk I/O module be a part of a file I/O subsystem.
  *
  * @details
@@ -85,7 +85,7 @@ typedef struct
 void disk_io(void);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Returns the number of detected disks.
  *
  * @return
@@ -96,7 +96,7 @@ void disk_io(void);
 size_t get_disks(void);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Retrieves disk descriptor by identifier.
  *
  * @param[in]  did   Disk identifier.
@@ -115,7 +115,7 @@ size_t get_disks(void);
 void get_disk(size_t did, disk_t *disk);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Retrieves human-readable disk information string.
  *
  * @param[in]  did           Disk identifier.
@@ -136,7 +136,7 @@ void get_disk(size_t did, disk_t *disk);
 void get_diskInfo(size_t did, char *dsk_info, size_t dsk_infoLen);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Flushes pending write operations to disk.
  *
  * @param[in] did Disk identifier.
@@ -155,7 +155,7 @@ void get_diskInfo(size_t did, char *dsk_info, size_t dsk_infoLen);
 uint8_t flush_disk(size_t did);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Reads blocks from disk.
  *
  * @param[out] buffer Destination buffer.
@@ -182,7 +182,7 @@ uint8_t flush_disk(size_t did);
 uint8_t read_disk(void *buffer, size_t did, size_t blck, size_t blocks);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Writes blocks to disk.
  *
  * @param[in] buffer Source buffer.

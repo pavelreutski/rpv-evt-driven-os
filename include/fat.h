@@ -5,13 +5,13 @@
 #include <stdbool.h>
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Maximum file name length (including null terminator).
  */
 #define MAX_FILE_NAME           (256)
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief File access mode flags.
  *
  * @details
@@ -32,7 +32,7 @@ typedef enum
 } file_access_t;
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief FAT filesystem error codes.
  *
  * @details
@@ -49,7 +49,7 @@ typedef enum
 } fat_error_code_t;
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief FAT timestamp structure.
  *
  * @details
@@ -68,7 +68,7 @@ typedef struct
 } fildatetime_t;
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief File information structure.
  *
  * @details
@@ -121,7 +121,7 @@ typedef struct
 } filinfo_t;
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Retrieves current working directory path.
  *
  * @param[out] cwd Output buffer for path string.
@@ -133,7 +133,7 @@ typedef struct
 void fat_getcwd(char *cwd);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Checks whether a file or directory exists.
  *
  * @param[in] path Path to file or directory.
@@ -145,7 +145,7 @@ void fat_getcwd(char *cwd);
 bool fat_exists(char const* path);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Changes current working directory.
  *
  * @param[in] cwd Target directory path.
@@ -156,7 +156,7 @@ bool fat_exists(char const* path);
 bool fat_chdir(char const* cwd);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Creates a new directory.
  *
  * @param[in] path Directory path.
@@ -167,7 +167,7 @@ bool fat_chdir(char const* cwd);
 bool fat_mkdir(char const* path);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Removes a file or directory.
  *
  * @param[in] path Target path.
@@ -178,7 +178,7 @@ bool fat_mkdir(char const* path);
 bool fat_unlink(char const* path);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Mounts a FAT filesystem.
  *
  * @param[in] path Mount source (device path).
@@ -191,7 +191,7 @@ bool fat_unlink(char const* path);
 bool fat_mount(char const* path);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Unmounts a FAT filesystem.
  *
  * @param[in] path Mount source.
@@ -202,7 +202,7 @@ bool fat_mount(char const* path);
 bool fat_unmount(char const* path);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Retrieves file or directory metadata.
  *
  * @param[in]  path Target path.
@@ -214,7 +214,7 @@ bool fat_unmount(char const* path);
 bool fat_stat(char const* path, filinfo_t *fno);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Returns last FAT error code.
  *
  * @return Most recent fat_error_code_t value.
@@ -222,7 +222,7 @@ bool fat_stat(char const* path, filinfo_t *fno);
 fat_error_code_t fat_getcode(void);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Closes an open file descriptor.
  *
  * @param[in] fd File descriptor.
@@ -230,7 +230,7 @@ fat_error_code_t fat_getcode(void);
 void fat_fclose(int fd);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Opens a file.
  *
  * @param[in] path File path.
@@ -243,7 +243,7 @@ void fat_fclose(int fd);
 int fat_fopen(char const* path, file_access_t mode);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Returns file size.
  *
  * @param[in] fd File descriptor.
@@ -253,7 +253,7 @@ int fat_fopen(char const* path, file_access_t mode);
 size_t fat_fsize(int fd);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Reads data from file.
  *
  * @param[in]  fd      File descriptor.
@@ -267,7 +267,7 @@ size_t fat_fsize(int fd);
 size_t fat_fread(int fd, void *buffer, size_t nread);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Writes data to file.
  *
  * @param[in] fd       File descriptor.
@@ -279,7 +279,7 @@ size_t fat_fread(int fd, void *buffer, size_t nread);
 size_t fat_fwrite(int fd, void const* buffer, size_t nwrite);
 
 /**
- * @ingroup kernel_fio
+ * @ingroup kernel_needimpl
  * @brief Lists directory contents.
  *
  * @param[in] path     Directory path.
