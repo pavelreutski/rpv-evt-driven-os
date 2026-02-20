@@ -1,3 +1,9 @@
+/**
+ * @file fat.h
+ * @ingroup kernel_needimpl
+ * @brief File system middleware interface called by file I/O subsystem
+ */
+ 
 #pragma once
 
 #include <stddef.h>
@@ -5,13 +11,11 @@
 #include <stdbool.h>
 
 /**
- * @ingroup kernel_needimpl
  * @brief Maximum file name length (including null terminator).
  */
 #define MAX_FILE_NAME           (256)
 
 /**
- * @ingroup kernel_needimpl
  * @brief File access mode flags.
  *
  * @details
@@ -32,7 +36,6 @@ typedef enum
 } file_access_t;
 
 /**
- * @ingroup kernel_needimpl
  * @brief FAT filesystem error codes.
  *
  * @details
@@ -49,7 +52,6 @@ typedef enum
 } fat_error_code_t;
 
 /**
- * @ingroup kernel_needimpl
  * @brief FAT timestamp structure.
  *
  * @details
@@ -68,7 +70,6 @@ typedef struct
 } fildatetime_t;
 
 /**
- * @ingroup kernel_needimpl
  * @brief File information structure.
  *
  * @details

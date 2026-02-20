@@ -1,9 +1,15 @@
+/**
+ * @file prompt.h
+ * @ingroup kernel_needimpl
+ * @brief System prompt constructor interface used by the Kernel Shell
+ */
+
 #pragma once
 
 #include <stddef.h>
 
 /**
- * @ingroup kernel_core
+ * @ingroup kernel_needimpl
  * @brief Generates or retrieves the current shell prompt string.
  *
  * @param[out] prompt  Output buffer receiving the prompt string.

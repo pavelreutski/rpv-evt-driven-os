@@ -1,3 +1,9 @@
+/**
+ * @file disk.h
+ * @ingroup kernel_needimpl
+ * @brief Disk low level I/O interface called by file I/O subsystem
+ */
+ 
 #pragma once
 
 #include <stddef.h>
@@ -5,7 +11,6 @@
 #include <stdbool.h>
 
 /**
- * @ingroup kernel_needimpl
  * @brief Disk I/O status codes.
  *
  * @details
@@ -26,7 +31,6 @@ enum
 };
 
 /**
- * @ingroup kernel_needimpl
  * @brief Disk descriptor structure.
  *
  * @details

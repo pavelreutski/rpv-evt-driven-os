@@ -12,6 +12,7 @@
 
 ## Table of Contents
 
+- [Usage Example](#example)
 - [Documentation](#documentation)
 - [Abstract](#abstract)
 - [Research Motivation](#research-motivation)
@@ -22,6 +23,10 @@
 - [Clone Repository](#clone-repository)
 
 ---
+
+## Usage example
+
+[Event Driven Platforms Kernel](https://github.com/pavelreutski/rpv_platforms-evt-driven-os)
 
 ## Documentation (Doxygen style)
 [Event Driven Kernel pages](https://pavelreutski.github.io/rpv-evt-driven-os/)

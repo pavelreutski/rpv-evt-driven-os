@@ -13,36 +13,50 @@
  *
  * @section architecture Kernel Architecture
  * The kernel is organized into modular subsystems:
- * - Kernel Core: Events pipeline, and service dispatch
- * - Event System: Publish/subscribe events for inter-module communication
+ * - Kernel Core: Events pipeline (events and service dispatch), publish/subscribe events
+ * - Command/Service Registrar: Flexibe command/service registration
  * - Filesystem: Mount, unmount, file operations, and shell commands
  * - Shell: Interactive command-line interface
- * - Signal Handling: Signal masks, delivery, and pending signals
+ * - Signal Handling: Signal masks, delivery, and pending signals (using kernel pipeline)
  * - Journal: Kernel log entries and retrieval
  *
  * @section usage Usage
- * Include public headers from `include/` and call the
- * initialization then action functions for the subsystems you need.
+ * Include public headers from `include/` implement required APIs needed by the kernel using profile (see \ref kernel_needimpl). 
+ * At project entry call subsystems initialization you need following with shell start functions to enter into
+ * events never ending processing loop.
+ * @note some subsystems might not be available according to chosen kernel profile e.g. lite profile doesnt include file I/O subsystem
  *
  * @section license License
  * Event driven kernel is released under the MIT License.
  */
 
  /**
-  * @defgroup kernel_needimpl APIs called by Kernel which needs implementation on a target platform project
-  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike.
-  *        These APIs require implementation within the concrete target platform project. There are several compile instance profiles available
-  *        each defines the number of APIs need in implementation on a target project
+  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel 
+  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. 
+  * There are APIs require implementation within the concrete target platform project. 
+  * There are several compile instance profiles available each defines the number of APIs need in implementation
   */
 
  /**
   * @defgroup kernel_lite Kernel lite profile
-  * @brief Kernel lite variant.
+  * @ingroup kernel_needimpl
+  * @brief Kernel lite variant. Includes a core with basic commands. 
+  * @details
+  * Requires implementation of 
+  * - \ref console.h : console output operations.
+  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
   */
 
  /**
   * @defgroup kernel_full Kernel full profile
-  * @brief Kernel full variant
+  * @ingroup kernel_needimpl
+  * @brief Kernel full variant. Includes a core and all currently available subsystems. 
+  * @details
+  * Requires implementation of 
+  * - \ref console.h : console output operations 
+  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
+  * - \ref disk.h    : low level Disk I/O operations -> called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.
+  * - \ref fat.h     : file system middleware interface -> called by kernel file I/O subsystem for file I/O operations.
   */
 
  /**

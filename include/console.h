@@ -1,3 +1,9 @@
+/**
+ * @file console.h
+ * @ingroup kernel_needimpl
+ * @brief Console interface used by the Kernel Shell
+ */
+
 #pragma once
 
 #include <stddef.h>
