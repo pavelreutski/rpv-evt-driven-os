@@ -1,0 +1,4 @@
+<map id="Kernel lite profile" name="Kernel lite profile">
+<area shape="rect" id="Node000001" title="Kernel lite variant. Includes a core with basic commands." alt="" coords="220,13,353,38"/>
+<area shape="rect" id="Node000002" href="$group__kernel__needimpl.html" title="Kernel can run on any binary system platfrom and compile using target platform toolchain e...." alt="" coords="5,5,172,45"/>
+</map>

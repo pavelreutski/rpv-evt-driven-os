@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['needs_20implementation_20on_20a_20target_20platform_20project_0',['APIs called by Kernel which needs implementation on a target platform project',['../group__kernel__needimpl.html',1,'']]]
+  ['mandatory_20apis_20called_20by_20the_20kernel_0',['Mandatory APIs called by the Kernel',['../group__kernel__needimpl.html',1,'']]]
 ];

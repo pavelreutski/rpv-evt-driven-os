@@ -89,13 +89,26 @@ $(document).ready(function(){initNavTree('group__kernel__lite.html',''); initRes
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Kernel lite profile</div></div>
+  <div class="headertitle"><div class="title">Kernel lite profile<div class="ingroups"><a class="el" href="group__kernel__needimpl.html">Mandatory APIs called by the Kernel</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Kernel lite variant.  
+<p>Kernel lite variant. Includes a core with basic commands.  
 </p>
-<p>Kernel lite variant. </p>
+<div class="dynheader">
+Collaboration diagram for Kernel lite profile:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__kernel__lite.png" border="0" usemap="#agroup____kernel____lite" alt=""/></div>
+<map name="agroup____kernel____lite" id="agroup____kernel____lite">
+<area shape="rect" title="Kernel lite variant. Includes a core with basic commands." alt="" coords="220,13,353,38"/>
+<area shape="rect" href="group__kernel__needimpl.html" title="Kernel can run on any binary system platfrom and compile using target platform toolchain e...." alt="" coords="5,5,172,45"/>
+</map>
+</div>
+<p>Kernel lite variant. Includes a core with basic commands. </p>
+<p>Requires implementation of</p><ul>
+<li><a class="el" href="console_8h.html">console.h</a> : console output operations.</li>
+<li><a class="el" href="prompt_8h.html">prompt.h</a> : system prompt constructor called by the kernel shell. </li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

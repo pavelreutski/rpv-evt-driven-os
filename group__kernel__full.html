@@ -89,13 +89,28 @@ $(document).ready(function(){initNavTree('group__kernel__full.html',''); initRes
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Kernel full profile</div></div>
+  <div class="headertitle"><div class="title">Kernel full profile<div class="ingroups"><a class="el" href="group__kernel__needimpl.html">Mandatory APIs called by the Kernel</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Kernel full variant.  
+<p>Kernel full variant. Includes a core and all currently available subsystems.  
 </p>
-<p>Kernel full variant. </p>
+<div class="dynheader">
+Collaboration diagram for Kernel full profile:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__kernel__full.png" border="0" usemap="#agroup____kernel____full" alt=""/></div>
+<map name="agroup____kernel____full" id="agroup____kernel____full">
+<area shape="rect" title="Kernel full variant. Includes a core and all currently available subsystems." alt="" coords="220,13,353,38"/>
+<area shape="rect" href="group__kernel__needimpl.html" title="Kernel can run on any binary system platfrom and compile using target platform toolchain e...." alt="" coords="5,5,172,45"/>
+</map>
+</div>
+<p>Kernel full variant. Includes a core and all currently available subsystems. </p>
+<p>Requires implementation of</p><ul>
+<li><a class="el" href="console_8h.html">console.h</a> : console output operations</li>
+<li><a class="el" href="prompt_8h.html">prompt.h</a> : system prompt constructor called by the kernel shell.</li>
+<li><a class="el" href="disk_8h.html">disk.h</a> : low level Disk I/O operations -&gt; called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.</li>
+<li><a class="el" href="fat_8h.html">fat.h</a> : file system middleware interface -&gt; called by kernel file I/O subsystem for file I/O operations. </li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

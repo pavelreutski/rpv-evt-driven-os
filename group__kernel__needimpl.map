@@ -1,0 +1,5 @@
+<map id="Mandatory APIs called by the Kernel" name="Mandatory APIs called by the Kernel">
+<area shape="rect" id="Node000003" href="$group__kernel__full.html" title="Kernel full variant. Includes a core and all currently available subsystems." alt="" coords="220,5,353,31"/>
+<area shape="rect" id="Node000002" href="$group__kernel__lite.html" title="Kernel lite variant. Includes a core with basic commands." alt="" coords="220,55,353,80"/>
+<area shape="rect" id="Node000001" title="Kernel can run on any binary system platfrom and compile using target platform toolchain e...." alt="" coords="5,23,172,63"/>
+</map>

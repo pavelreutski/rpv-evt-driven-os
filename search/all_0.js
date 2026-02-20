@@ -35,6 +35,6 @@ var searchData=
   ['_5fkernel_5fvstringformat_32',['_kernel_vstringFormat',['../group__kernel__core.html#ga02118917089a7dc333ebded0a02e2f20',1,'kernel_stdio.h']]],
   ['_5fservice_33',['_SERVICE',['../group__kernel__core.html#gaa7ed73cb96fe511acf757c3f723d0266',1,'service.h']]],
   ['_5fshell_5fcommand_34',['_SHELL_COMMAND',['../group__kernel__core.html#ga9a84289384e2e513f720c953ea60be36',1,'command.h']]],
-  ['_5fshell_5fprompt_35',['_shell_prompt',['../group__kernel__core.html#gaee4f6af6188dcfb44dd4263332899095',1,'prompt.h']]],
+  ['_5fshell_5fprompt_35',['_shell_prompt',['../group__kernel__needimpl.html#gaee4f6af6188dcfb44dd4263332899095',1,'prompt.h']]],
   ['_5fshell_5fstart_36',['_shell_start',['../group__kernel__core.html#ga8f9d0333348003b2e852571141f37e17',1,'shell.h']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RPV Event driven kernel: APIs called by Kernel which needs implementation on a target platform project</title>
+<title>RPV Event driven kernel: Mandatory APIs called by the Kernel</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,72 +90,50 @@ $(document).ready(function(){initNavTree('group__kernel__needimpl.html',''); ini
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
+<a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">APIs called by Kernel which needs implementation on a target platform project</div></div>
+  <div class="headertitle"><div class="title">Mandatory APIs called by the Kernel</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. These APIs require implementation within the concrete target platform project. There are several compile instance profiles available each defines the number of APIs need in implementation on a target project.  
+<p>Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. There are APIs require implementation within the concrete target platform project. There are several compile instance profiles available each defines the number of APIs need in implementation.  
 <a href="#details">More...</a></p>
+<div class="dynheader">
+Collaboration diagram for Mandatory APIs called by the Kernel:</div>
+<div class="dyncontent">
+<div class="center"><img src="group__kernel__needimpl.png" border="0" usemap="#agroup____kernel____needimpl" alt=""/></div>
+<map name="agroup____kernel____needimpl" id="agroup____kernel____needimpl">
+<area shape="rect" href="group__kernel__full.html" title="Kernel full variant. Includes a core and all currently available subsystems." alt="" coords="220,5,353,31"/>
+<area shape="rect" href="group__kernel__lite.html" title="Kernel lite variant. Includes a core with basic commands." alt="" coords="220,55,353,80"/>
+<area shape="rect" title="Kernel can run on any binary system platfrom and compile using target platform toolchain e...." alt="" coords="5,23,172,63"/>
+</map>
+</div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdisk__t.html">disk_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disk descriptor structure.  <a href="structdisk__t.html#details">More...</a><br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
+Modules</h2></td></tr>
+<tr class="memitem:group__kernel__lite" id="r_group__kernel__lite"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__lite.html">Kernel lite profile</a></td></tr>
+<tr class="memdesc:group__kernel__lite"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel lite variant. Includes a core with basic commands. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfildatetime__t.html">fildatetime_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">FAT timestamp structure.  <a href="structfildatetime__t.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfilinfo__t.html">filinfo_t</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">File information structure.  <a href="structfilinfo__t.html#details">More...</a><br /></td></tr>
+<tr class="memitem:group__kernel__full" id="r_group__kernel__full"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__full.html">Kernel full profile</a></td></tr>
+<tr class="memdesc:group__kernel__full"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel full variant. Includes a core and all currently available subsystems. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:gaf43dedece15d018ffad8970492870bac" id="r_gaf43dedece15d018ffad8970492870bac"><td class="memItemLeft" align="right" valign="top"><a id="gaf43dedece15d018ffad8970492870bac" name="gaf43dedece15d018ffad8970492870bac"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_FILE_NAME</b>&#160;&#160;&#160;(256)</td></tr>
-<tr class="memdesc:gaf43dedece15d018ffad8970492870bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum file name length (including null terminator). <br /></td></tr>
-<tr class="separator:gaf43dedece15d018ffad8970492870bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b" id="r_ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#gga06fc87d81c62e9abb8790b6e5713c55ba626449784422dc252991ebe2c2e56873">DISK_IO_OK</a>
-, <a class="el" href="group__kernel__needimpl.html#gga06fc87d81c62e9abb8790b6e5713c55bad0e928066796af20010fda971882364d">DISK_IO_ERR</a>
-, <a class="el" href="group__kernel__needimpl.html#gga06fc87d81c62e9abb8790b6e5713c55bae7f5ca482944ab4ee38521024396ce97">DISK_INVALID</a>
-, <a class="el" href="group__kernel__needimpl.html#gga06fc87d81c62e9abb8790b6e5713c55bad3977941d7c5548e4294dcf6740019d1">DISK_NOT_READY</a>
-, <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#gga06fc87d81c62e9abb8790b6e5713c55ba410e4bf95d89aedf1e74651431b7dc17">DISK_WRITE_PROTECT</a>
-<br />
- }</td></tr>
-<tr class="memdesc:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disk I/O status codes.  <a href="group__kernel__needimpl.html#ga06fc87d81c62e9abb8790b6e5713c55b">More...</a><br /></td></tr>
-<tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga744e4881c6b957482dfe43a70d4f75e0" id="r_ga744e4881c6b957482dfe43a70d4f75e0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#ga744e4881c6b957482dfe43a70d4f75e0">file_access_t</a> { <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#gga744e4881c6b957482dfe43a70d4f75e0abc12fb4abc05d500e44b1933e485a930">FILE_READ</a> = 0x01
-, <a class="el" href="group__kernel__needimpl.html#gga744e4881c6b957482dfe43a70d4f75e0ad6098fc5d2343501a61efdac838e5925">FILE_WRITE</a> = 0x02
-, <a class="el" href="group__kernel__needimpl.html#gga744e4881c6b957482dfe43a70d4f75e0a66100ecf9720655dd2076dc508609c6b">FILE_CREATE</a> = 0x08
-, <a class="el" href="group__kernel__needimpl.html#gga744e4881c6b957482dfe43a70d4f75e0aaa23d14aee5af00fdfa4dc2b96e9ba04">FILE_CREATE_NEW</a> = 0x04
-, <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#gga744e4881c6b957482dfe43a70d4f75e0a03ceb17b3f22e06535b04e4fe7b96c77">FILE_APPEND</a> = 0x30
-<br />
- }</td></tr>
-<tr class="memdesc:ga744e4881c6b957482dfe43a70d4f75e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">File access mode flags.  <a href="group__kernel__needimpl.html#ga744e4881c6b957482dfe43a70d4f75e0">More...</a><br /></td></tr>
-<tr class="separator:ga744e4881c6b957482dfe43a70d4f75e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabf34590a5bb8cf63ff752fa95caa0ade" id="r_gabf34590a5bb8cf63ff752fa95caa0ade"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gabf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a> { <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#ggabf34590a5bb8cf63ff752fa95caa0adea41a1e0966f4643c3ddc0c92028431434">FAT_OK</a>
-, <a class="el" href="group__kernel__needimpl.html#ggabf34590a5bb8cf63ff752fa95caa0adea3d3a3cc82a61ed3bf3c7077a0b5fab94">FAT_IO_ERROR</a>
-, <a class="el" href="group__kernel__needimpl.html#ggabf34590a5bb8cf63ff752fa95caa0adea22b720a90a281275a11fe89e07f56479">FAT_NOT_FOUND</a>
-, <a class="el" href="group__kernel__needimpl.html#ggabf34590a5bb8cf63ff752fa95caa0adea88cc791b90a74f63a1724eaaf91e548f">FAT_ACCESS_DENIED</a>
-, <br />
-&#160;&#160;<a class="el" href="group__kernel__needimpl.html#ggabf34590a5bb8cf63ff752fa95caa0adea2b9f0e41cbc358d2562455f4856b95b5">FAT_ERR_NOTSET</a>
-<br />
- }</td></tr>
-<tr class="memdesc:gabf34590a5bb8cf63ff752fa95caa0ade"><td class="mdescLeft">&#160;</td><td class="mdescRight">FAT filesystem error codes.  <a href="group__kernel__needimpl.html#gabf34590a5bb8cf63ff752fa95caa0ade">More...</a><br /></td></tr>
-<tr class="separator:gabf34590a5bb8cf63ff752fa95caa0ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:console_8h" id="r_console_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html">console.h</a></td></tr>
+<tr class="memdesc:console_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Console interface used by the Kernel Shell. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:disk_8h" id="r_disk_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="disk_8h.html">disk.h</a></td></tr>
+<tr class="memdesc:disk_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disk low level I/O interface called by file I/O subsystem. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:fat_8h" id="r_fat_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fat_8h.html">fat.h</a></td></tr>
+<tr class="memdesc:fat_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">File system middleware interface called by file I/O subsystem. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:prompt_8h" id="r_prompt_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="prompt_8h.html">prompt.h</a></td></tr>
+<tr class="memdesc:prompt_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">System prompt constructor interface used by the Kernel Shell. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -231,13 +209,13 @@ Functions</h2></td></tr>
 <tr class="memitem:ga82c636d566eebae7738ee41b89efe85e" id="r_ga82c636d566eebae7738ee41b89efe85e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#ga82c636d566eebae7738ee41b89efe85e">fat_stat</a> (char const *path, <a class="el" href="structfilinfo__t.html">filinfo_t</a> *fno)</td></tr>
 <tr class="memdesc:ga82c636d566eebae7738ee41b89efe85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves file or directory metadata.  <br /></td></tr>
 <tr class="separator:ga82c636d566eebae7738ee41b89efe85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga86785bf1c0e33984e6f306e903d95352" id="r_ga86785bf1c0e33984e6f306e903d95352"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__kernel__needimpl.html#gabf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#ga86785bf1c0e33984e6f306e903d95352">fat_getcode</a> (void)</td></tr>
+<tr class="memitem:ga86785bf1c0e33984e6f306e903d95352" id="r_ga86785bf1c0e33984e6f306e903d95352"><td class="memItemLeft" align="right" valign="top"><a class="el" href="fat_8h.html#abf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#ga86785bf1c0e33984e6f306e903d95352">fat_getcode</a> (void)</td></tr>
 <tr class="memdesc:ga86785bf1c0e33984e6f306e903d95352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns last FAT error code.  <br /></td></tr>
 <tr class="separator:ga86785bf1c0e33984e6f306e903d95352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2ccdf9c990a775bfa196c2fadcee0e32" id="r_ga2ccdf9c990a775bfa196c2fadcee0e32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#ga2ccdf9c990a775bfa196c2fadcee0e32">fat_fclose</a> (int fd)</td></tr>
 <tr class="memdesc:ga2ccdf9c990a775bfa196c2fadcee0e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes an open file descriptor.  <br /></td></tr>
 <tr class="separator:ga2ccdf9c990a775bfa196c2fadcee0e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa40253711df8cd07cc8c4a3d75d5221a" id="r_gaa40253711df8cd07cc8c4a3d75d5221a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gaa40253711df8cd07cc8c4a3d75d5221a">fat_fopen</a> (char const *path, <a class="el" href="group__kernel__needimpl.html#ga744e4881c6b957482dfe43a70d4f75e0">file_access_t</a> mode)</td></tr>
+<tr class="memitem:gaa40253711df8cd07cc8c4a3d75d5221a" id="r_gaa40253711df8cd07cc8c4a3d75d5221a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gaa40253711df8cd07cc8c4a3d75d5221a">fat_fopen</a> (char const *path, <a class="el" href="fat_8h.html#a744e4881c6b957482dfe43a70d4f75e0">file_access_t</a> mode)</td></tr>
 <tr class="memdesc:gaa40253711df8cd07cc8c4a3d75d5221a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a file.  <br /></td></tr>
 <tr class="separator:gaa40253711df8cd07cc8c4a3d75d5221a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac8a01e76f59005bf2b0d8ef1a4a0daca" id="r_gac8a01e76f59005bf2b0d8ef1a4a0daca"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gac8a01e76f59005bf2b0d8ef1a4a0daca">fat_fsize</a> (int fd)</td></tr>
@@ -252,6 +230,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae9a5c9c51dc8a8da4cb24504b8501e96" id="r_gae9a5c9c51dc8a8da4cb24504b8501e96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gae9a5c9c51dc8a8da4cb24504b8501e96">fat_ls</a> (char const *path, void const *ls_ctx, void(*nxt_file)(void const *ls_ctx, <a class="el" href="structfilinfo__t.html">filinfo_t</a> const *fi))</td></tr>
 <tr class="memdesc:gae9a5c9c51dc8a8da4cb24504b8501e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists directory contents.  <br /></td></tr>
 <tr class="separator:gae9a5c9c51dc8a8da4cb24504b8501e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaee4f6af6188dcfb44dd4263332899095" id="r_gaee4f6af6188dcfb44dd4263332899095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__kernel__needimpl.html#gaee4f6af6188dcfb44dd4263332899095">_shell_prompt</a> (char *prompt, const size_t p_len)</td></tr>
+<tr class="memdesc:gaee4f6af6188dcfb44dd4263332899095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates or retrieves the current shell prompt string.  <br /></td></tr>
+<tr class="separator:gaee4f6af6188dcfb44dd4263332899095"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -263,98 +244,66 @@ Variables</h2></td></tr>
 <tr class="separator:ga540a604f6f6afd2157c3a080fd4e4259"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. These APIs require implementation within the concrete target platform project. There are several compile instance profiles available each defines the number of APIs need in implementation on a target project. </p>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga06fc87d81c62e9abb8790b6e5713c55b" name="ga06fc87d81c62e9abb8790b6e5713c55b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga06fc87d81c62e9abb8790b6e5713c55b">&#9670;&#160;</a></span>anonymous enum</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">anonymous enum</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Disk I/O status codes. </p>
-<p>Return values used by disk I/O operations to indicate success or failure conditions.</p>
-<dl class="section note"><dt>Note</dt><dd>Values are ordered but shall not be relied upon for numeric comparison unless explicitly documented. </dd></dl>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55ba626449784422dc252991ebe2c2e56873" name="gga06fc87d81c62e9abb8790b6e5713c55ba626449784422dc252991ebe2c2e56873"></a>DISK_IO_OK&#160;</td><td class="fielddoc"><p>Operation completed successfully. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55bad0e928066796af20010fda971882364d" name="gga06fc87d81c62e9abb8790b6e5713c55bad0e928066796af20010fda971882364d"></a>DISK_IO_ERR&#160;</td><td class="fielddoc"><p>General I/O error occurred. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55bae7f5ca482944ab4ee38521024396ce97" name="gga06fc87d81c62e9abb8790b6e5713c55bae7f5ca482944ab4ee38521024396ce97"></a>DISK_INVALID&#160;</td><td class="fielddoc"><p>Invalid parameter or disk identifier. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55bad3977941d7c5548e4294dcf6740019d1" name="gga06fc87d81c62e9abb8790b6e5713c55bad3977941d7c5548e4294dcf6740019d1"></a>DISK_NOT_READY&#160;</td><td class="fielddoc"><p>Disk is not initialized or not ready. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga06fc87d81c62e9abb8790b6e5713c55ba410e4bf95d89aedf1e74651431b7dc17" name="gga06fc87d81c62e9abb8790b6e5713c55ba410e4bf95d89aedf1e74651431b7dc17"></a>DISK_WRITE_PROTECT&#160;</td><td class="fielddoc"><p>Write operation attempted on protected media. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="gabf34590a5bb8cf63ff752fa95caa0ade" name="gabf34590a5bb8cf63ff752fa95caa0ade"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabf34590a5bb8cf63ff752fa95caa0ade">&#9670;&#160;</a></span>fat_error_code_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="group__kernel__needimpl.html#gabf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>FAT filesystem error codes. </p>
-<p>Provides detailed error status retrievable via <a class="el" href="group__kernel__needimpl.html#ga86785bf1c0e33984e6f306e903d95352" title="Returns last FAT error code.">fat_getcode()</a>. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggabf34590a5bb8cf63ff752fa95caa0adea41a1e0966f4643c3ddc0c92028431434" name="ggabf34590a5bb8cf63ff752fa95caa0adea41a1e0966f4643c3ddc0c92028431434"></a>FAT_OK&#160;</td><td class="fielddoc"><p>Operation successful. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggabf34590a5bb8cf63ff752fa95caa0adea3d3a3cc82a61ed3bf3c7077a0b5fab94" name="ggabf34590a5bb8cf63ff752fa95caa0adea3d3a3cc82a61ed3bf3c7077a0b5fab94"></a>FAT_IO_ERROR&#160;</td><td class="fielddoc"><p>Low-level disk I/O error. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggabf34590a5bb8cf63ff752fa95caa0adea22b720a90a281275a11fe89e07f56479" name="ggabf34590a5bb8cf63ff752fa95caa0adea22b720a90a281275a11fe89e07f56479"></a>FAT_NOT_FOUND&#160;</td><td class="fielddoc"><p>File or directory not found. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggabf34590a5bb8cf63ff752fa95caa0adea88cc791b90a74f63a1724eaaf91e548f" name="ggabf34590a5bb8cf63ff752fa95caa0adea88cc791b90a74f63a1724eaaf91e548f"></a>FAT_ACCESS_DENIED&#160;</td><td class="fielddoc"><p>Permission denied. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ggabf34590a5bb8cf63ff752fa95caa0adea2b9f0e41cbc358d2562455f4856b95b5" name="ggabf34590a5bb8cf63ff752fa95caa0adea2b9f0e41cbc358d2562455f4856b95b5"></a>FAT_ERR_NOTSET&#160;</td><td class="fielddoc"><p>No error set. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="ga744e4881c6b957482dfe43a70d4f75e0" name="ga744e4881c6b957482dfe43a70d4f75e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga744e4881c6b957482dfe43a70d4f75e0">&#9670;&#160;</a></span>file_access_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="group__kernel__needimpl.html#ga744e4881c6b957482dfe43a70d4f75e0">file_access_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>File access mode flags. </p>
-<p>Bitmask flags used when opening a file via <a class="el" href="group__kernel__needimpl.html#gaa40253711df8cd07cc8c4a3d75d5221a" title="Opens a file.">fat_fopen()</a>. Flags may be combined unless otherwise restricted.</p>
-<dl class="section note"><dt>Note</dt><dd>Mode validation is implementation-defined. </dd></dl>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga744e4881c6b957482dfe43a70d4f75e0abc12fb4abc05d500e44b1933e485a930" name="gga744e4881c6b957482dfe43a70d4f75e0abc12fb4abc05d500e44b1933e485a930"></a>FILE_READ&#160;</td><td class="fielddoc"><p>Open file with read permission. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga744e4881c6b957482dfe43a70d4f75e0ad6098fc5d2343501a61efdac838e5925" name="gga744e4881c6b957482dfe43a70d4f75e0ad6098fc5d2343501a61efdac838e5925"></a>FILE_WRITE&#160;</td><td class="fielddoc"><p>Open file with write permission. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga744e4881c6b957482dfe43a70d4f75e0a66100ecf9720655dd2076dc508609c6b" name="gga744e4881c6b957482dfe43a70d4f75e0a66100ecf9720655dd2076dc508609c6b"></a>FILE_CREATE&#160;</td><td class="fielddoc"><p>Create file; overwrite if exists. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga744e4881c6b957482dfe43a70d4f75e0aaa23d14aee5af00fdfa4dc2b96e9ba04" name="gga744e4881c6b957482dfe43a70d4f75e0aaa23d14aee5af00fdfa4dc2b96e9ba04"></a>FILE_CREATE_NEW&#160;</td><td class="fielddoc"><p>Create file; fail if already exists. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="gga744e4881c6b957482dfe43a70d4f75e0a03ceb17b3f22e06535b04e4fe7b96c77" name="gga744e4881c6b957482dfe43a70d4f75e0a03ceb17b3f22e06535b04e4fe7b96c77"></a>FILE_APPEND&#160;</td><td class="fielddoc"><p>Open file and set cursor to end. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
+<p>Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. There are APIs require implementation within the concrete target platform project. There are several compile instance profiles available each defines the number of APIs need in implementation. </p>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gaee4f6af6188dcfb44dd4263332899095" name="gaee4f6af6188dcfb44dd4263332899095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaee4f6af6188dcfb44dd4263332899095">&#9670;&#160;</a></span>_shell_prompt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void _shell_prompt </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>prompt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>p_len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generates or retrieves the current shell prompt string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">prompt</td><td>Output buffer receiving the prompt string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">p_len</td><td>Length of the output buffer in bytes.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><ul>
+<li>prompt must not be NULL.</li>
+<li>p_len &gt; 0.</li>
+</ul>
+</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><ul>
+<li>prompt contains a null-terminated string on success.</li>
+<li>The string is truncated if the buffer is insufficient.</li>
+</ul>
+</dd></dl>
+<p>Writes the current shell prompt into the provided buffer. The prompt format is implementation-defined and may include contextual information such as:</p><ul>
+<li>Current working directory</li>
+<li>User name</li>
+<li>System state indicators</li>
+</ul>
+<p>The function guarantees null-termination provided p_len &gt; 0.</p>
+<dl class="section user"><dt>Side Effects:</dt><dd><ul>
+<li>None expected (read-only state access).</li>
+</ul>
+</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>The caller is responsible for providing a sufficiently large buffer to avoid truncation. </dd></dl>
+
+</div>
+</div>
 <a id="gabafffa70adf9bfb0d4dc305353c453c4" name="gabafffa70adf9bfb0d4dc305353c453c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gabafffa70adf9bfb0d4dc305353c453c4">&#9670;&#160;</a></span>con_char()</h2>
 
@@ -712,7 +661,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__kernel__needimpl.html#ga744e4881c6b957482dfe43a70d4f75e0">file_access_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="fat_8h.html#a744e4881c6b957482dfe43a70d4f75e0">file_access_t</a>&#160;</td>
           <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
@@ -860,7 +809,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__kernel__needimpl.html#gabf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a> fat_getcode </td>
+          <td class="memname"><a class="el" href="fat_8h.html#abf34590a5bb8cf63ff752fa95caa0ade">fat_error_code_t</a> fat_getcode </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>

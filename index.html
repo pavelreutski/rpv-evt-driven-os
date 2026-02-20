@@ -104,16 +104,16 @@ Introduction</h1>
 <h1><a class="anchor" id="architecture"></a>
 Kernel Architecture</h1>
 <p>The kernel is organized into modular subsystems:</p><ul>
-<li>Kernel Core: Events pipeline, and service dispatch</li>
-<li>Event System: Publish/subscribe events for inter-module communication</li>
+<li>Kernel Core: Events pipeline (events and service dispatch), publish/subscribe events</li>
+<li>Command/Service Registrar: Flexibe command/service registration</li>
 <li>Filesystem: Mount, unmount, file operations, and shell commands</li>
 <li>Shell: Interactive command-line interface</li>
-<li>Signal Handling: Signal masks, delivery, and pending signals</li>
+<li>Signal Handling: Signal masks, delivery, and pending signals (using kernel pipeline)</li>
 <li>Journal: Kernel log entries and retrieval</li>
 </ul>
 <h1><a class="anchor" id="usage"></a>
 Usage</h1>
-<p>Include public headers from <code>include/</code> and call the initialization then action functions for the subsystems you need.</p>
+<p>Include public headers from <code>include/</code> implement required APIs needed by the kernel using profile (see <a class="el" href="group__kernel__needimpl.html">Mandatory APIs called by the Kernel</a>). At project entry call subsystems initialization you need following with shell start functions to enter into events never ending processing loop. </p><dl class="section note"><dt>Note</dt><dd>some subsystems might not be available according to chosen kernel profile e.g. lite profile doesnt include file I/O subsystem</dd></dl>
 <h1><a class="anchor" id="license"></a>
 License</h1>
 <p>Event driven kernel is released under the MIT License. </p>

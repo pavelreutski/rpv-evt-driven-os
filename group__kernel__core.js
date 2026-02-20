@@ -63,7 +63,6 @@ var group__kernel__core =
     [ "_kernel_subEvt", "group__kernel__core.html#gae825e6052274c5f5e089a9228b1793c0", null ],
     [ "_kernel_tryGetKey", "group__kernel__core.html#ga75b430424ed398679e7743d526be450d", null ],
     [ "_kernel_vstringFormat", "group__kernel__core.html#ga02118917089a7dc333ebded0a02e2f20", null ],
-    [ "_shell_prompt", "group__kernel__core.html#gaee4f6af6188dcfb44dd4263332899095", null ],
     [ "_shell_start", "group__kernel__core.html#ga8f9d0333348003b2e852571141f37e17", null ],
     [ "hex_monitor", "group__kernel__core.html#gad9e0853d6efd9b67b3890e2dd8625907", null ],
     [ "text_monitor", "group__kernel__core.html#ga0f2b628d943d28971ffd2d17130f4ad6", null ]

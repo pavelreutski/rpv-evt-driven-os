@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['called_20by_20kernel_20which_20needs_20implementation_20on_20a_20target_20platform_20project_0',['APIs called by Kernel which needs implementation on a target platform project',['../group__kernel__needimpl.html',1,'']]],
+  ['called_20by_20the_20kernel_0',['Mandatory APIs called by the Kernel',['../group__kernel__needimpl.html',1,'']]],
   ['code_1',['code',['../structconsole__key__s.html#a29e1fac89cdd53c25682b8470ec6bcda',1,'console_key_s']]],
   ['command_5fs_2',['command_s',['../structcommand__s.html',1,'']]],
   ['command_5ft_3',['command_t',['../group__kernel__core.html#ga2503500589735c0460a39f66f4f9157f',1,'command.h']]],
@@ -13,7 +13,8 @@ var searchData=
   ['con_5fstring_10',['con_string',['../group__kernel__needimpl.html#ga6ece3036d6d4dab70b2dcfd30f22c379',1,'console.h']]],
   ['con_5ftab_11',['con_tab',['../group__kernel__needimpl.html#ga22e99046be0f8a63766d97397d5aa701',1,'console.h']]],
   ['con_5fxy_12',['con_xy',['../group__kernel__needimpl.html#ga2e599afd8d199514f3153cb3d751addd',1,'console.h']]],
-  ['console_5fkey_5fs_13',['console_key_s',['../structconsole__key__s.html',1,'']]],
-  ['console_5fkey_5ft_14',['console_key_t',['../group__kernel__core.html#gaed6acfbddfaf973b58468c7f1fec51a4',1,'events.h']]],
-  ['create_5ftime_15',['create_time',['../structfilinfo__t.html#abc8fc8d2530636b0e5f54bea34230d7f',1,'filinfo_t']]]
+  ['console_2eh_13',['console.h',['../console_8h.html',1,'']]],
+  ['console_5fkey_5fs_14',['console_key_s',['../structconsole__key__s.html',1,'']]],
+  ['console_5fkey_5ft_15',['console_key_t',['../group__kernel__core.html#gaed6acfbddfaf973b58468c7f1fec51a4',1,'events.h']]],
+  ['create_5ftime_16',['create_time',['../structfilinfo__t.html#abc8fc8d2530636b0e5f54bea34230d7f',1,'filinfo_t']]]
 ];
