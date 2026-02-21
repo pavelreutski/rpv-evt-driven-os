@@ -31,6 +31,236 @@
  */
 
  /**
+  * \page kernel_architecture Block Diagrams
+  * \dot
+  * digraph kernel_arch {
+  *     rankdir=TB;
+  *     label="kernel overal diagram";
+  *     node [shape=box, style=filled];
+  *
+  *     subgraph cluster_kernel {
+  *         label="Kernel Runtime";
+  *         style=filled;
+  *         fillcolor="#e6f2ff";
+  *
+  *         Shell     [label="Shell"];
+  *         Core      [label="Kernel Core\n(Event Pipeline/Subscribe/Publish)"];
+  *         Signals   [label="Signal Handling"];
+  *
+  *         Commands [label="Command Table"];
+  *         Services [label="Service Table"];
+  *
+  *         Shell -> Commands [style=invis];
+  *         Commands -> Services [style=invis];
+  *         Services -> Signals [style=invis];
+  *         Signals -> Core [style=invis];
+  *
+  *         kernel_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_platform_base {
+  *         label="Platform Mandatory APIs\n(Lite or Full)\nImplemented on target project";
+  *         style=filled;
+  *         fillcolor="#d9ead3";
+  *
+  *         Console [label="console.h\n(console device facade)", style=solid];
+  *         Prompt  [label="prompt.h\n(system prompt string constructor/builder)", style=solid];
+  *         Disk    [label="disk.h\n(low level sectors I/O facade)", style=dashed];
+  *         FAT     [label="fat.h\n(file I/O middleware facade)", style=dashed];
+  *
+  *         Console -> Prompt [style=invis];
+  *         Prompt -> Disk [style=invis];
+  *         Disk -> FAT [style=invis];
+  *
+  *         platform_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_full {
+  *         label="Full Profile";
+  *         style="filled,dashed";
+  *         fillcolor="#fff2cc";
+  *
+  *         FIO[label="File I/O Subsystem"];
+  *         Journal[label="System Journal"];
+  *
+  *         // Full-only internal dependencies
+  *         FIO -> Journal [style=invis];
+  *
+  *         full_profile_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     Shell -> Signals;
+  *     Shell -> Commands;
+  *     Signals -> Core;
+  *     Core -> Services;
+  *
+  *     Shell -> Console;
+  *     Shell -> Prompt;
+  *
+  *     Shell -> FIO[style=dashed];
+  *     Shell -> Journal[style=dashed];
+  *
+  *     FIO -> Journal;
+  *     FIO -> Disk[style=dashed];
+  *     FIO -> FAT[style=dashed];
+  *
+  *     kernel_anchor -> platform_anchor[style=invis];
+  *     platform_anchor -> full_profile_anchor[style=invis];
+  *
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * \dot 
+  * digraph fio_backend_arch {
+  *	    rankdir=TB;
+  *     label="target file backend implementation example";
+  *     node [shape=box, style=filled];
+  *
+  *     Disk [label="disk.h\n(low level sectors I/O)"];
+  *     FAT [label="fat.h\n(file I/O middleware facade)"];
+  *     FATFS [label="filesystem library e.g. fatfs"];
+  *     Storage [label="Storage Device\ne.g. HD, SD-Card etc.", shape=cylinder, width=1.5, height=2];
+  *
+  *     FAT -> FATFS;
+  *     FATFS -> Disk;
+  *     Disk -> Storage;
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * @details
+  * Legend: Solid outline presents always existing blocks and links, Dashed is optional and might not exist according to the chosen kernel profile.
+  */
+
+ /**
+  * \page cmd_list Shell commands list
+  *     
+  * ## Basic (Lite profile) commands
+  *
+  * - **ver** - displays current kernel version
+  * - **svc** - displays service table (just names)
+  * - **rmon addr len** - displays [addr, addr + len - 1] memory region
+  *
+  * ## All (Full profile) commands
+  * 
+  * - **dir (ls)**       - displays current directory contents.
+  * - **cd name**        - change directory.
+  * - **rm name**        - delete file or directory. @note forbids directory removable thats not empty.
+  * - **type name**      - display file content as text. @note 'type hex name' display file content as hexdec
+  * - **cp path1 path2** - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'.
+  * - **cp con name**    - create file with the content typed in console.
+  *	
+  */
+
+ /**
+  * \page cmd_svc_table Service / Command tables
+  * 
+  * Just use an appropriate macros provided
+  *
+  * ## Service registration example
+  *
+  * \ref _SERVICE
+  *
+  * ## Command registration example
+  *
+  * \ref _SHELL_COMMAND
+  *
+  */
+
+/**
+ * \page cmake_int CMake target integration
+ *
+ * Its cmake frendly hence at repo root supplies a CMakeLists.txt and defines the following cmake entities.
+ *
+ * ## properties
+ *
+ * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile 
+ *
+ * ## targets
+ * 
+ * - kernel-core : The core logic.
+ * - kernel-fio  : file I/O subsystem logic.
+ * - kernel-sysj : A system journal logic.
+ * - rpv-kernel  : Combines upper targets depending on profile being set. @note Its a cmake interface target
+ *
+ * ## kernel profiles
+ *
+ * - **lite**: rpv-kernel includes just kernel-core
+ * - **full**: rpv-kernel includes kernl-core, kernel-fio and kernel-sysj i.e. all available targets
+ *
+ * ## target project CMakeList.txt example
+ *
+ * \code{.cmake}
+ * project(kernel_platform_target LANGUAGES C ASM
+ *                                DESCRIPTION "platform target using rpv event driven kernel")
+ *
+ * # by default **lite** profile used unless redefined by the following line
+ * # set(KERNEL_PROFILE full CACHE STRING "" FORCE)
+ *
+ * # event driven kernel
+ *
+ * FetchContent_Declare(
+ *         evtdriven-kernel
+ *         GIT_REPOSITORY git@github.com:pavelreutski/rpv-evt-driven-os.git
+ *         GIT_TAG master
+ * )
+ *
+ * FetchContent_MakeAvailable(evtdriven-kernel)
+ *
+ * add_executable(${PROJECT_NAME})
+ *
+ * target_sources(${PROJECT_NAME} PRIVATE main.c)
+ * target_link_libraries(${PROJECT_NAME} PRIVATE rpv-kernel)
+ * 
+ * target_link_options(${PROJECT_NAME} PRIVATE -Wl,-Tlinker.ld) # linker script containing **__cmd_table, __end_cmd_table** and **__svc_table, __end_svc_table**
+ *
+ * \endcode
+ *
+ * ## linker script example
+ * 
+ * \code{.ld}
+ * ...
+ * __cmd_table = .;
+ * KEEP(*(.cmd_table))
+ * __end_cmd_table = .;
+ *
+ * __svc_table = .;
+ * KEEP(*(.service_table))
+ * __end_svc_table = .;
+ * ...
+ * \endcode
+ */
+
+ /**
+  * \page target_project_main Target entry (e.g. main.c) example
+  * \code{.c}
+  * #include "shell.h"
+  * #include "kernel_stdio.h"
+  *
+  * #include "platform.h" // target platform initialization logic
+  *
+  * int main() {
+  *
+  *     // _kernel_fio(); lite variant doesnt contain file I/O subsystem. Full variant enabled only
+  *
+  *     _kernel_stdio();
+  *     _kernel_outString("Starting event driven on target platform\n");
+  *
+  *     // start init platform
+  *     platform_init();
+  *     // end init platform maybe enable global interrupts in case of embedded SoC
+  *
+  *     _shell_start();
+  *
+  *     return 0;
+  * }
+  * \endcode
+  */
+
+ /**
   * @defgroup kernel_needimpl Mandatory APIs called by the Kernel 
   * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. 
   * There are APIs require implementation within the concrete target platform project. 
