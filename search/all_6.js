@@ -34,5 +34,6 @@ var searchData=
   ['filinfo_5ft_31',['filinfo_t',['../structfilinfo__t.html',1,'']]],
   ['flush_5fdisk_32',['flush_disk',['../group__kernel__needimpl.html#gaa867e667777a42a9c1f522e0b7dc8d41',1,'disk.h']]],
   ['full_20profile_33',['Kernel full profile',['../group__kernel__full.html',1,'']]],
-  ['full_5fname_34',['full_name',['../structfilinfo__t.html#a68e068377df61e7ae07fed397a1427ce',1,'filinfo_t']]]
+  ['full_20profile_20commands_34',['All (Full profile) commands',['../cmd_list.html#autotoc_md3',1,'']]],
+  ['full_5fname_35',['full_name',['../structfilinfo__t.html#a68e068377df61e7ae07fed397a1427ce',1,'filinfo_t']]]
 ];

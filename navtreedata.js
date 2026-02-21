@@ -26,6 +26,11 @@ var NAVTREE =
 [
   [ "RPV Event driven kernel", "index.html", [
     [ "Event Driven Kernel Documentation", "index.html", "index" ],
+    [ "Block Diagrams", "kernel_architecture.html", null ],
+    [ "Shell commands list", "cmd_list.html", null ],
+    [ "Service / Command tables", "cmd_svc_table.html", null ],
+    [ "CMake target integration", "cmake_int.html", null ],
+    [ "Target entry (e.g. main.c) example", "target_project_main.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
