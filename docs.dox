@@ -1,17 +1,17 @@
 /**
- * @mainpage Event Driven Kernel Documentation
+ * @mainpage Basic information
  *
  * @section intro Introduction
  * An event driven kernel is a small, modular, embedded kernel designed for
  * educational and lightweight RTOS applications. It provides:
  * - Event system with publish/subscribe model producing a reactive like firmwares 
  * - POSIX-alike signal handling. The concrete behaviour is a bit differ from POSIX one 
- *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm 
+ *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm (see \ref kernel_sgls)
  * - Shell command execution framework
  * - Filesystem abstraction and mount management
  * - Kernel logging and journal subsystem
  *
- * @section architecture Kernel Architecture
+ * @section architecture Kernel Architecture (see \ref kernel_architecture)
  * The kernel is organized into modular subsystems:
  * - Kernel Core: Events pipeline (events and service dispatch), publish/subscribe events
  * - Command/Service Registrar: Flexibe command/service registration
@@ -136,22 +136,250 @@
   */
 
  /**
+  * \page kernel_stdio Kernel stdio
+  * 
+  * STDIN works in a following loop:
+  * 
+  * - when \ref _kernel_stdio() called it sibscribes to \ref EVT_USERCON_KEY event
+  * - kernel shell when entered into never ending loop calls \ref _kernel_getKey blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait 
+  *   @note \ref _kernel_getKey calls \ref _kernel_pipeline which runs services registered via \ref _SERVICE and exectues queued events 
+  * - when \ref EVT_USERCON_KEY is published and the subscriber is called by \ref _kernel_pipeline() it sets new input key and raises SIGIO signal to the kernel (see \ref kernel_signal.h):
+  *   - kernel flags up a signal. \ref _kernel_getKey drops awaited SIGIO and returns a new key input set by an event subscriber called
+  *   - kernel shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
+  *   - kernel shell at any new ASCII input received forwards to the STDOUT.
+  *   - kernel shell calls \ref _kernel_getKey again.
+  *
+  * @warning SIGIO reserved for STDIN usage only any attempt to raise it by the target logic shall result the shell recognizing 
+  *          a new key input as such since a key is unknown (or retain previous state) the behaviour is undefined 
+  *          when the shell will start processing a 'new' input. It doesnt apply to \ref EVT_USERCON_KEY event publish 
+  *          i.e. it can be published anywhere anytime during system lifetime
+  *
+  * STDOUT logic just outputs characters to the console (see \ref kernel_stdio.h and \ref console.h).
+  *
+  * That said anything that publishes \ref EVT_USERCON_KEY event the kernel shell treats it as a new user input. 
+  * @note it doesnt care what is the exact source and how many of them are e.g. tty/keyb/network etc.
+  * 
+  * As such the most sutable place publishing events are services registered by \ref _SERVICE
+  *
+  * ## STDIN target platform service example
+  *
+  * \code{.c}
+  *
+  * #include <stdbool.h>
+  *
+  * #include "uart.h"
+  * #include "events.h"
+  *
+  * #include "kernel.h"
+  * #include "service.h"
+  *
+  * static void uart_service(void);
+  * static inline bool is_charValid(char c);
+  *
+  * _SERVICE(uart_svc, uart_service);
+  *
+  * static void uart_service(void) {
+  *
+  *     char c;
+  *     while((c = _uart_read()) != '\0') {
+  *
+  *         if (is_charValid(c)) {
+  *
+  *             console_key_t key = { .code = c, .scan_code = 0 };
+  *             _kernel_pubEvt(EVT_USERCON_KEY, (evt_data_t *) &key);
+  *         }
+  *     }
+  * }
+  *
+  * static inline bool is_charValid(char c) {
+  *
+  *    return ((c >= '0') && (c <= '9')) || 
+  *                ((c >= 'a') && (c <= 'z')) ||
+  *                ((c >= 'A') && (c <= 'Z')) ||
+  *                ((c == ' ') || (c == '\n') || (c == '\t') || (c == '\b') || (c == '\x7f'));
+  * }
+  * 
+  * \endcode
+  *
+  */
+  
+ /**
+  * \page kernel_sgls Signals processing
+  *
+  * There are 32 signals total (see \ref kernel_signal.h)
+  *
+  * @note signals logic usage doesnt affect/alter the behaviour of a kernel event loop 
+  *       it designed to help introduce a separation between target software design and system level events (e.g. interrupts) 
+  *       to avoid overloading the event loop with not required target software subscribers
+  *
+  * ## SIGIO
+  *
+  * see \ref kernel_stdio
+  *
+  * ## SIGINT, SIGBUS (notify / bus error)
+  *
+  * It reserved a special meaning and such signals flow scheme can be presented on a following diagram 
+  *
+  * \dot
+  * digraph kernel_sigs_diag {
+  *     rankdir=LR;
+  *     splines=false;
+  *     label="signals and kernel relationship";
+  *     node [shape=box, style=filled];
+  *
+  * 	subgraph hardware_clust {
+  *
+  *         { rank=same;
+  *     	    hw0 [label="hardware 0\nsigint\nsigbus"];
+  *     	    hw1 [label="hardware 1\nsigint\nsigbus"];
+  *     	    hw_dot [label="...", shape=plaintext, style=""];
+  *     	    hwn [label="hardware n\nsigint\sigbus"];
+  *         }
+  *
+  *         hw0 -> hw1 [style=invis];
+  *         hw1 -> hw_dot [style=invis];
+  *         hw_dot -> hwn [style=invis];
+  *
+  *     }
+  *
+  *     subgraph services_clust {
+  *
+  *         { rank=same;
+  *             us0 [label="user service 0\nsigwait\nsigpending"];
+  *             us1 [label="user service 1\nsigwait\nsigpending"];
+  *             us_dot [label="...", shape=plaintext, style=""];
+  *             usn [label="user service n\nsigwait\nsigpendiding"];
+  *         }
+  *
+  *         us0 -> us1 [style=invis];
+  *         us1 -> us_dot [style=invis];
+  *         us_dot -> usn [style=invis];
+  *
+  *     }
+  *
+  *     kernel [label="kernel", height=2];
+  *
+  *     hw0 -> kernel -> us0 [style=invis];
+  *
+  *     us0 -> kernel;
+  *     us1 -> kernel;
+  *     usn -> kernel;  
+  *
+  *     hw0 -> kernel;
+  *     hw1 -> kernel;
+  *     hwn -> kernel;
+  *
+  * }
+  * \enddot
+  *
+  * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref kernel_signal.h). 
+  * The service either use \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call 
+  *     and when SIGINT raised it can check using driver state if a \b 'right' SIGINT, SIGBUS raised.
+  * @note In case of a \ref _kernel_sigwait() blocking call from a service the kernel pipeline halts preventing calling the subscribers for the events published 
+  *       so that the only case in using such a call is where a target really needs a hardware signal to continue operation by design 
+  *       e.g. a power managment service that hibernates (forces into sleep) the target until awakend. 
+  *       When \ref _kernel_sigwait() called not from a service the kernel pipeline behaviour is as usual i.e. as for \ref kernel_stdio the kernel shell is not a service
+  *
+  * In case of multiple hardware drivers raise SIGINT, SIGBUS a kernel supplies a semaphore for each signal meaning as long as semaphore value > 0
+  *    the kernel persists SIGINT, SIGBUS flagged until a number of raise and a number of signals acknowledge calls are matched in a given
+  *    hardware notification time period. Each call to \ref _kernel_raise(SIGINT | SIGBUS) increases and \ref _kernel_sigprocmask(SIG_UNBLOCK, (SIGINT | SIGBUS) 
+  *    decreases corresponsing semaphore value. When semaphore value reaches 0 the kernel flags down either SIGINT or SIGBUS or both.
+  *
+  * @warning at the moment only SIGINT, SIGBUS have semaphores attached other signals dont. Fot these a raise call flags up and sigprocmask flags down only. 
+  *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS yet and maybe shall not in a future.
+  *
+  * ## blocking call usage example
+  * \code{.c}
+  *
+  * /******************* blocking call ************************/
+  *
+  * ...
+  *
+  *  sigset_t sgls;
+  * _kernel_sigemptyset(&sgls);       // init signals set
+  *
+  * _kernel_sigaddset(&sgls, SIGINT); // include SIGINT to the set 
+  * _kernel_sigaddset(&sgls, SIGBUS); // include SIGBUS to the set
+  *
+  * int sgl;
+  * _kernel_sigwait(&sgls, &sgl);     // sigwait blocking call
+  *            
+  * if (sgl == SIGBUS) {
+  *
+  *    sb_reg = SB_CLOSE;
+  *    _kernel_jentry("sb_svc: DMA bus error occured");           // bus error
+  *
+  *    _kernel_sigprocmask(SIG_UNBLOCK, (sigset_t *) &sgl, NULL); // acknowledge SIGBUS
+  *
+  * } else if (_xdma_mm2s_sgcmpltSignal()) {                       // is it 'right' SIGINT ?
+  * 
+  *    sb_reg = SB_WRITE;
+  *
+  *    sb_playcount--;
+  *    sb_service();
+  *
+  *    _kernel_sigprocmask(SIG_UNBLOCK, &sgls, NULL);             // yes, acknowledge SIGINT
+  *
+  *    ...
+  *
+  * \endcode
+  *
+  * ## none-blocking call usage example
+  *
+  * \code{.c} 
+  *
+  * /****************** none-blocking call *********************/
+  *
+  *    ...
+  *
+  *  sigset_t set;
+  *
+  * _kernel_sigemptyset(&set);
+  * _kernel_sigaddset(&set, SIGINT);
+  * _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
+  *
+  * _kernel_sigpending(&set);
+  *
+  * if (!_kernel_sigismember(&set, SIGINT)) {
+  *       return;
+  * }
+  *
+  * int time = _rtmsure_time();
+  *
+  * if (time == -1) {
+  *     return;
+  * }
+  *
+  * rt_msuretime = time;
+  * _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
+  *
+  *   ...
+  *
+  * \endcode
+  */
+
+ /**
   * \page cmd_list Shell commands list
   *     
   * ## Basic (Lite profile) commands
   *
-  * - **ver** - displays current kernel version
-  * - **svc** - displays service table (just names)
-  * - **rmon addr len** - displays [addr, addr + len - 1] memory region
+  * - **ver**                   - displays current kernel version
+  * - **svc**                   - displays service table (just names)
+  * - **cls**                   - clears the console i.e. calls console clear function (see \ref con_clear)
+  * - **rmon \<addr\> \<len\>** - displays [addr, addr + len - 1] memory region
   *
   * ## All (Full profile) commands
-  * 
-  * - **dir (ls)**       - displays current directory contents.
-  * - **cd name**        - change directory.
-  * - **rm name**        - delete file or directory. @note forbids directory removable thats not empty.
-  * - **type name**      - display file content as text. @note 'type hex name' display file content as hexdec
-  * - **cp path1 path2** - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'.
-  * - **cp con name**    - create file with the content typed in console.
+  *
+  * - **sysj**                        - displays all kernel journal entries written. @note when read and displayed journal clears
+  * - **disks**                       - displays 'disks' or storage devices enumerated by \ref disk.h
+  * - **dsk_block \<did\> \<block\>** - displays **block** content of **did** disk. **block** - sector index, **did** - disk index   
+  * - **dir (ls)**                    - displays current directory contents
+  * - **mkdir \<name\>**              - creates a directory
+  * - **cd \<name\>**                 - changes a current directory
+  * - **rm \<name\>**                 - delete file or directory. @note forbids directory removable thats not empty.
+  * - **type \<name\>**               - display file content as text. @note 'type hex name' display file content as hexdec
+  * - **cp \<path1\> \<path2\>**      - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'
+  * - **cp con \<name\>**             - create file with the content typed in console
   *	
   */
 
