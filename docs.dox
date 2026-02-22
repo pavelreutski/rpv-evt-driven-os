@@ -3,15 +3,15 @@
  *
  * @section intro Introduction
  * An event driven kernel is a small, modular, embedded kernel designed for
- * educational and lightweight RTOS applications. It provides:
- * - Event system with publish/subscribe model producing a reactive like firmwares 
+ * educational and lightweight RTOS applications by using profiles designation: Lite & Full. It provides:
+ * - Event system with publish/subscribe model producing a reactive like firmwares <- Lite & Full profile
  * - POSIX-alike signal handling. The concrete behaviour is a bit differ from POSIX one 
- *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm (see \ref kernel_sgls)
- * - Shell command execution framework
- * - Filesystem abstraction and mount management
- * - Kernel logging and journal subsystem
+ *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm (see \ref kernel_sgls) <- Lite & Full profile
+ * - Shell command execution framework <- Lite & Full profile 
+ * - Filesystem abstraction and mount management <- Full profile
+ * - Kernel logging and journal subsystem <- Full profile
  *
- * @section architecture Kernel Architecture (see \ref kernel_architecture)
+ * @section architecture Kernel Architecture
  * The kernel is organized into modular subsystems:
  * - Kernel Core: Events pipeline (events and service dispatch), publish/subscribe events
  * - Command/Service Registrar: Flexibe command/service registration
@@ -20,18 +20,20 @@
  * - Signal Handling: Signal masks, delivery, and pending signals (using kernel pipeline)
  * - Journal: Kernel log entries and retrieval
  *
+ * (see \ref kernel_arch)
+ *
  * @section usage Usage
  * Include public headers from `include/` implement required APIs needed by the kernel using profile (see \ref kernel_needimpl). 
  * At project entry call subsystems initialization you need following with shell start functions to enter into
  * events never ending processing loop.
- * @note some subsystems might not be available according to chosen kernel profile e.g. lite profile doesnt include file I/O subsystem
+ * @note some subsystems might not be available in the chosen kernel profile e.g. lite profile doesnt include file I/O subsystem
  *
  * @section license License
  * Event driven kernel is released under the MIT License.
  */
 
  /**
-  * \page kernel_architecture Block Diagrams
+  * \page kernel_arch Block Diagrams
   * \dot
   * digraph kernel_arch {
   *     rankdir=TB;
