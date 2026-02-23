@@ -208,19 +208,22 @@
  /**
   * \page kernel_sgls Signals processing
   *
-  * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n 
-  *       Signals set construction by using _kernel_sigemptyset() and _kernel_sigaddset().\n
-  *       Signals probing by using _kernel_sigismember() and _kernel_sigpending().\n
-  *       Signals raise by using _kernel_raise().\n
-  *       Signals control by using _kernel_sigprocmask() for signals subscription and acknowledgement.\n
-  *       Signal flags state check by using _kernel_sigwait() blocking and _kernel_sigpending() none-blocking for signals await and/or poll
+  * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n
+  * 
+  * The signals kernel API as follows:
+  *
+  * - set construction by using _kernel_sigemptyset() and _kernel_sigaddset().\n
+  * - probing by using _kernel_sigismember() and _kernel_sigpending().\n
+  * - raise by using _kernel_raise().\n
+  * - control by using _kernel_sigprocmask() for signals subscription and acknowledgement.\n
+  * - flags state check by using _kernel_sigwait() blocking and _kernel_sigpending() none-blocking for signals await and/or poll
   *
   * ## typical signals usage flow
   *
-  * - contruct a signals set by using \ref _kernel_sigemptyset() and \ref _kernel_sigaddset().
-  * - subscribe signals set by using \ref _kernel_sigprocmask() with SIG_BLOCK.
-  * - wait or poll signals set by using \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call.
-  * - acknowledge signals set by using \ref _kernel_sigprocmask() with SIG_UNBLOCK.
+  * - contruct a signals set \ref _kernel_sigemptyset() and \ref _kernel_sigaddset().
+  * - subscribe signals set \ref _kernel_sigprocmask() with SIG_BLOCK.
+  * - wait or poll signals set \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call.
+  * - acknowledge signals set \ref _kernel_sigprocmask() with SIG_UNBLOCK.
   *
   * ## signals set blocking behaviour
   * 
