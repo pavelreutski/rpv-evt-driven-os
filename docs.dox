@@ -208,7 +208,84 @@
  /**
   * \page kernel_sgls Signals processing
   *
-  * There are 32 signals total (see \ref kernel_signal.h)
+  * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n 
+  *       Signals set construction by using _kernel_sigemptyset() and _kernel_sigaddset().\n
+  *       Signals probing by using _kernel_sigismember() and _kernel_sigpending().\n
+  *       Signals raise by using _kernel_raise().\n
+  *       Signals control by using _kernel_sigprocmask() for signals subscription and acknowledgement.\n
+  *       Signal flags state check by using _kernel_sigwait() blocking and _kernel_sigpending() none-blocking for signals await and/or poll
+  *
+  * ## typical signals usage flow
+  *
+  * - contruct a signals set by using \ref _kernel_sigemptyset() and \ref _kernel_sigaddset().
+  * - subscribe signals set by using \ref _kernel_sigprocmask() with SIG_BLOCK.
+  * - wait or poll signals set by using \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call.
+  * - acknowledge signals set by using \ref _kernel_sigprocmask() with SIG_UNBLOCK.
+  *
+  * ## signals set blocking behaviour
+  * 
+  * When signals set constructed using multiple signals and in case of \ref _kernel_sigwait() blocking call usage. 
+  * It will return to (unblock) the main execution loop when any signal from the signals set is flagged. 
+  * Each next call to \ref _kernel_sigwait() should either block or return immediatly notifying next flag from the signals set reception.
+  * So \ref _kernel_sigwait() calls in a loop can be used to await a whole signals set if neccessary.
+  * @note in blocking calls loop a received signal flagged from awaiting set has to be acknowledged prior to next \ref _kernel_sigwait() otherwise
+  *       it will return immediatly duplicating just received signal notification.
+  *
+  * ## signals set none-blocking behaviour
+  *
+  * \ref _kernel_sigpending() has exact same as blocking \ref _kernel_sigwait() behaviour apart from that it doesnt block a main execution loop
+  * and it constructs the signals set that indicates subscribed signals flagged at the moment of calling none-blocking \ref _kernel_sigpending().
+  * Signals acknowledgement necessity and behaviour in a case of calls loop is exact same.
+  *
+  * ## signals set usage code snippets
+  *
+  * \code{.c}
+  *
+  * ...
+  *
+  * /* construct SIGINT & SIGBUS signals set */
+  *
+  *  sigset_t set;
+  *
+  * _kernel_sigemptyset(&set);
+  * _kernel_sigaddset(&set, SIGINT);
+  * _kernel_sigaddset(&set, SIGBUS);
+  *
+  * ...
+  *
+  * /* subscribe to signals set events */
+  *
+  *  _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
+  *
+  * /* poll signals set flags  */
+  * _kernel_sigpending(&set); // none-blocking call
+  *
+  * if (!_kernel_sigismember(&set, SIGINT)) { // probe SIGINT flag
+  *      return;
+  * }
+  *
+  * ...
+  *
+  * /* wait any signals set flag */
+  *
+  * int sgl;
+  * _kernel_sigwait(&sgls, &sgl); // blocking call
+  *
+  * switch(sgl) {
+  *
+  *    case SIGINT: { /* handle SIGINT flagged */ } break;
+  *    case SIGBUS: { /* handle SIGBUS flagged */ } break;
+  * }
+  *
+  * ...
+  *
+  * /* acknowledge signals set flags handled  */
+  *
+  *  _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
+  *
+  * ...
+  *
+  * \endcode 
   *
   * @note signals logic usage doesnt affect/alter the behaviour of a kernel event loop 
   *       it designed to help introduce a separation between target software design and system level events (e.g. interrupts) 
@@ -235,7 +312,7 @@
   *     	    hw0 [label="hardware 0\nsigint\nsigbus"];
   *     	    hw1 [label="hardware 1\nsigint\nsigbus"];
   *     	    hw_dot [label="...", shape=plaintext, style=""];
-  *     	    hwn [label="hardware n\nsigint\sigbus"];
+  *     	    hwn [label="hardware n\nsigint\nsigbus"];
   *         }
   *
   *         hw0 -> hw1 [style=invis];
@@ -274,7 +351,7 @@
   * }
   * \enddot
   *
-  * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref kernel_signal.h). 
+  * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref _kernel_raise() with (SIGINT | SIGBUS)). 
   * The service either use \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call 
   *     and when SIGINT raised it can check using driver state if a \b 'right' SIGINT, SIGBUS raised.
   * @note In case of a \ref _kernel_sigwait() blocking call from a service the kernel pipeline halts preventing calling the subscribers for the events published 
@@ -284,11 +361,11 @@
   *
   * In case of multiple hardware drivers raise SIGINT, SIGBUS a kernel supplies a semaphore for each signal meaning as long as semaphore value > 0
   *    the kernel persists SIGINT, SIGBUS flagged until a number of raise and a number of signals acknowledge calls are matched in a given
-  *    hardware notification time period. Each call to \ref _kernel_raise(SIGINT | SIGBUS) increases and \ref _kernel_sigprocmask(SIG_UNBLOCK, (SIGINT | SIGBUS) 
+  *    hardware notification time period. Each call to \ref _kernel_raise with (SIGINT | SIGBUS) increases and \ref _kernel_sigprocmask() with SIG_UNBLOCK, (SIGINT | SIGBUS) 
   *    decreases corresponsing semaphore value. When semaphore value reaches 0 the kernel flags down either SIGINT or SIGBUS or both.
   *
-  * @warning at the moment only SIGINT, SIGBUS have semaphores attached other signals dont. Fot these a raise call flags up and sigprocmask flags down only. 
-  *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS yet and maybe shall not in a future.
+  * @warning at the moment only SIGINT, SIGBUS have semaphores attached other signals dont. For these a _kernel_raise() and _kernel_sigprocmask() call flags up/down only. 
+  *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS and SIGIO yet and maybe shall not in a future.
   *
   * ## blocking call usage example
   * \code{.c}
@@ -356,6 +433,43 @@
   * _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
   *
   *   ...
+  *
+  * \endcode
+  *
+  * ## driver isr example
+  *
+  * \code{.c}
+  *
+  * /************************ driver isr **********************/
+  *
+  * /* DMA1 ISR */
+  *
+  * static void onxDMA1_irq(void) {
+  *
+  *    volatile xdmasr_t xdma_sr = { 0 };
+  *    xdma_sr.reg = (XDMA1 -> mm2s.sr).reg;
+  *
+  *    /* its either an error or i/o complete IRQ */
+  *
+  *    bool ioe = xdma_sr.err_irq;
+  *    bool ioc = xdma_sr.ioc_irq;
+  *
+  *    (XDMA1 -> mm2s.sr).reg = xdma_sr.reg;
+  *
+  *    int sgl = SIGINT;
+  *
+  *    if (ioe) {
+  *       sgl = SIGBUS;        
+  *    }
+  *
+  *    if (ioc) {
+  *       sgmm2s_cmpltSig = true;
+  *    }
+  *
+  *    /* raised as separated calls if isr called twice for each case but can be combined as (SIGINT | SIGBUS) depending on current hardware state. Signals are order numbers.*/
+  *
+  *    _kernel_raise(sgl);
+  * }
   *
   * \endcode
   */
