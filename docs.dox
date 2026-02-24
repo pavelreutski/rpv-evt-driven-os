@@ -138,18 +138,18 @@
   */
 
  /**
-  * \page kernel_stdio Kernel stdio
+  * \page kernel_stdio Kernel STDIO
   * 
   * STDIN works in a following loop:
   * 
   * - when \ref _kernel_stdio() called it sibscribes to \ref EVT_USERCON_KEY event
-  * - kernel shell when entered into never ending loop calls \ref _kernel_getKey blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait 
-  *   @note \ref _kernel_getKey calls \ref _kernel_pipeline which runs services registered via \ref _SERVICE and exectues queued events 
+  * - kernel shell when entered into never ending loop calls \ref _kernel_getKey() blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait() 
+  *   @note \ref _kernel_getKey() calls \ref _kernel_pipeline() which runs services registered via \ref _SERVICE and exectues queued events 
   * - when \ref EVT_USERCON_KEY is published and the subscriber is called by \ref _kernel_pipeline() it sets new input key and raises SIGIO signal to the kernel (see \ref kernel_signal.h):
-  *   - kernel flags up a signal. \ref _kernel_getKey drops awaited SIGIO and returns a new key input set by an event subscriber called
-  *   - kernel shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
-  *   - kernel shell at any new ASCII input received forwards to the STDOUT.
-  *   - kernel shell calls \ref _kernel_getKey again.
+  *   - kernel flags up a signal. \ref _kernel_getKey() drops awaited SIGIO and returns a new key input set by an event subscriber called
+  *   - shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
+  *   - shell at any new ASCII input received forwards to the STDOUT.
+  *   - shell calls \ref _kernel_getKey() again.
   *
   * @warning SIGIO reserved for STDIN usage only any attempt to raise it by the target logic shall result the shell recognizing 
   *          a new key input as such since a key is unknown (or retain previous state) the behaviour is undefined 
