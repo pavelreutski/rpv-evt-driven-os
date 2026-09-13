@@ -6,12 +6,15 @@ project(rpv-evt-driven-kernel
 
 # public kernel properties
 
+set(EVENT_DATA_FILE "" CACHE FILEPATH "User event data file")
+
 set(KERNEL_PROFILE "LITE" CACHE STRING "Kernel profile (LITE, FULL)")
 set_property(CACHE KERNEL_PROFILE PROPERTY STRINGS LITE FULL)
 
 # internal cmake properties
 
 set(KERNEL_AUTOGEN_DIRECTORY "${CMAKE_BINARY_DIR}/autogen/kernel")
+set(KERNEL_DATA_AUTOGEN_DIRECTORY "${CMAKE_BINARY_DIR}/autogen/data")
 
 # core sources
 
@@ -62,6 +65,87 @@ else()
 	message(FATAL_ERROR "invalid kernel profile: ${KERNEL_PROFILE}")
 endif()
 
+# event data file parsing
+
+set(EVENT_DATA_TYPES "")    # event data type definitions
+set(EVENT_DATA_MEMBERS "")  # event data union members
+set(EVENT_DATA_INCLUDES "") # event data includes (e.g. stdlib or libc)
+
+if(EVENT_DATA_FILE)
+
+	if(NOT EXISTS "${EVENT_DATA_FILE}")
+        message(FATAL_ERROR "EVENT_DATA_FILE does not exist: " "${EVENT_DATA_FILE}")
+    endif()
+
+    file(STRINGS "${EVENT_DATA_FILE}" EVENT_DATA_LINES)
+
+	set(EVENT_DATA_SECTION "")
+
+	foreach(line IN LISTS EVENT_DATA_LINES)
+
+        string(STRIP "${line}" stripped_line)
+		string(TOLOWER "${stripped_line}" stripped_line)
+
+        # Section markers
+        if("${stripped_line}" STREQUAL "/* event types begin */")
+            set(EVENT_DATA_SECTION "types")
+            continue()
+        endif()
+
+        if("${stripped_line}" STREQUAL "/* event types end */")
+            set(EVENT_DATA_SECTION "")
+            continue()
+        endif()
+
+        if("${stripped_line}" STREQUAL "/* event members begin */")
+            set(EVENT_DATA_SECTION "members")
+            continue()
+        endif()
+
+        if("${stripped_line}" STREQUAL "/* event members end */")
+            set(EVENT_DATA_SECTION "")
+            continue()
+        endif()
+
+        # Ignore empty lines
+        if("${stripped_line}" STREQUAL "")
+            continue()
+        endif()
+
+        # Includes
+        if("${stripped_line}" MATCHES "^#include[ \t]+")
+            string(APPEND EVENT_DATA_INCLUDES "${line}\n")
+            continue()
+        endif()
+
+        # Type definitions
+        if("${EVENT_DATA_SECTION}" STREQUAL "types")
+            string(APPEND EVENT_DATA_TYPES "${line}\n")
+            continue()
+        endif()
+
+        # Union members
+        if("${EVENT_DATA_SECTION}" STREQUAL "members")
+            string(APPEND EVENT_DATA_MEMBERS "    ${line} \\\n")
+            continue()
+        endif()
+
+        message(FATAL_ERROR "Unexpected line outside a USER_EVENT section:\n" "${line}")
+
+    endforeach()
+
+endif()
+
+if(EVENT_DATA_MEMBERS)
+    set(EVENT_DATA_DEFINE "#define USER_EVENT_DATA \\\n${EVENT_DATA_MEMBERS}")
+else()
+    set(EVENT_DATA_DEFINE "#define USER_EVENT_DATA")
+endif()
+
+# event data generation
+
+configure_file(./data/event_data.h.in ${KERNEL_DATA_AUTOGEN_DIRECTORY}/event_data.h)
+
 # config generation
 
 configure_file(./config/kernel_conf.h.in ${KERNEL_AUTOGEN_DIRECTORY}/kernel_conf.h)
@@ -76,13 +160,15 @@ target_sources(kernel-core PRIVATE ${KERNEL_CORE_C_SOURCES})
 target_include_directories(kernel-core PRIVATE ./src
 											   ./include
 											   ./include/core											   
-											   ${KERNEL_AUTOGEN_DIRECTORY})
+											   ${KERNEL_AUTOGEN_DIRECTORY}
+                                               ${KERNEL_DATA_AUTOGEN_DIRECTORY})
 
 add_library(rpv-kernel INTERFACE)
 target_sources(rpv-kernel INTERFACE $<TARGET_OBJECTS:kernel-core>)
 
 target_include_directories(rpv-kernel INTERFACE ./include													
-												./include/core)
+												./include/core
+                                                ${KERNEL_DATA_AUTOGEN_DIRECTORY})
 
 if (KERNEL_ENABLE_FIO)
 
