@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#include "event_data.h"
+
 /**
  * @ingroup kernel_core
  * @brief User-level event identifiers.
@@ -87,6 +89,8 @@ union evt_data_u {
 	 * Valid when event type is EVT_USERCON_KEY.
 	 */
 	struct console_key_s con_key;
+
+	USER_EVENT_DATA
 };
 
 /**
