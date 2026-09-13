@@ -182,7 +182,8 @@ if (KERNEL_ENABLE_FIO)
 	target_include_directories(kernel-fio PRIVATE ./include
 										   		  ./include/fio
 										   		  ./include/sysj
-										   		  ./include/core)
+										   		  ./include/core
+                                                  ${KERNEL_DATA_AUTOGEN_DIRECTORY})
 
 	target_include_directories(rpv-kernel INTERFACE ./include/fio)
 	
@@ -199,7 +200,8 @@ if (KERNEL_ENABLE_SYSJ)
 
 	target_include_directories(kernel-sysj PRIVATE ./include
 												   ./include/core
-												   ./include/sysj)
+												   ./include/sysj
+                                                   ${KERNEL_DATA_AUTOGEN_DIRECTORY})
 
 	target_include_directories(rpv-kernel INTERFACE ./include/sysj)
 
