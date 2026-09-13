@@ -18,8 +18,9 @@
 #define MAX_QUEUE_EVENTS			   (10)
 #define MAX_EVT_SUBSCRIBERS            (10)
 
-enum {
+enum : uint8_t {
 
+	KERNEL_INIT,
 	KERNEL_IDLE,
 	KERNEL_SVC,
 	KERNEL_EVT,
@@ -81,13 +82,13 @@ static process_t *rt_proc                               = NULL;
 static evt_t events[MAX_QUEUE_EVENTS];
 static evt_subscription_token_t evt_tokens[MAX_EVT_SUBSCRIBERS];
 
-static uint8_t kernel_pipeline                         = 0;
-
 static sigset_t kernel_sigs                            = 0;
 static sigset_t kernel_sigMask                         = 0;
 
 static sigsem_t kernel_sigbussem					   = 0;
 static sigsem_t kernel_sigintsem                       = 0;
+
+static uint8_t kernel_pipeline                         = KERNEL_INIT;
 
 static sigset_t* context_signals(void);
 static sigset_t* context_sigMask(void);
@@ -113,6 +114,9 @@ static void enque_evt(uint8_t evtId, evt_data_t* evtData);
 
 extern service_t __svc_table[];
 extern service_t __end_svc_table[];
+
+extern service_init_t __svcinit_table[];
+extern service_init_t __end_svcinit_table[];
 
 void _kernel_pubEvt(uint8_t id, evt_data_t* data) {
 
@@ -433,6 +437,15 @@ static void sigsem_dec(const sigset_t set) {
 }
 
 static __attribute__((noinline)) void exec_svcs(void) {
+
+	if (kernel_pipeline == KERNEL_INIT) {
+
+		for (service_init_t *svc_init = (service_init_t *) &__svcinit_table;
+				svc_init != (service_init_t *) &__end_svcinit_table; svc_init++) {
+
+			(*svc_init)();
+		}
+	}
 
 	kernel_pipeline = KERNEL_SVC;
 

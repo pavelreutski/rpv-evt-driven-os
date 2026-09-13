@@ -54,6 +54,22 @@ typedef struct service_s service_t;
 
 /**
  * @ingroup kernel_core
+ * @brief Function pointer type for service initialization routines.
+ *
+ * @details
+ * Defines the signature of a function invoked once during kernel
+ * startup to initialize a system service.
+ *
+ * The function takes no arguments and returns no value.
+ *
+ * @note
+ * Service initialization functions are registered using
+ * @ref _SERVICE_INIT.
+ */
+typedef void (*service_init_t)(void);
+
+/**
+ * @ingroup kernel_core
  * @brief Declares and registers a system service.
  *
  * @param name         Identifier of the service object.
@@ -93,3 +109,39 @@ typedef struct service_s service_t;
 #define _SERVICE(name, service_main) \
     __attribute__((used, section(".service_table"))) \
     static const service_t name = { #name, service_main }
+
+/**
+ * @ingroup kernel_core
+ * @brief Registers a service initialization function.
+ *
+ * @param name Identifier of the initialization entry.
+ * @param service_main Initialization function.
+ *
+ * @details
+ * Places the initialization function address into the
+ * ".service_init" linker section.
+ *
+ * The kernel invokes all registered initialization functions
+ * once during system startup, before entering the service
+ * runtime loop.
+ *
+ * Initialization functions must return and should perform only
+ * startup/initialization work.
+ *
+ * @warning
+ * Requires linker script support for the ".service_init" section
+ * and its boundary symbols.
+ *
+ * @par Example
+ * @code
+ * static void logger_init(void)
+ * {
+ *     // Initialize logger.
+ * }
+ *
+ * _SERVICE_INIT(logger_startup, logger_init);
+ * @endcode
+ */
+#define _SERVICE_INIT(name, service_main) \
+    __attribute__((used, section(".service_init"))) \
+    static const service_init_t name = service_main
