@@ -1,3 +1,4 @@
+
 /**
  * @mainpage Basic information
  *
@@ -5,9 +6,9 @@
  * An event driven kernel is a small, modular, embedded kernel designed for
  * educational and lightweight RTOS applications by using profiles designation: Lite & Full. It provides:
  * - Event system with publish/subscribe model producing a reactive like firmwares <- Lite & Full profile
- * - POSIX-alike signal handling. The concrete behaviour is a bit differ from POSIX one 
+ * - POSIX-alike signal handling. The concrete behaviour is a bit differ from POSIX one
  *      while giving same synchronization context mental model e.g. await/poll for signal flagged paradigm (see \ref kernel_sgls) <- Lite & Full profile
- * - Shell command execution framework <- Lite & Full profile 
+ * - Shell command execution framework <- Lite & Full profile
  * - Filesystem abstraction and mount management <- Full profile
  * - Kernel logging and journal subsystem <- Full profile
  *
@@ -23,7 +24,7 @@
  * (see \ref kernel_arch)
  *
  * @section usage Usage
- * Include public headers from `include/` implement required APIs needed by the kernel using profile (see \ref kernel_needimpl). 
+ * Include public headers from `include/` implement required APIs needed by the kernel using profile (see \ref kernel_needimpl).
  * At project entry call subsystems initialization you need following with shell start functions to enter into
  * events never ending processing loop.
  * @note some subsystems might not be available in the chosen kernel profile e.g. lite profile doesnt include file I/O subsystem
@@ -32,502 +33,544 @@
  * Event driven kernel is released under the MIT License.
  */
 
- /**
-  * \page kernel_arch Block Diagrams
-  * \dot
-  * digraph kernel_arch {
-  *     rankdir=TB;
-  *     label="kernel overal diagram";
-  *     node [shape=box, style=filled];
-  *
-  *     subgraph cluster_kernel {
-  *         label="Kernel Runtime";
-  *         style=filled;
-  *         fillcolor="#e6f2ff";
-  *
-  *         Shell     [label="Shell"];
-  *         Core      [label="Kernel Core\n(Event Pipeline/Subscribe/Publish)"];
-  *         Signals   [label="Signal Handling"];
-  *
-  *         Commands [label="Command Table"];
-  *         Services [label="Service Table"];
-  *
-  *         Shell -> Commands [style=invis];
-  *         Commands -> Services [style=invis];
-  *         Services -> Signals [style=invis];
-  *         Signals -> Core [style=invis];
-  *
-  *         kernel_anchor [label="", style=invis, width=0, height=0];
-  *     }
-  *
-  *     subgraph cluster_platform_base {
-  *         label="Platform Mandatory APIs\n(Lite or Full)\nImplemented on target project";
-  *         style=filled;
-  *         fillcolor="#d9ead3";
-  *
-  *         Console [label="console.h\n(console device facade)", style=solid];
-  *         Prompt  [label="prompt.h\n(system prompt string constructor/builder)", style=solid];
-  *         Disk    [label="disk.h\n(low level sectors I/O facade)", style=dashed];
-  *         FAT     [label="fat.h\n(file I/O middleware facade)", style=dashed];
-  *
-  *         Console -> Prompt [style=invis];
-  *         Prompt -> Disk [style=invis];
-  *         Disk -> FAT [style=invis];
-  *
-  *         platform_anchor [label="", style=invis, width=0, height=0];
-  *     }
-  *
-  *     subgraph cluster_full {
-  *         label="Full Profile";
-  *         style="filled,dashed";
-  *         fillcolor="#fff2cc";
-  *
-  *         FIO[label="File I/O Subsystem"];
-  *         Journal[label="System Journal"];
-  *
-  *         // Full-only internal dependencies
-  *         FIO -> Journal [style=invis];
-  *
-  *         full_profile_anchor [label="", style=invis, width=0, height=0];
-  *     }
-  *
-  *     Shell -> Signals;
-  *     Shell -> Commands;
-  *     Signals -> Core;
-  *     Core -> Services;
-  *
-  *     Shell -> Console;
-  *     Shell -> Prompt;
-  *
-  *     Shell -> FIO[style=dashed];
-  *     Shell -> Journal[style=dashed];
-  *
-  *     FIO -> Journal;
-  *     FIO -> Disk[style=dashed];
-  *     FIO -> FAT[style=dashed];
-  *
-  *     kernel_anchor -> platform_anchor[style=invis];
-  *     platform_anchor -> full_profile_anchor[style=invis];
-  *
-  * }
-  * \enddot
-  *
-  * ---
-  *
-  * \dot 
-  * digraph fio_backend_arch {
-  *	    rankdir=TB;
-  *     label="target file backend implementation example";
-  *     node [shape=box, style=filled];
-  *
-  *     Disk [label="disk.h\n(low level sectors I/O)"];
-  *     FAT [label="fat.h\n(file I/O middleware facade)"];
-  *     FATFS [label="filesystem library e.g. fatfs"];
-  *     Storage [label="Storage Device\ne.g. HD, SD-Card etc.", shape=cylinder, width=1.5, height=2];
-  *
-  *     FAT -> FATFS;
-  *     FATFS -> Disk;
-  *     Disk -> Storage;
-  * }
-  * \enddot
-  *
-  * ---
-  *
-  * @details
-  * Legend: Solid outline presents always existing blocks and links, Dashed is optional and might not exist according to the chosen kernel profile.
-  */
+/**
+ * \page kernel_arch Block Diagrams
+ * \ingroup docs_arch
+ *
+ * \dot
+ * digraph kernel_arch {
+ *     rankdir=TB;
+ *     label="kernel overal diagram";
+ *     node [shape=box, style=filled];
+ *
+ *     subgraph cluster_kernel {
+ *         label="Kernel Runtime";
+ *         style=filled;
+ *         fillcolor="#e6f2ff";
+ *
+ *         Shell     [label="Shell"];
+ *         Core      [label="Kernel Core\n(Event Pipeline/Subscribe/Publish)"];
+ *         Signals   [label="Signal Handling"];
+ *
+ *         Commands [label="Command Table"];
+ *         Services [label="Service Table"];
+ *
+ *         Shell -> Commands [style=invis];
+ *         Commands -> Services [style=invis];
+ *         Services -> Signals [style=invis];
+ *         Signals -> Core [style=invis];
+ *
+ *         kernel_anchor [label="", style=invis, width=0, height=0];
+ *     }
+ *
+ *     subgraph cluster_platform_base {
+ *         label="Platform Mandatory APIs\n(Lite or Full)\nImplemented on target project";
+ *         style=filled;
+ *         fillcolor="#d9ead3";
+ *
+ *         Console [label="console.h\n(console device facade)", style=solid];
+ *         Prompt  [label="prompt.h\n(system prompt string constructor/builder)", style=solid];
+ *         Disk    [label="disk.h\n(low level sectors I/O facade)", style=dashed];
+ *         FAT     [label="fat.h\n(file I/O middleware facade)", style=dashed];
+ *
+ *         Console -> Prompt [style=invis];
+ *         Prompt -> Disk [style=invis];
+ *         Disk -> FAT [style=invis];
+ *
+ *         platform_anchor [label="", style=invis, width=0, height=0];
+ *     }
+ *
+ *     subgraph cluster_full {
+ *         label="Full Profile";
+ *         style="filled,dashed";
+ *         fillcolor="#fff2cc";
+ *
+ *         FIO[label="File I/O Subsystem"];
+ *         Journal[label="System Journal"];
+ *
+ *         FIO -> Journal [style=invis];
+ *
+ *         full_profile_anchor [label="", style=invis, width=0, height=0];
+ *     }
+ *
+ *     Shell -> Signals;
+ *     Shell -> Commands;
+ *     Signals -> Core;
+ *     Core -> Services;
+ *
+ *     Shell -> Console;
+ *     Shell -> Prompt;
+ *
+ *     Shell -> FIO[style=dashed];
+ *     Shell -> Journal[style=dashed];
+ *
+ *     FIO -> Journal;
+ *     FIO -> Disk[style=dashed];
+ *     FIO -> FAT[style=dashed];
+ *
+ *     kernel_anchor -> platform_anchor[style=invis];
+ *     platform_anchor -> full_profile_anchor[style=invis];
+ * }
+ * \enddot
+ *
+ * ---
+ *
+ * \dot
+ * digraph fio_backend_arch {
+ *     rankdir=TB;
+ *     label="target file backend implementation example";
+ *     node [shape=box, style=filled];
+ *
+ *     Disk [label="disk.h\n(low level sectors I/O)"];
+ *     FAT [label="fat.h\n(file I/O middleware facade)"];
+ *     FATFS [label="filesystem library e.g. fatfs"];
+ *     Storage [label="Storage Device\ne.g. HD, SD-Card etc.", shape=cylinder, width=1.5, height=2];
+ *
+ *     FAT -> FATFS;
+ *     FATFS -> Disk;
+ *     Disk -> Storage;
+ * }
+ * \enddot
+ *
+ * ---
+ *
+ * @details
+ * Legend: Solid outline presents always existing blocks and links, Dashed is optional and might not exist according to the chosen kernel profile.
+ */
 
- /**
-  * \page kernel_stdio Kernel STDIO
-  * 
-  * STDIN works in a following loop:
-  * 
-  * - when \ref _kernel_stdio() called it sibscribes to \ref EVT_USERCON_KEY event
-  * - kernel shell when entered into never ending loop calls \ref _kernel_getKey() blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait() 
-  *   @note \ref _kernel_getKey() calls \ref _kernel_pipeline() which runs services registered via \ref _SERVICE and exectues queued events 
-  * - when \ref EVT_USERCON_KEY is published and the subscriber is called by \ref _kernel_pipeline() it sets new input key and raises SIGIO signal to the kernel (see \ref kernel_signal.h):
-  *   - kernel flags up a signal. \ref _kernel_getKey() drops awaited SIGIO and returns a new key input set by an event subscriber called
-  *   - shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
-  *   - shell at any new ASCII input received forwards to the STDOUT.
-  *   - shell calls \ref _kernel_getKey() again.
-  *
-  * @warning SIGIO reserved for STDIN usage only any attempt to raise it by the target logic shall result the shell recognizing 
-  *          a new key input as such since a key is unknown (or retain previous state) the behaviour is undefined 
-  *          when the shell will start processing a 'new' input. It doesnt apply to \ref EVT_USERCON_KEY event publish 
-  *          i.e. it can be published anywhere anytime during system lifetime
-  *
-  * STDOUT logic just outputs characters to the console (see \ref kernel_stdio.h and \ref console.h).
-  *
-  * That said anything that publishes \ref EVT_USERCON_KEY event the kernel shell treats it as a new user input. 
-  * @note it doesnt care what is the exact source and how many of them are e.g. tty/keyb/network etc.
-  * 
-  * As such the most sutable place publishing events are services registered by \ref _SERVICE
-  *
-  * ## STDIN target platform service example
-  *
-  * \code{.c}
-  *
-  * #include <stdbool.h>
-  *
-  * #include "uart.h"
-  * #include "events.h"
-  *
-  * #include "kernel.h"
-  * #include "service.h"
-  *
-  * static void uart_service(void);
-  * static inline bool is_charValid(char c);
-  *
-  * _SERVICE(uart_svc, uart_service);
-  *
-  * static void uart_service(void) {
-  *
-  *     char c;
-  *     while((c = _uart_read()) != '\0') {
-  *
-  *         if (is_charValid(c)) {
-  *
-  *             console_key_t key = { .code = c, .scan_code = 0 };
-  *             _kernel_pubEvt(EVT_USERCON_KEY, (evt_data_t *) &key);
-  *         }
-  *     }
-  * }
-  *
-  * static inline bool is_charValid(char c) {
-  *
-  *    return ((c >= '0') && (c <= '9')) || 
-  *                ((c >= 'a') && (c <= 'z')) ||
-  *                ((c >= 'A') && (c <= 'Z')) ||
-  *                ((c == ' ') || (c == '\n') || (c == '\t') || (c == '\b') || (c == '\x7f'));
-  * }
-  * 
-  * \endcode
-  *
-  */
-  
- /**
-  * \page kernel_sgls Signals processing
-  *
-  * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n
-  * 
-  * The signals kernel API as follows:
-  *
-  * - set construction by using _kernel_sigemptyset() and _kernel_sigaddset().\n
-  * - probing by using _kernel_sigismember() and _kernel_sigpending().\n
-  * - raise by using _kernel_raise().\n
-  * - control by using _kernel_sigprocmask() for signals subscription and acknowledgement.\n
-  * - flags state check by using _kernel_sigwait() blocking and _kernel_sigpending() none-blocking for signals await and/or poll
-  *
-  * ## typical signals usage flow
-  *
-  * - contruct a signals set \ref _kernel_sigemptyset() and \ref _kernel_sigaddset().
-  * - subscribe signals set \ref _kernel_sigprocmask() with SIG_BLOCK.
-  * - wait or poll signals set \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call.
-  * - acknowledge signals set \ref _kernel_sigprocmask() with SIG_UNBLOCK.
-  *
-  * ## signals set blocking behaviour
-  * 
-  * When signals set constructed using multiple signals and in case of \ref _kernel_sigwait() blocking call usage. 
-  * It will return to (unblock) the main execution loop when any signal from the signals set is flagged. 
-  * Each next call to \ref _kernel_sigwait() should either block or return immediatly notifying next flag from the signals set reception.
-  * So \ref _kernel_sigwait() calls in a loop can be used to await a whole signals set if neccessary.
-  * @note in blocking calls loop a received signal flagged from awaiting set has to be acknowledged prior to next \ref _kernel_sigwait() otherwise
-  *       it will return immediatly duplicating just received signal notification.
-  *
-  * ## signals set none-blocking behaviour
-  *
-  * \ref _kernel_sigpending() has exact same as blocking \ref _kernel_sigwait() behaviour apart from that it doesnt block a main execution loop
-  * and it constructs the signals set that indicates subscribed signals flagged at the moment of calling none-blocking \ref _kernel_sigpending().
-  * Signals acknowledgement necessity and behaviour in a case of calls loop is exact same.
-  *
-  * ## signals set usage code snippets
-  *
-  * \code{.c}
-  *
-  * ...
-  *
-  * /* construct SIGINT & SIGBUS signals set */
-  *
-  *  sigset_t set;
-  *
-  * _kernel_sigemptyset(&set);
-  * _kernel_sigaddset(&set, SIGINT);
-  * _kernel_sigaddset(&set, SIGBUS);
-  *
-  * ...
-  *
-  * /* subscribe to signals set events */
-  *
-  *  _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
-  *
-  * /* poll signals set flags  */
-  * _kernel_sigpending(&set); // none-blocking call
-  *
-  * if (!_kernel_sigismember(&set, SIGINT)) { // probe SIGINT flag
-  *      return;
-  * }
-  *
-  * ...
-  *
-  * /* wait any signals set flag */
-  *
-  * int sgl;
-  * _kernel_sigwait(&sgls, &sgl); // blocking call
-  *
-  * switch(sgl) {
-  *
-  *    case SIGINT: { /* handle SIGINT flagged */ } break;
-  *    case SIGBUS: { /* handle SIGBUS flagged */ } break;
-  * }
-  *
-  * ...
-  *
-  * /* acknowledge signals set flags handled  */
-  *
-  *  _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
-  *
-  * ...
-  *
-  * \endcode 
-  *
-  * @note signals logic usage doesnt affect/alter the behaviour of a kernel event loop 
-  *       it designed to help introduce a separation between target software design and system level events (e.g. interrupts) 
-  *       to avoid overloading the event loop with not required target software subscribers
-  *
-  * ## SIGIO
-  *
-  * see \ref kernel_stdio
-  *
-  * ## SIGINT, SIGBUS (notify / bus error)
-  *
-  * It reserved a special meaning and such signals flow scheme can be presented on a following diagram 
-  *
-  * \dot
-  * digraph kernel_sigs_diag {
-  *     rankdir=LR;
-  *     splines=false;
-  *     label="signals and kernel relationship";
-  *     node [shape=box, style=filled];
-  *
-  * 	subgraph hardware_clust {
-  *
-  *         { rank=same;
-  *     	    hw0 [label="hardware 0\nsigint\nsigbus"];
-  *     	    hw1 [label="hardware 1\nsigint\nsigbus"];
-  *     	    hw_dot [label="...", shape=plaintext, style=""];
-  *     	    hwn [label="hardware n\nsigint\nsigbus"];
-  *         }
-  *
-  *         hw0 -> hw1 [style=invis];
-  *         hw1 -> hw_dot [style=invis];
-  *         hw_dot -> hwn [style=invis];
-  *
-  *     }
-  *
-  *     subgraph services_clust {
-  *
-  *         { rank=same;
-  *             us0 [label="user service 0\nsigwait\nsigpending"];
-  *             us1 [label="user service 1\nsigwait\nsigpending"];
-  *             us_dot [label="...", shape=plaintext, style=""];
-  *             usn [label="user service n\nsigwait\nsigpendiding"];
-  *         }
-  *
-  *         us0 -> us1 [style=invis];
-  *         us1 -> us_dot [style=invis];
-  *         us_dot -> usn [style=invis];
-  *
-  *     }
-  *
-  *     kernel [label="kernel", height=2];
-  *
-  *     hw0 -> kernel -> us0 [style=invis];
-  *
-  *     us0 -> kernel;
-  *     us1 -> kernel;
-  *     usn -> kernel;  
-  *
-  *     hw0 -> kernel;
-  *     hw1 -> kernel;
-  *     hwn -> kernel;
-  *
-  * }
-  * \enddot
-  *
-  * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref _kernel_raise() with (SIGINT | SIGBUS)). 
-  * The service either use \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call 
-  *     and when SIGINT raised it can check using driver state if a \b 'right' SIGINT, SIGBUS raised.
-  * @note In case of a \ref _kernel_sigwait() blocking call from a service the kernel pipeline halts preventing calling the subscribers for the events published 
-  *       so that the only case in using such a call is where a target really needs a hardware signal to continue operation by design 
-  *       e.g. a power managment service that hibernates (forces into sleep) the target until awakend. 
-  *       When \ref _kernel_sigwait() called not from a service the kernel pipeline behaviour is as usual i.e. as for \ref kernel_stdio the kernel shell is not a service
-  *
-  * In case of multiple hardware drivers raise SIGINT, SIGBUS a kernel supplies a semaphore for each signal meaning as long as semaphore value > 0
-  *    the kernel persists SIGINT, SIGBUS flagged until a number of raise and a number of signals acknowledge calls are matched in a given
-  *    hardware notification time period. Each call to \ref _kernel_raise with (SIGINT | SIGBUS) increases and \ref _kernel_sigprocmask() with SIG_UNBLOCK, (SIGINT | SIGBUS) 
-  *    decreases corresponsing semaphore value. When semaphore value reaches 0 the kernel flags down either SIGINT or SIGBUS or both.
-  *
-  * @warning at the moment only SIGINT, SIGBUS have semaphores attached other signals dont. For these a _kernel_raise() and _kernel_sigprocmask() call flags up/down only. 
-  *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS and SIGIO yet and maybe shall not in a future.
-  *
-  * ## blocking call usage example
-  * \code{.c}
-  *
-  * /******************* blocking call ************************/
-  *
-  * ...
-  *
-  *  sigset_t sgls;
-  * _kernel_sigemptyset(&sgls);       // init signals set
-  *
-  * _kernel_sigaddset(&sgls, SIGINT); // include SIGINT to the set 
-  * _kernel_sigaddset(&sgls, SIGBUS); // include SIGBUS to the set
-  *
-  * int sgl;
-  * _kernel_sigwait(&sgls, &sgl);     // sigwait blocking call
-  *            
-  * if (sgl == SIGBUS) {
-  *
-  *    sb_reg = SB_CLOSE;
-  *    _kernel_jentry("sb_svc: DMA bus error occured");           // bus error
-  *
-  *    _kernel_sigprocmask(SIG_UNBLOCK, (sigset_t *) &sgl, NULL); // acknowledge SIGBUS
-  *
-  * } else if (_xdma_mm2s_sgcmpltSignal()) {                       // is it 'right' SIGINT ?
-  * 
-  *    sb_reg = SB_WRITE;
-  *
-  *    sb_playcount--;
-  *    sb_service();
-  *
-  *    _kernel_sigprocmask(SIG_UNBLOCK, &sgls, NULL);             // yes, acknowledge SIGINT
-  *
-  *    ...
-  *
-  * \endcode
-  *
-  * ## none-blocking call usage example
-  *
-  * \code{.c} 
-  *
-  * /****************** none-blocking call *********************/
-  *
-  *    ...
-  *
-  *  sigset_t set;
-  *
-  * _kernel_sigemptyset(&set);
-  * _kernel_sigaddset(&set, SIGINT);
-  * _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
-  *
-  * _kernel_sigpending(&set);
-  *
-  * if (!_kernel_sigismember(&set, SIGINT)) {
-  *       return;
-  * }
-  *
-  * int time = _rtmsure_time();
-  *
-  * if (time == -1) {
-  *     return;
-  * }
-  *
-  * rt_msuretime = time;
-  * _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
-  *
-  *   ...
-  *
-  * \endcode
-  *
-  * ## driver isr example
-  *
-  * \code{.c}
-  *
-  * /************************ driver isr **********************/
-  *
-  * /* DMA1 ISR */
-  *
-  * static void onxDMA1_irq(void) {
-  *
-  *    volatile xdmasr_t xdma_sr = { 0 };
-  *    xdma_sr.reg = (XDMA1 -> mm2s.sr).reg;
-  *
-  *    /* its either an error or i/o complete IRQ */
-  *
-  *    bool ioe = xdma_sr.err_irq;
-  *    bool ioc = xdma_sr.ioc_irq;
-  *
-  *    (XDMA1 -> mm2s.sr).reg = xdma_sr.reg;
-  *
-  *    int sgl = SIGINT;
-  *
-  *    if (ioe) {
-  *       sgl = SIGBUS;        
-  *    }
-  *
-  *    if (ioc) {
-  *       sgmm2s_cmpltSig = true;
-  *    }
-  *
-  *    /* raised as separated calls if isr called twice for each case but can be combined as (SIGINT | SIGBUS) depending on current hardware state. Signals are order numbers.*/
-  *
-  *    _kernel_raise(sgl);
-  * }
-  *
-  * \endcode
-  */
+/**
+ * \page kernel_services Kernel Services and Event Pipeline
+ * \ingroup docs_runtime
+ *
+ * ## Overview
+ *
+ * The kernel runtime uses a service table and an event pipeline to execute
+ * registered services and process queued events.
+ *
+ * Services provide a way to execute target-specific or application-specific
+ * logic as part of the kernel runtime. A typical use is polling a hardware
+ * peripheral and publishing a kernel event when new input is available.
+ *
+ * The service registration macro is \ref _SERVICE.
+ *
+ * ## Service declaration
+ *
+ * A service is declared using the \ref _SERVICE macro. The declaration
+ * associates a service name with its implementation function and places
+ * the service in the service table.
+ *
+ * Example:
+ *
+ * \code{.c}
+ * #include "kernel.h"
+ * #include "service.h"
+ *
+ * static void uart_service(void);
+ *
+ * _SERVICE(uart_svc, uart_service);
+ *
+ * static void uart_service(void)
+ * {
+ *     /* Service implementation */
+ * }
+ * \endcode
+ *
+ * See also the \ref cmd_svc_table page for service and command registration.
+ *
+ * ## Service execution
+ *
+ * The kernel pipeline is executed by \ref _kernel_pipeline().
+ * The pipeline invokes registered services and processes queued events.
+ *
+ * Services should perform short operations and return control to the kernel
+ * pipeline. A service should avoid waiting indefinitely for hardware or
+ * application activity, since doing so prevents the pipeline from continuing
+ * its normal processing.
+ *
+ * ## Event publication
+ *
+ * A service can publish an event using \ref _kernel_pubEvt().
+ * The event can then be handled by subscribers when the kernel pipeline
+ * processes the event queue.
+ *
+ * Example:
+ *
+ * \code{.c}
+ * console_key_t key = { .code = 'a', .scan_code = 0 };
+ * _kernel_pubEvt(EVT_USERCON_KEY, (evt_data_t *)&key);
+ * \endcode
+ *
+ * The event payload is supplied by the publisher. Its interpretation depends
+ * on the event type and the corresponding subscriber.
+ *
+ * ## Typical execution flow
+ *
+ * A typical service-driven event flow is:
+ *
+ * 1. A service is registered using \ref _SERVICE.
+ * 2. The kernel pipeline invokes the registered service.
+ * 3. The service detects a target or application event.
+ * 4. The service publishes an event using \ref _kernel_pubEvt().
+ * 5. The kernel pipeline processes the queued event.
+ * 6. The corresponding event subscriber handles the event.
+ *
+ * ## Relationship with signals
+ *
+ * Signals provide a separate notification and synchronization mechanism.
+ * They are not the same as published kernel events.
+ *
+ * See \ref kernel_sgls for general signal handling.
+ *
+ * ## Relationship with Kernel STDIO
+ *
+ * Kernel STDIO uses the event pipeline for incoming console events and
+ * signals to notify the shell that input is available.
+ *
+ * See \ref kernel_stdio for the STDIN and STDOUT implementation details.
+ */
 
- /**
-  * \page cmd_list Shell commands list
-  *     
-  * ## Basic (Lite profile) commands
-  *
-  * - **ver**                   - displays current kernel version
-  * - **svc**                   - displays service table (just names)
-  * - **cls**                   - clears the console i.e. calls console clear function (see \ref con_clear)
-  * - **rmon \<addr\> \<len\>** - displays [addr, addr + len - 1] memory region
-  *
-  * ## All (Full profile) commands
-  *
-  * - **sysj**                        - displays all kernel journal entries written. @note when read and displayed journal clears
-  * - **disks**                       - displays 'disks' or storage devices enumerated by \ref disk.h
-  * - **dsk_block \<did\> \<block\>** - displays **block** content of **did** disk. **block** - sector index, **did** - disk index   
-  * - **dir (ls)**                    - displays current directory contents
-  * - **mkdir \<name\>**              - creates a directory
-  * - **cd \<name\>**                 - changes a current directory
-  * - **rm \<name\>**                 - delete file or directory. @note forbids directory removable thats not empty.
-  * - **type \<name\>**               - display file content as text. @note 'type hex name' display file content as hexdec
-  * - **cp \<path1\> \<path2\>**      - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'
-  * - **cp con \<name\>**             - create file with the content typed in console
-  *	
-  */
+/**
+ * \page cmd_svc_table Service / Command tables
+ * \ingroup docs_runtime
+ *
+ * Just use an appropriate macros provided
+ *
+ * ## Service registration example
+ *
+ * \ref _SERVICE
+ *
+ * ## Command registration example
+ *
+ * \ref _SHELL_COMMAND
+ */
 
- /**
-  * \page cmd_svc_table Service / Command tables
-  * 
-  * Just use an appropriate macros provided
-  *
-  * ## Service registration example
-  *
-  * \ref _SERVICE
-  *
-  * ## Command registration example
-  *
-  * \ref _SHELL_COMMAND
-  *
-  */
+/**
+ * \page kernel_sgls Signals processing
+ * \ingroup docs_runtime
+ *
+ * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n
+ *
+ * The signals kernel API as follows:
+ *
+ * - set construction by using _kernel_sigemptyset() and _kernel_sigaddset().\n
+ * - probing by using _kernel_sigismember() and _kernel_sigpending().\n
+ * - raise by using _kernel_raise().\n
+ * - control by using _kernel_sigprocmask() for signals subscription and acknowledgement.\n
+ * - flags state check by using _kernel_sigwait() blocking and _kernel_sigpending() none-blocking for signals await and/or poll
+ *
+ * ## typical signals usage flow
+ *
+ * - contruct a signals set \ref _kernel_sigemptyset() and \ref _kernel_sigaddset().
+ * - subscribe signals set \ref _kernel_sigprocmask() with SIG_BLOCK.
+ * - wait or poll signals set \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call.
+ * - acknowledge signals set \ref _kernel_sigprocmask() with SIG_UNBLOCK.
+ *
+ * ## signals set blocking behaviour
+ *
+ * When signals set constructed using multiple signals and in case of \ref _kernel_sigwait() blocking call usage.
+ * It will return to (unblock) the main execution loop when any signal from the signals set is flagged.
+ * Each next call to \ref _kernel_sigwait() should either block or return immediatly notifying next flag from the signals set reception.
+ * So \ref _kernel_sigwait() calls in a loop can be used to await a whole signals set if neccessary.
+ * @note in blocking calls loop a received signal flagged from awaiting set has to be acknowledged prior to next \ref _kernel_sigwait() otherwise
+ *       it will return immediatly duplicating just received signal notification.
+ *
+ * ## signals set none-blocking behaviour
+ *
+ * \ref _kernel_sigpending() has exact same as blocking \ref _kernel_sigwait() behaviour apart from that it doesnt block a main execution loop
+ * and it constructs the signals set that indicates subscribed signals flagged at the moment of calling none-blocking \ref _kernel_sigpending().
+ * Signals acknowledgement necessity and behaviour in a case of calls loop is exact same.
+ *
+ * ## signals set usage code snippets
+ *
+ * \code{.c}
+ *
+ * ...
+ *
+ * /* construct SIGINT & SIGBUS signals set */
+ *
+ * sigset_t set;
+ *
+ * _kernel_sigemptyset(&set);
+ * _kernel_sigaddset(&set, SIGINT);
+ * _kernel_sigaddset(&set, SIGBUS);
+ *
+ * ...
+ *
+ * /* subscribe to signals set events */
+ *
+ * _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
+ *
+ * /* poll signals set flags */
+ * _kernel_sigpending(&set); // none-blocking call
+ *
+ * if (!_kernel_sigismember(&set, SIGINT)) { // probe SIGINT flag
+ *     return;
+ * }
+ *
+ * ...
+ *
+ * /* wait any signals set flag */
+ *
+ * int sgl;
+ * _kernel_sigwait(&sgls, &sgl); // blocking call
+ *
+ * switch(sgl) {
+ *     case SIGINT: { /* handle SIGINT flagged */ } break;
+ *     case SIGBUS: { /* handle SIGBUS flagged */ } break;
+ * }
+ *
+ * ...
+ *
+ * /* acknowledge signals set flags handled */
+ *
+ * _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
+ *
+ * ...
+ *
+ * \endcode
+ *
+ * @note signals logic usage doesnt affect/alter the behaviour of a kernel event loop
+ *       it designed to help introduce a separation between target software design and system level events (e.g. interrupts)
+ *       to avoid overloading the event loop with not required target software subscribers
+ *
+ * ## SIGIO
+ *
+ * see \ref kernel_stdio
+ *
+ * ## SIGINT, SIGBUS (notify / bus error)
+ *
+ * It reserved a special meaning and such signals flow scheme can be presented on a following diagram
+ *
+ * \dot
+ * digraph kernel_sigs_diag {
+ *     rankdir=LR;
+ *     splines=false;
+ *     label="signals and kernel relationship";
+ *     node [shape=box, style=filled];
+ *
+ *     subgraph hardware_clust {
+ *         { rank=same;
+ *             hw0 [label="hardware 0\nsigint\nsigbus"];
+ *             hw1 [label="hardware 1\nsigint\nsigbus"];
+ *             hw_dot [label="...", shape=plaintext, style=""];
+ *             hwn [label="hardware n\nsigint\nsigbus"];
+ *         }
+ *         hw0 -> hw1 [style=invis];
+ *         hw1 -> hw_dot [style=invis];
+ *         hw_dot -> hwn [style=invis];
+ *     }
+ *
+ *     subgraph services_clust {
+ *         { rank=same;
+ *             us0 [label="user service 0\nsigwait\nsigpending"];
+ *             us1 [label="user service 1\nsigwait\nsigpending"];
+ *             us_dot [label="...", shape=plaintext, style=""];
+ *             usn [label="user service n\nsigwait\nsigpendiding"];
+ *         }
+ *         us0 -> us1 [style=invis];
+ *         us1 -> us_dot [style=invis];
+ *         us_dot -> usn [style=invis];
+ *     }
+ *
+ *     kernel [label="kernel", height=2];
+ *     hw0 -> kernel -> us0 [style=invis];
+ *     us0 -> kernel;
+ *     us1 -> kernel;
+ *     usn -> kernel;
+ *     hw0 -> kernel;
+ *     hw1 -> kernel;
+ *     hwn -> kernel;
+ * }
+ * \enddot
+ *
+ * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref _kernel_raise() with (SIGINT | SIGBUS)).
+ * The service either use \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call
+ *     and when SIGINT raised it can check using driver state if a \b 'right' SIGINT, SIGBUS raised.
+ * @note In case of a \ref _kernel_sigwait() blocking call from a service the kernel pipeline halts preventing calling the subscribers for the events published
+ *       so that the only case in using such a call is where a target really needs a hardware signal to continue operation by design
+ *       e.g. a power managment service that hibernates (forces into sleep) the target until awakend.
+ *       When \ref _kernel_sigwait() called not from a service the kernel pipeline behaviour is as usual i.e. as for \ref kernel_stdio the kernel shell is not a service
+ *
+ * In case of multiple hardware drivers raise SIGINT, SIGBUS a kernel supplies a semaphore for each signal meaning as long as semaphore value > 0
+ *    the kernel persists SIGINT, SIGBUS flagged until a number of raise and a number of signals acknowledge calls are matched in a given
+ *    hardware notification time period. Each call to \ref _kernel_raise with (SIGINT | SIGBUS) increases and \ref _kernel_sigprocmask() with SIG_UNBLOCK, (SIGINT | SIGBUS)
+ *    decreases corresponsing semaphore value. When semaphore value reaches 0 the kernel flags down either SIGINT or SIGBUS or both.
+ *
+ * @warning at the moment only SIGINT, SIGBUS have semaphores attached other signals dont. For these a _kernel_raise() and _kernel_sigprocmask() call flags up/down only.
+ *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS and SIGIO yet and maybe shall not in a future.
+ *
+ * ## blocking call usage example
+ * \code{.c}
+ * /******************* blocking call ************************/
+ * ...
+ * sigset_t sgls;
+ * _kernel_sigemptyset(&sgls);
+ * _kernel_sigaddset(&sgls, SIGINT);
+ * _kernel_sigaddset(&sgls, SIGBUS);
+ *
+ * int sgl;
+ * _kernel_sigwait(&sgls, &sgl);
+ *
+ * if (sgl == SIGBUS) {
+ *     sb_reg = SB_CLOSE;
+ *     _kernel_jentry("sb_svc: DMA bus error occured");
+ *     _kernel_sigprocmask(SIG_UNBLOCK, (sigset_t *) &sgl, NULL);
+ * } else if (_xdma_mm2s_sgcmpltSignal()) {
+ *     sb_reg = SB_WRITE;
+ *     sb_playcount--;
+ *     sb_service();
+ *     _kernel_sigprocmask(SIG_UNBLOCK, &sgls, NULL);
+ *     ...
+ * }
+ * \endcode
+ *
+ * ## none-blocking call usage example
+ * \code{.c}
+ * /****************** none-blocking call *********************/
+ * ...
+ * sigset_t set;
+ * _kernel_sigemptyset(&set);
+ * _kernel_sigaddset(&set, SIGINT);
+ * _kernel_sigprocmask(SIG_BLOCK, &set, NULL);
+ *
+ * _kernel_sigpending(&set);
+ *
+ * if (!_kernel_sigismember(&set, SIGINT)) {
+ *     return;
+ * }
+ *
+ * int time = _rtmsure_time();
+ * if (time == -1) {
+ *     return;
+ * }
+ *
+ * rt_msuretime = time;
+ * _kernel_sigprocmask(SIG_UNBLOCK, &set, NULL);
+ * ...
+ * \endcode
+ *
+ * ## driver isr example
+ * \code{.c}
+ * /************************ driver isr **********************/
+ * /* DMA1 ISR */
+ * static void onxDMA1_irq(void) {
+ *     volatile xdmasr_t xdma_sr = { 0 };
+ *     xdma_sr.reg = (XDMA1 -> mm2s.sr).reg;
+ *
+ *     bool ioe = xdma_sr.err_irq;
+ *     bool ioc = xdma_sr.ioc_irq;
+ *     (XDMA1 -> mm2s.sr).reg = xdma_sr.reg;
+ *
+ *     int sgl = SIGINT;
+ *     if (ioe) {
+ *         sgl = SIGBUS;
+ *     }
+ *     if (ioc) {
+ *         sgmm2s_cmpltSig = true;
+ *     }
+ *
+ *     _kernel_raise(sgl);
+ * }
+ * \endcode
+ */
+
+/**
+ * \page kernel_stdio Kernel STDIO
+ * \ingroup docs_runtime
+ *
+ * STDIN works in a following loop:
+ *
+ * - when \ref _kernel_stdio() called it sibscribes to \ref EVT_USERCON_KEY event
+ * - kernel shell when entered into never ending loop calls \ref _kernel_getKey() blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait()
+ *   @note \ref _kernel_getKey() calls \ref _kernel_pipeline() which runs services registered via \ref _SERVICE and exectues queued events
+ * - when \ref EVT_USERCON_KEY is published and the subscriber is called by \ref _kernel_pipeline() it sets new input key and raises SIGIO signal to the kernel (see \ref kernel_signal.h):
+ *   - kernel flags up a signal. \ref _kernel_getKey() drops awaited SIGIO and returns a new key input set by an event subscriber called
+ *   - shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
+ *   - shell at any new ASCII input received forwards to the STDOUT.
+ *   - shell calls \ref _kernel_getKey() again.
+ *
+ * @warning SIGIO reserved for STDIN usage only any attempt to raise it by the target logic shall result the shell recognizing
+ *          a new key input as such since a key is unknown (or retain previous state) the behaviour is undefined
+ *          when the shell will start processing a 'new' input. It doesnt apply to \ref EVT_USERCON_KEY event publish
+ *          i.e. it can be published anywhere anytime during system lifetime
+ *
+ * STDOUT logic just outputs characters to the console (see \ref kernel_stdio.h and \ref console.h).
+ *
+ * That said anything that publishes \ref EVT_USERCON_KEY event the kernel shell treats it as a new user input.
+ * @note it doesnt care what is the exact source and how many of them are e.g. tty/keyb/network etc.
+ *
+ * As such the most sutable place publishing events are services registered by \ref _SERVICE
+ *
+ * ## STDIN target platform service example
+ *
+ * \code{.c}
+ * #include <stdbool.h>
+ * #include "uart.h"
+ * #include "events.h"
+ * #include "kernel.h"
+ * #include "service.h"
+ *
+ * static void uart_service(void);
+ * static inline bool is_charValid(char c);
+ *
+ * _SERVICE(uart_svc, uart_service);
+ *
+ * static void uart_service(void) {
+ *     char c;
+ *     while((c = _uart_read()) != '\0') {
+ *         if (is_charValid(c)) {
+ *             console_key_t key = { .code = c, .scan_code = 0 };
+ *             _kernel_pubEvt(EVT_USERCON_KEY, (evt_data_t *) &key);
+ *         }
+ *     }
+ * }
+ *
+ * static inline bool is_charValid(char c) {
+ *     return ((c >= '0') && (c <= '9')) ||
+ *            ((c >= 'a') && (c <= 'z')) ||
+ *            ((c >= 'A') && (c <= 'Z')) ||
+ *            ((c == ' ') || (c == '\n') || (c == '\t') || (c == '\b') || (c == '\x7f'));
+ * }
+ * \endcode
+ */
+
+/**
+ * \page cmd_list Shell commands list
+ * \ingroup docs_shell
+ *
+ * ## Basic (Lite profile) commands
+ *
+ * - **ver**                   - displays current kernel version
+ * - **svc**                   - displays service table (just names)
+ * - **cls**                   - clears the console i.e. calls console clear function (see \ref con_clear)
+ * - **rmon \<addr\> \<len\>** - displays [addr, addr + len - 1] memory region
+ *
+ * ## All (Full profile) commands
+ *
+ * - **sysj**                        - displays all kernel journal entries written. @note when read and displayed journal clears
+ * - **disks**                       - displays 'disks' or storage devices enumerated by \ref disk.h
+ * - **dsk_block \<did\> \<block\>** - displays **block** content of **did** disk. **block** - sector index, **did** - disk index
+ * - **dir (ls)**                    - displays current directory contents
+ * - **mkdir \<name\>**              - creates a directory
+ * - **cd \<name\>**                 - changes a current directory
+ * - **rm \<name\>**                 - delete file or directory. @note forbids directory removable thats not empty.
+ * - **type \<name\>**               - display file content as text. @note 'type hex name' display file content as hexdec
+ * - **cp \<path1\> \<path2\>**      - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'
+ * - **cp con \<name\>**             - create file with the content typed in console
+ */
 
 /**
  * \page cmake_int CMake target integration
+ * \ingroup docs_integration
  *
  * Its cmake frendly hence at repo root supplies a CMakeLists.txt and defines the following cmake entities.
  *
  * ## properties
  *
- * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile 
+ * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile
  *
  * ## targets
- * 
+ *
  * - kernel-core : The core logic.
  * - kernel-fio  : file I/O subsystem logic.
  * - kernel-sysj : A system journal logic.
@@ -545,9 +588,7 @@
  *                                DESCRIPTION "platform target using rpv event driven kernel")
  *
  * # by default **lite** profile used unless redefined by the following line
- * # set(KERNEL_PROFILE full CACHE STRING "" FORCE)
- *
- * # event driven kernel
+ * # set(KERNEL_PROFILE full CACHE STRING " FORCE)
  *
  * FetchContent_Declare(
  *         evtdriven-kernel
@@ -558,16 +599,14 @@
  * FetchContent_MakeAvailable(evtdriven-kernel)
  *
  * add_executable(${PROJECT_NAME})
- *
  * target_sources(${PROJECT_NAME} PRIVATE main.c)
  * target_link_libraries(${PROJECT_NAME} PRIVATE rpv-kernel)
- * 
- * target_link_options(${PROJECT_NAME} PRIVATE -Wl,-Tlinker.ld) # linker script containing **__cmd_table, __end_cmd_table** and **__svc_table, __end_svc_table**
  *
+ * target_link_options(${PROJECT_NAME} PRIVATE -Wl,-Tlinker.ld)
  * \endcode
  *
  * ## linker script example
- * 
+ *
  * \code{.ld}
  * ...
  * __cmd_table = .;
@@ -581,72 +620,107 @@
  * \endcode
  */
 
- /**
-  * \page target_project_main Target entry (e.g. main.c) example
-  * \code{.c}
-  * #include "shell.h"
-  * #include "kernel_stdio.h"
-  *
-  * #include "platform.h" // target platform initialization logic
-  *
-  * int main() {
-  *
-  *     // _kernel_fio(); lite variant doesnt contain file I/O subsystem. Full variant enabled only
-  *
-  *     _kernel_stdio();
-  *     _kernel_outString("Starting event driven on target platform\n");
-  *
-  *     // start init platform
-  *     platform_init();
-  *     // end init platform maybe enable global interrupts in case of embedded SoC
-  *
-  *     _shell_start();
-  *
-  *     return 0;
-  * }
-  * \endcode
-  */
+/**
+ * \page target_project_main Target entry (e.g. main.c) example
+ * \ingroup docs_integration
+ *
+ * \code{.c}
+ * #include "shell.h"
+ * #include "kernel_stdio.h"
+ * #include "platform.h"
+ *
+ * int main() {
+ *     // _kernel_fio(); lite variant doesnt contain file I/O subsystem. Full variant enabled only
+ *     _kernel_stdio();
+ *     _kernel_outString("Starting event driven on target platform\n");
+ *
+ *     platform_init();
+ *     _shell_start();
+ *
+ *     return 0;
+ * }
+ * \endcode
+ */
 
- /**
-  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel 
-  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. 
-  * There are APIs require implementation within the concrete target platform project. 
-  * There are several compile instance profiles available each defines the number of APIs need in implementation
-  */
+/**
+ * @defgroup kernel_needimpl Mandatory APIs called by the Kernel
+ * @ingroup docs_integration
+ * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike.
+ * There are APIs require implementation within the concrete target platform project.
+ * There are several compile instance profiles available each defines the number of APIs need in implementation
+ */
 
- /**
-  * @defgroup kernel_lite Kernel lite profile
-  * @ingroup kernel_needimpl
-  * @brief Kernel lite variant. Includes a core with basic commands. 
-  * @details
-  * Requires implementation of 
-  * - \ref console.h : console output operations.
-  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
-  */
+/**
+ * @defgroup kernel_lite Kernel lite profile
+ * @ingroup kernel_needimpl
+ * @brief Kernel lite variant. Includes a core with basic commands.
+ * @details
+ * Requires implementation of
+ * - \ref console.h : console output operations.
+ * - \ref prompt.h : system prompt constructor called by the kernel shell.
+ */
 
- /**
-  * @defgroup kernel_full Kernel full profile
-  * @ingroup kernel_needimpl
-  * @brief Kernel full variant. Includes a core and all currently available subsystems. 
-  * @details
-  * Requires implementation of 
-  * - \ref console.h : console output operations 
-  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
-  * - \ref disk.h    : low level Disk I/O operations -> called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.
-  * - \ref fat.h     : file system middleware interface -> called by kernel file I/O subsystem for file I/O operations.
-  */
+/**
+ * @defgroup kernel_full Kernel full profile
+ * @ingroup kernel_needimpl
+ * @brief Kernel full variant. Includes a core and all currently available subsystems.
+ * @details
+ * Requires implementation of
+ * - \ref console.h : console output operations
+ * - \ref prompt.h : system prompt constructor called by the kernel shell.
+ * - \ref disk.h : low level Disk I/O operations -> called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.
+ * - \ref fat.h : file system middleware interface -> called by kernel file I/O subsystem for file I/O operations.
+ */
 
- /**
-  * @defgroup kernel_core Kernel runtime API
-  * @brief Kernel core runtime shell with basic commands and stdio included.
-  */
- 
- /**
-  * @defgroup kernel_fio Kernel file I/O subsystem
-  * @brief Kernel filesystem and drive management middleware API extending kernel shell runtime with file mangement commands.
-  */
- 
- /**
-  * @defgroup kernel_sysj Kernel system journal subsystem
-  * @brief Kernel system events journal API extending kernel shell runtime with journal manipulation commands.
-  */
+/**
+ * @defgroup kernel_core Kernel runtime API
+ * @ingroup docs_api
+ * @brief Kernel core runtime shell with basic commands and stdio included.
+ */
+
+/**
+ * @defgroup kernel_fio Kernel file I/O subsystem
+ * @ingroup docs_api
+ * @brief Kernel filesystem and drive management middleware API extending kernel shell runtime with file mangement commands.
+ */
+
+/**
+ * @defgroup kernel_sysj Kernel system journal subsystem
+ * @ingroup docs_api
+ * @brief Kernel system events journal API extending kernel shell runtime with journal manipulation commands.
+ */
+
+/**
+ * @defgroup docs_intro 01. Introduction
+ * @brief Project overview and getting started.
+ */
+
+/**
+ * @defgroup docs_arch 02. Architecture
+ * @brief Kernel architecture and design diagrams.
+ */
+
+/**
+ * @defgroup docs_runtime 03. Kernel Runtime
+ * @brief Services, event processing, signals and standard I/O.
+ */
+
+/**
+ * @defgroup docs_shell 04. Shell
+ * @brief Shell commands and command-line interface.
+ */
+
+/**
+ * @defgroup docs_subsystems 05. Subsystems
+ * @brief Optional kernel subsystems.
+ */
+
+/**
+ * @defgroup docs_integration 06. Platform Integration
+ * @brief Required platform APIs and target project integration.
+ */
+
+/**
+ * @defgroup docs_api 07. API Reference
+ * @brief Public kernel API groups.
+ */
