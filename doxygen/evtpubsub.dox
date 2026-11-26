@@ -44,25 +44,41 @@
  * _kernel_pubEvt(EVENT_ID, event_data);
  * @endcode
  *
- * ## User Event Data
+* ## User Event Data
  *
  * User event payload types are supplied through the file selected by the
- * CMake `EVENT_DATA_FILE` cache variable. During configuration, CMake reads
- * this file and collects its declarations into the generated
- * `autogen/data/event_data.h` header. The input file can provide standard
- * header `#include` directives, custom payload type declarations between
- * `/* event types begin */` and `/* event types end */`, and members for
- * the shared event-data union between `/* event members begin */` and
- * `/* event members end */`. The generated `USER_EVENT_DATA` macro expands
- * to those union members, while the custom type declarations are emitted
- * before the macro so the member types are available when `evt_data_t` is
- * declared in `events.h`. Event identifiers are declared separately; this
- * generation flow defines payload types and union members, not user event IDs.
+ * CMake @c EVENT_DATA_FILE cache variable (see \ref cmake_int). During configuration, CMake
+ * processes this file and generates @c autogen/data/event_data.h.
  *
- * @note Include only standard C headers in the user event-data input file.
- *       Define custom payload types using standard C types (for example,
- *       `uint8_t`, `uint16_t`, `uint32_t`, and `char`) rather than
- *       project-specific types or dependencies on other project headers.
+ * The input file separates custom type declarations and event-data union
+ * members using dedicated markers:
+ *
+ * @code
+ * #include <stdint.h>
+ *
+ * /* event types begin */
+ * typedef struct {
+ *     uint8_t key;
+ *     uint32_t value;
+ * } user_event_data_t;
+ * /* event types end */
+ *
+ * /* event members begin */
+ * user_event_data_t user_data;
+ * /* event members end */
+ * @endcode
+ *
+ * The declarations inside the types section are emitted into the generated
+ * header, while the members section is used to construct the
+ * @c USER_EVENT_DATA macro. The macro injects the user-defined members
+ * into the shared @c evt_data_t union declared in @c events.h.
+ *
+ * Event identifiers are declared separately. This generation flow defines
+ * payload types and union members, not user event IDs.
+ *
+ * @note The input file must rely only on standard C headers. Custom payload
+ *       types must be built from standard C types and must not depend on
+ *       project-specific headers or types.
  *
  * ## Event Delivery Flow
  *
