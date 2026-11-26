@@ -1,0 +1,189 @@
+ /**
+  * \page kernel_arch Block Diagrams
+  *
+  * ## Kernel subsystems by using profile selected
+  *    Depending on kernel profile it requires profile`s mandatory API implementation (see \ref kernel_lite and \ref kernel_full for details)
+  *
+  *    API implementation requirements:
+  *    - **Lite**: console.h and prompt.h
+  *    - **Full**: console.h, prompt.h, fat.h and disk.h
+  *
+  * \dot
+  * digraph kernel_arch {
+  *     rankdir=TB;
+  *     label="kernel overal diagram";
+  *     node [shape=box, style=filled];
+  *
+  *     subgraph cluster_kernel {
+  *         label="Kernel Runtime";
+  *         style=filled;
+  *         fillcolor="#e6f2ff";
+  *
+  *         Shell     [label="Shell"];
+  *         Core      [label="Kernel Core\n(Event Pipeline/Subscribe/Publish)"];
+  *         Signals   [label="Signal Handling"];
+  *
+  *         Commands [label="Command Table"];
+  *         Services [label="Service Table"];
+  *
+  *         Shell -> Commands [style=invis];
+  *         Commands -> Services [style=invis];
+  *         Services -> Signals [style=invis];
+  *         Signals -> Core [style=invis];
+  *
+  *         kernel_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_platform_base {
+  *         label="Platform Mandatory APIs\n(Lite or Full)\nImplemented on target project";
+  *         style=filled;
+  *         fillcolor="#d9ead3";
+  *
+  *         Console [label="console.h\n(console device facade)", style=solid];
+  *         Prompt  [label="prompt.h\n(system prompt string constructor/builder)", style=solid];
+  *         Disk    [label="disk.h\n(low level sectors I/O facade)", style=dashed];
+  *         FAT     [label="fat.h\n(file I/O middleware facade)", style=dashed];
+  *
+  *         Console -> Prompt [style=invis];
+  *         Prompt -> Disk [style=invis];
+  *         Disk -> FAT [style=invis];
+  *
+  *         platform_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_full {
+  *         label="Full Profile";
+  *         style="filled,dashed";
+  *         fillcolor="#fff2cc";
+  *
+  *         FIO[label="File I/O Subsystem"];
+  *         Journal[label="System Journal"];
+  *
+  *         // Full-only internal dependencies
+  *         FIO -> Journal [style=invis];
+  *
+  *         full_profile_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     Shell -> Signals;
+  *     Shell -> Commands;
+  *     Signals -> Core;
+  *     Core -> Services;
+  *
+  *     Shell -> Console;
+  *     Shell -> Prompt;
+  *
+  *     Shell -> FIO[style=dashed];
+  *     Shell -> Journal[style=dashed];
+  *
+  *     FIO -> Journal;
+  *     FIO -> Disk[style=dashed];
+  *     FIO -> FAT[style=dashed];
+  *
+  *     kernel_anchor -> platform_anchor[style=invis];
+  *     platform_anchor -> full_profile_anchor[style=invis];
+  *
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * ## File I/O backend on target platform architecture implementing fat.h and disk.h. 
+  *    It shows fat.h implementation calls a FAT library or custom logic that calls disk.h for low level disk I/O operations
+  *
+  * \dot 
+  * digraph fio_backend_arch {
+  *	    rankdir=TB;
+  *     label="target file backend implementation example";
+  *     node [shape=box, style=filled];
+  *
+  *     Disk [label="disk.h\n(low level sectors I/O)"];
+  *     FAT [label="fat.h\n(file I/O middleware facade)"];
+  *     FATFS [label="filesystem library e.g. fatfs"];
+  *     Storage [label="Storage Device\ne.g. HD, SD-Card etc.", shape=cylinder, width=1.5, height=2];
+  *
+  *     FAT -> FATFS;
+  *     FATFS -> Disk;
+  *     Disk -> Storage;
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * ## Kernel Runtime Execution Flow
+  *
+  * Target platform entry is launched at system startup. Before shell executes kernel stdio has to be called first otherwise 
+  * since shell using it will blind to console key events published. Its not a 0xDEAD system state events loop and other subsystems will be active 
+  * its just a shell 'console' will not be operational leaving shell deaf to the user 'console' input.
+  *
+  * The platform entry sequence as follows:
+  *
+  * \code{c}
+  * int main() {
+  *
+  *     /* kernel stdio */
+  *
+  *     _kernel_stdio();                       // stdio and user console is initialized
+  *     _kernel_outString("Starting shell\n"); // its able produce output to a console
+  *
+  *     ... // whatever other platform initialization
+  *
+  *     _shell_start();
+  *
+  *     return 0; // for the sake return something though the target platform CPU should not reach that address
+  * }
+  * \endcode
+  *
+  * The Shell (see \ref _shell_start) is the kernel runtime entry point but has to be called from target platform logic. 
+  * The best place is target platform main() entry. It repeatedly calls
+  * @ref _kernel_getKey(), which blocks until a console key event is
+  * signaled.
+  *
+  * While waiting for the signal, the kernel executes its pipeline,
+  * consisting of one-time service initialization (on the first execution),
+  * service execution, and event subscriber dispatch.
+  *
+  * The console key event subscriber stores the received key and raises
+  * @c SIGIO, allowing @ref _kernel_getKey() to return the key to the Shell.
+  *
+  * @dot
+  * digraph kernel_runtime {
+  *
+  *     rankdir=TB;
+  *     node [shape=box, style="rounded"];
+  *
+  *     shell [label="Shell"];
+  *     get_key [label="_kernel_getKey()"];
+  *     sigwait [label="_kernel_sigwait(SIGIO)"];
+  *     pipeline [label="_kernel_pipeline()"];
+  *     init [label="Initialize service table\n(first execution only)"];
+  *     services [label="Execute services"];
+  *     events [label="Process event subscribers"];
+  *     key_event [label="EVT_USERCON_KEY"];
+  *     subscriber [label="Console key subscriber\nStore key and raise SIGIO"];
+  *     return_key [label="Return console key"];
+  *
+  *     shell -> get_key;
+  *     get_key -> sigwait;
+  *
+  *     sigwait -> pipeline [label="while SIGIO pending = 0"];
+  *     pipeline -> init [label="first execution"];
+  *     init -> services;
+  *     pipeline -> services [label="subsequent executions"];
+  *     services -> events;
+  *     events -> sigwait [label="pipeline complete"];
+  *
+  *     key_event -> subscriber;
+  *     subscriber -> sigwait [label="raise SIGIO"];
+  *
+  *     sigwait -> return_key [label="SIGIO received"];
+  *     return_key -> shell;
+  * }
+  * @enddot
+  *
+  * @note Service initialization is executed only during the first
+  *       kernel pipeline invocation.
+  *
+  * @details
+  * Legend: Solid outline presents always existing blocks and links, Dashed is optional and might not exist according to the chosen kernel profile.
+  */

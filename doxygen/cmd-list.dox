@@ -1,0 +1,33 @@
+ /**
+  * \page cmd_list Shell commands
+  *
+  * User commands can be added using \ref _SHELL_COMMAND \n
+  * Commands input must follow this format:
+  *
+  * @code
+  * {cmd_text}\n
+  * @endcode
+  *
+  * The @c '\\n' sequence marks the end of the command input.
+  *     
+  * ## Basic (Lite profile) commands
+  *
+  * - **ver**                   - displays current kernel version
+  * - **svc**                   - displays service table (just names)
+  * - **cls**                   - clears the console i.e. calls console clear function (see \ref con_clear)
+  * - **rmon \<addr\> \<len\>** - displays [addr, addr + len - 1] memory region
+  *
+  * ## All (Full profile) commands
+  *
+  * - **sysj**                        - displays all kernel journal entries written. @note when read and displayed journal clears
+  * - **disks**                       - displays 'disks' or storage devices enumerated by \ref disk.h
+  * - **dsk_block \<did\> \<block\>** - displays **block** content of **did** disk. **block** - sector index, **did** - disk index   
+  * - **dir (ls)**                    - displays current directory contents
+  * - **mkdir \<name\>**              - creates a directory
+  * - **cd \<name\>**                 - changes a current directory
+  * - **rm \<name\>**                 - delete file or directory. @note forbids directory removable thats not empty.
+  * - **type \<name\>**               - display file content as text. @note 'type hex name' display file content as hexdec
+  * - **cp \<path1\> \<path2\>**      - copy file name path1 to path2 e.g. 'cp test.txt test2.txt' or 'cp test.txt 111/test2.txt'
+  * - **cp con \<name\>**             - create file with the content typed in console
+  *	
+  */

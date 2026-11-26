@@ -1,0 +1,33 @@
+/**
+ * @mainpage Overview
+ *
+ * ## Introduction
+ * An event driven kernel is a small, modular, embedded kernel designed for
+ * lightweight RTOS applications by using profiles designation: Lite & Full (see \ref kernel_lite and \ref kernel_full for their API reference). It provides:
+ * - Event system with publish/subscribe model producing a reactive like firmwares <- Lite & Full profile
+ * - POSIX-alike signal handling. The concrete behaviour differ from POSIX one 
+ *      while giving own synchronization context mental model e.g. await/poll for signal flagged paradigm (see \ref kernel_sgls) <- Lite & Full profile
+ * - Shell command execution framework <- Lite & Full profile 
+ * - Filesystem abstraction and mount management <- Full profile
+ * - Kernel logging and journal subsystem <- Full profile
+ *
+ * ## Kernel Architecture
+ * The kernel is organized into modular subsystems:
+ * - Kernel Core: Events pipeline (events and service dispatch), publish/subscribe events (see \ref events_subscription_publish)
+ * - Command/Service Registrar: Flexibe command/service registration (see \ref cmd_svc_table)
+ * - Filesystem: Mount, unmount, file operations, and shell commands
+ * - Shell: Interactive command-line interface (see \ref cmd_list)
+ * - Signal Handling: Signal masks, delivery, and pending signals (using kernel pipeline see \ref kernel_sgls)
+ * - Journal: Kernel log entries and retrieval
+ *
+ * (see \ref kernel_arch)
+ *
+ * ## Usage
+ * Include public headers from `include/` implement required APIs needed by the kernel using profile (see \ref kernel_needimpl). 
+ * At project entry call subsystems initialization you need following with shell start functions to enter into
+ * events never ending processing loop. (see \ref target_project_main)
+ * @note some subsystems might not be available in the chosen kernel profile e.g. lite profile doesnt include file I/O subsystem etc.
+ *
+ * ## License
+ * Event driven kernel is released under the MIT License.
+ */

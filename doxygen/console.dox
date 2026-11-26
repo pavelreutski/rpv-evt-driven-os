@@ -1,0 +1,128 @@
+
+/**
+ * @page kernel_console User Console
+ *
+ * @brief Describes the target-platform user console and its interaction
+ *        with the kernel Shell.
+ *
+ * ## Overview
+ *
+ * The kernel Shell interacts with a user console through the console
+ * interface implemented by the target platform. The console may be
+ * implemented using any suitable communication or input device.
+ *
+ * A UART-based console is the typical implementation, although the
+ * kernel does not require a UART or any particular physical interface.
+ *
+ * The target platform is responsible for providing the console driver
+ * and the console service that delivers input to the kernel runtime.
+ *
+ * ## Console I/O Configuration
+ *
+ * The target-platform user console implementation is responsible for
+ * normalizing terminal input to provide consistent terminal behavior.
+ *
+ * The following input normalization rules should be applied:
+ *
+ * - Backspace (BS, @c 0x08): translate BS input to DEL (@c 0x7F)
+ *   before delivering it to the kernel Shell.
+ * - Delete (DEL, @c 0x7F): upon receiving DEL, perform the terminal
+ *   erase sequence Backspace, Space, Backspace (@c 0x08, @c 0x20,
+ *   @c 0x08), visually erasing the character preceding the cursor
+ *   and moving the cursor one character to the left.
+ * - Line endings: normalize CRLF (@c 0x0D 0x0A) sequences to a single
+ *   LF (@c 0x0A) character before delivering input to the kernel Shell.
+ *
+ * These normalization rules provide consistent terminal behavior
+ * regardless of the terminal emulator or physical console interface
+ * used by the target platform.
+ *
+ * ## Console Input
+ *
+ * A typical UART-based implementation consists of the following components:
+ *
+ * - UART driver - provides low-level UART input operations, such as
+ *   polling or retrieving received characters from the UART peripheral.
+ * - UART service - polls or retrieves received characters through the
+ *   UART driver and publishes user console key events when input is
+ *   available.
+ * - Kernel Shell - retrieves console key input through the kernel stdio
+ *   interface and processes the received input.
+ *
+ * The UART service publishes @c EVT_USERCON_KEY when a character is
+ * received. The event payload contains the received character represented
+ * by its code (ASCII in UART terminal alike case) in the console key @c code field.
+ *
+ * The kernel stdio event subscriber stores the received key and raises
+ * @c SIGIO, allowing the Shell to retrieve the key through
+ * @ref _kernel_getKey().
+ *
+ * ## Console Output
+ *
+ * The target platform implements @ref console.h, which provides the
+ * console output interface used by kernel components.
+ *
+ * A UART-based implementation typically forwards console output
+ * operations to the underlying UART driver, which handles the
+ * transmission of characters or strings through the UART peripheral.
+ *
+ * The console interface acts as a platform abstraction between the
+ * kernel runtime and the target console implementation.
+ *
+ * ## Typical UART-Based Implementation
+ *
+ * @dot
+ * digraph console_arch {
+ *     rankdir=TB;
+ *     node [shape=box, style=rounded];
+ *
+ *     UART [label="UART Peripheral"];
+ *     Driver [label="UART Driver"];
+ *     Service [label="UART Service"];
+ *     Event [label="EVT_USERCON_KEY\n(code = ASCII character)"];
+ *     Stdio [label="Kernel stdio\nEvent subscriber"];
+ *     Shell [label="Kernel Shell"];
+ *     Console [label="console.h"];
+ *
+ *     UART -> Driver [label="Receive"];
+ *     Driver -> Service [label="Read / poll"];
+ *     Service -> Event [label="Publish"];
+ *     Event -> Stdio [label="Dispatch"];
+ *     Stdio -> Shell [label="SIGIO / key"];
+ *
+ *     Shell -> Console [label="Output"];
+ *     Console -> Driver [label="Transmit"];
+ *     Driver -> UART [label="Transmit"];
+ * }
+ * @enddot
+ *
+ * ## Example Host Terminal Configuration
+ *
+ * During development, @c picocom can be used as a host-side terminal
+ * to communicate with the target platform over UART.
+ *
+ * A typical invocation is:
+ *
+ * @code
+ * picocom /dev/{tty_dev} -b {bit_rate} --imap lfcrlf --omap crlf,delbs
+ * @endcode
+ *
+ * Where:
+ * - @c /dev/{tty_dev} is the host serial device (e.g. @c /dev/ttyUSB0).
+ * - @c {bit_rate} is the UART baud rate configured on the target.
+ * - @c --imap @c lfcrlf maps received LF characters to CRLF.
+ * - @c --omap @c crlf,delbs maps outgoing LF to CRLF and Backspace
+ *   to DEL, respectively.
+ *
+ * This configuration provides the terminal input/output normalization
+ * expected by the target console implementation.
+ *
+ * @note UART is an illustrative target implementation. Other console
+ *       devices and communication interfaces may be used, provided they
+ *       implement the required console interface and input event delivery.
+ *
+ * @see \ref kernel_lite
+ * @see \ref kernel_full
+ * @see \ref events_subscription_publish
+ * @see \ref kernel_arch
+ */

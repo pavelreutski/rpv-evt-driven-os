@@ -1,0 +1,56 @@
+ /**
+  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel
+  * @brief Target-platform APIs requiring implementation by the application
+  *        or platform project.
+  *
+  * The kernel is platform-independent and can be built using a target
+  * platform toolchain. Certain APIs must be implemented by the target
+  * platform project to provide hardware- or platform-specific functionality.
+  * The required API implementations depend on the selected kernel profile.
+  */
+
+ /**
+  * @defgroup kernel_lite Kernel Lite Profile
+  * @ingroup kernel_needimpl
+  * @brief Kernel runtime with basic shell and core functionality.
+  *
+  * @details
+  * The Lite profile requires implementation of the following target-platform
+  * APIs:
+  *
+  * - @ref console.h - Console device output and related operations.
+  * - @ref prompt.h - System prompt construction used by the kernel Shell.
+  */
+
+ /**
+  * @defgroup kernel_full Kernel Full Profile
+  * @ingroup kernel_needimpl
+  * @brief Kernel runtime with all currently available subsystems enabled.
+  *
+  * @details
+  * The Full profile requires implementation of the following target-platform
+  * APIs:
+  *
+  * - @ref console.h - Console device output and related operations.
+  * - @ref prompt.h - System prompt construction used by the kernel Shell.
+  * - @ref disk.h - Low-level disk I/O operations, providing sector-level
+  *   access to storage devices. Used by the file I/O subsystem or filesystem
+  *   middleware implementation.
+  * - @ref fat.h - Filesystem middleware interface providing file I/O
+  *   operations used by the kernel file I/O subsystem.
+  */
+
+ /**
+  * @defgroup kernel_core Kernel runtime API
+  * @brief Kernel core runtime shell with basic commands and stdio included.
+  */
+ 
+ /**
+  * @defgroup kernel_fio Kernel file I/O subsystem
+  * @brief Kernel filesystem and drive management middleware API extending kernel shell runtime with file mangement commands.
+  */
+ 
+ /**
+  * @defgroup kernel_sysj Kernel system journal subsystem
+  * @brief Kernel system events journal API extending kernel shell runtime with journal manipulation commands.
+  */

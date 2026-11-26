@@ -4,3 +4,5 @@
 *.obj
 
 docs/*
+build/*
+.vscode/*

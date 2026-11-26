@@ -1,0 +1,120 @@
+/**
+ * @page events_subscription_publish Event Subscription and Publish
+ *
+ * @brief Describes how components subscribe to events and how events are
+ * published and delivered to subscribers.
+ *
+ * ## Event-Driven Communication
+ *
+ * The kernel uses an event-driven communication model to allow components
+ * to communicate without requiring direct dependencies on one another.
+ *
+ * An event producer publishes an event, while interested components subscribe
+ * to receive notifications about that event.
+ *
+ * ## Event Subscription
+ *
+ * A component subscribes to an event to indicate that it is interested in
+ * receiving notifications when that event is published.
+ *
+ * A subscription typically associates an event identifier with a callback
+ * that handles the event.
+ *
+ * @code
+ * // Conceptual example:
+ * // Subscribe a callback to an event.
+ * _kernel_subEvt(EVENT_ID, event_handler);
+ * @endcode
+ *
+ * The callback is invoked by the event delivery mechanism when a matching
+ * event is published.
+ *
+ * ## Event Publishing
+ *
+ * An event producer publishes an event when something relevant happens in
+ * the system.
+ *
+ * Publishing an event allows all registered subscribers for that event to
+ * be notified without the producer needing to know which components are
+ * listening.
+ *
+ * @code
+ * // Conceptual example:
+ * // Publish an event.
+ * _kernel_pubEvt(EVENT_ID, event_data);
+ * @endcode
+ *
+* ## User Event Data {#user_event_data}
+ *
+ * User event payload types are supplied through the file selected by the
+ * CMake @c EVENT_DATA_FILE cache variable (see \ref cmake_int). During configuration, CMake
+ * processes this file and generates @c autogen/data/event_data.h.
+ *
+ * The input file separates custom type declarations and event-data union
+ * members using dedicated markers:
+ *
+ * @code
+ * #include <stdint.h>
+ *
+ * /* event types begin */
+ * typedef struct {
+ *     uint8_t key;
+ *     uint32_t value;
+ * } user_event_data_t;
+ * /* event types end */
+ *
+ * /* event members begin */
+ * user_event_data_t user_data;
+ * /* event members end */
+ * @endcode
+ *
+ * The declarations inside the types section are emitted into the generated
+ * header, while the members section is used to construct the
+ * @c USER_EVENT_DATA macro. The macro injects the user-defined members
+ * into the shared @c evt_data_t union declared in @c events.h.
+ *
+ * Event identifiers are declared separately. This generation flow defines
+ * payload types and union members, not user event IDs.
+ *
+ * @note The input file must rely only on standard C headers. Custom payload
+ *       types must be built from standard C types and must not depend on
+ *       project-specific headers or types.
+ *
+ * ## Event Delivery Flow
+ *
+ * The typical event flow consists of the following steps:
+ *
+ * - A component subscribes to an event and provides an event handler.
+ * - The event producer detects a condition or state change.
+ * - The producer publishes the corresponding event.
+ * - The kernel event mechanism identifies the matching subscribers.
+ * - The registered handlers are invoked with the published event data.
+ * - Subscribers process the notification independently.
+ *
+ * ## Decoupling Components
+ *
+ * Event subscription and publishing separate event producers from event
+ * consumers:
+ *
+ * - Producers only need to know which event to publish.
+ * - Consumers only need to subscribe to events they are interested in.
+ * - Multiple consumers can react to the same event.
+ * - Producers do not need direct references to consumer components.
+ *
+ * ## Implementation Guidelines
+ *
+ * - Keep event handlers focused on processing the notification.
+ * - Avoid unnecessary work in event handlers if callbacks execute in a
+ *   time-sensitive context.
+ * - Define and document the meaning and structure of event data.
+ * - Ensure that subscriptions are valid for the lifetime of their handlers.
+ *
+ * @note The function names and code snippets above are conceptual examples.
+ *       Refer to the kernel event API for the actual subscription and
+ *       publishing macros, function signatures, callback conventions, and
+ *       event data ownership rules.
+ *
+ * @see \ref kernel_sgls
+ * @see \ref kernel_arch
+ * @see \ref cmake_int
+ */

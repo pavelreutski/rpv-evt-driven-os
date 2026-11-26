@@ -1,0 +1,67 @@
+ /**
+  * \page kernel_stdio Kernel STDIO
+  * 
+  * STDIN works in a following loop:
+  * 
+  * - when \ref _kernel_stdio() called it sibscribes to \ref EVT_USERCON_KEY event
+  * - kernel shell when entered into never ending loop calls \ref _kernel_getKey() blocking call that in loop polls SIGIO (see \ref kernel_signal.h) flagged up by \ref _kernel_sigwait() 
+  *   @note \ref _kernel_getKey() calls \ref _kernel_pipeline() which runs services registered via \ref _SERVICE and exectues queued events 
+  * - when \ref EVT_USERCON_KEY is published and the subscriber is called by \ref _kernel_pipeline() it sets new input key and raises SIGIO signal to the kernel (see \ref kernel_signal.h):
+  *   - kernel flags up a signal. \ref _kernel_getKey() drops awaited SIGIO and returns a new key input set by an event subscriber called
+  *   - shell reacts on a new key input and places it into the command buffer. @note when its a return key it treats a command buffer filled with command to be executed.
+  *   - shell at any new ASCII input received forwards to the STDOUT.
+  *   - shell calls \ref _kernel_getKey() again.
+  *
+  * @warning SIGIO reserved for STDIN usage only any attempt to raise it by the target logic shall result the shell recognizing 
+  *          a new key input as such since a key is unknown (or retain previous state) the behaviour is undefined 
+  *          when the shell will start processing a 'new' input. It doesnt apply to \ref EVT_USERCON_KEY event publish 
+  *          i.e. it can be published anywhere anytime during system lifetime
+  *
+  * STDOUT logic just outputs characters to the console (see \ref kernel_stdio.h and \ref console.h).
+  *
+  * That said anything that publishes \ref EVT_USERCON_KEY event the kernel shell treats it as a new user input. 
+  * @note it doesnt care what is the exact source and how many of them are e.g. tty/keyb/network etc.
+  * 
+  * As such the most sutable place publishing events are services registered by \ref _SERVICE
+  *
+  * ## STDIN target platform service example
+  *
+  * \code{.c}
+  *
+  * #include <stdbool.h>
+  *
+  * #include "uart.h"
+  * #include "events.h"
+  *
+  * #include "kernel.h"
+  * #include "service.h"
+  *
+  * static void uart_service(void);
+  * static inline bool is_charValid(char c);
+  *
+  * _SERVICE(uart_svc, uart_service);
+  *
+  * static void uart_service(void) {
+  *
+  *     char c;
+  *     while((c = _uart_read()) != '\0') {
+  *
+  *         if (is_charValid(c)) {
+  *
+  *             console_key_t key = { .code = c, .scan_code = 0 };
+  *             _kernel_pubEvt(EVT_USERCON_KEY, (evt_data_t *) &key);
+  *         }
+  *     }
+  * }
+  *
+  * static inline bool is_charValid(char c) {
+  *
+  *    return ((c >= '0') && (c <= '9')) || 
+  *                ((c >= 'a') && (c <= 'z')) ||
+  *                ((c >= 'A') && (c <= 'Z')) ||
+  *                ((c == ' ') || (c == '\n') || (c == '\t') || (c == '\b') || (c == '\x7f'));
+  * }
+  * 
+  * \endcode
+  *
+  */
