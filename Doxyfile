@@ -1,5 +1,6 @@
 # General settings
 PROJECT_NAME           = "RPV Event driven kernel"
+HAVE_DOT               = YES
 HTML_OUTPUT            = .
 OUTPUT_DIRECTORY       = docs
 LAYOUT_FILE            = dox-layout.xml

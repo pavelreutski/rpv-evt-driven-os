@@ -2,7 +2,7 @@
   * \page kernel_arch Block Diagrams
   *
   * ## Kernel subsystems by using profile selected
-  *    Depending on kernel profile it requires profile`s mandatory API implementation (see \ref kernel_lite and \ref kernel_full for details)
+  *    Depending on kernel profile it requires mandatory API implementation (see \ref kernel_lite and \ref kernel_full for details)
   *
   *    API implementation requirements:
   *    - **Lite**: console.h and prompt.h
