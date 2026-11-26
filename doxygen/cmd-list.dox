@@ -1,7 +1,8 @@
  /**
-  * \page cmd_list Shell commands list
+  * \page cmd_list Shell commands
   *
-  * Commands must follow this format:
+  * User commands can be added using \ref _SHELL_COMMAND \n
+  * Commands input must follow this format:
   *
   * @code
   * {cmd_text}\n

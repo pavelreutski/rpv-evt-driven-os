@@ -1,8 +1,15 @@
  /**
-  * \page target_project_main Target platform example
+  * \page target_project_main Target platform usage code example
+  * \brief It targets a single entry point and possible usage actions that it might do. 
+  *        Generally it abstarcts away handling a main loop while having a lightweight event driven mechanism
+  *        Defined kernel profile (see \ref kernel_lite and \ref kernel_full) mandatory API implementation has to be done in a different modules
   * \code{.c}
+  *
   * #include "shell.h"
+  *
+  * #include "kernel.h"
   * #include "kernel_stdio.h"
+  * #include "kernel_service.h"
   *
   * #include "platform.h" // target platform initialization logic
   *
@@ -17,8 +24,11 @@
   * static void svc_init(void);
   * static void svc_runtime(void);
   *
-  * _SERVICE(platform_svc, svc_runtime);
-  * _SERVICE_INIT(platform_svcstartup, svc_init);
+  * _SERVICE(platform_svc, svc_runtime);          // service runtime
+  * _SERVICE_INIT(platform_svcstartup, svc_init); // service initialization
+  *
+  * static void on_userEvt(evt_data_t const* evt);   // user event observer
+  * static void on_conKeyEvt(evt_data_t const* evt); // console key observer
   *
   * int main() {
   *
@@ -37,15 +47,51 @@
   * }
   *
   * static void svc_init(void) {
+  *
   *     /* Platform service initialization */ 
+  *     ...
+  *     _kernel_subEvt(USER_EVENT, on_userEvt);
+  *     _kernel_subEvt(EVT_USERCON_KEY, on_conKeyEvt);
   * }
   *
   * static void svc_runtime(void) {
-  *     /* Platform service runtime */  
+  *
+  *     /* Platform service runtime */
+  *     ...
+  *     if (condition) {
+  * 
+  *         evt_data_t evt {};
+  *         _kernel_pubEvt(USER_EVENT, &evt);
+  *     }
+  *   
+  *     if (conio_pending) {
+  *
+  *         /* 
+  *          * Publish con key event -> subscribers will be called
+  *          * Should be picked up by the kernel stdio and effectively the con key will reach the shell
+  *          */
+  *
+  *         evt_data_t evt { .con_key.code = conio_read(), .con_key.scnacode = 0 };
+  *
+  *         _kernel_pubEvt(EVT_USERCON_KEY, &evt);
+  *     }
   * }
   *
   * static int platform_cmd(const int argc, const char** argv) {
   *     /* Platform command */
+  * }
+  *
+  * static void on_userEvt(evt_data_t const* evt) {
+  *
+  *     /* User event observer */
+  *     ...
+  * }
+  *
+  * static void on_conKeyEvt(evt_data_t const* evt) {
+  *
+  *     /* Console key event observer: Observer called by kernel core. */
+  *     ...
+  *     _kernel_outStringFormat("console key event. code - %d, scancode - %d", (int) evt.con_key.code, (int) evt.con_key.scancode);
   * }
   *
   * \endcode
