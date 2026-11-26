@@ -1,0 +1,105 @@
+ /**
+  * \page kernel_arch Block Diagrams
+  * Depending on selected kernel profile it requires profile`s mandatory API implementation (see \ref kernel_lite and \ref kernel_full for details)
+  * \dot
+  * digraph kernel_arch {
+  *     rankdir=TB;
+  *     label="kernel overal diagram";
+  *     node [shape=box, style=filled];
+  *
+  *     subgraph cluster_kernel {
+  *         label="Kernel Runtime";
+  *         style=filled;
+  *         fillcolor="#e6f2ff";
+  *
+  *         Shell     [label="Shell"];
+  *         Core      [label="Kernel Core\n(Event Pipeline/Subscribe/Publish)"];
+  *         Signals   [label="Signal Handling"];
+  *
+  *         Commands [label="Command Table"];
+  *         Services [label="Service Table"];
+  *
+  *         Shell -> Commands [style=invis];
+  *         Commands -> Services [style=invis];
+  *         Services -> Signals [style=invis];
+  *         Signals -> Core [style=invis];
+  *
+  *         kernel_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_platform_base {
+  *         label="Platform Mandatory APIs\n(Lite or Full)\nImplemented on target project";
+  *         style=filled;
+  *         fillcolor="#d9ead3";
+  *
+  *         Console [label="console.h\n(console device facade)", style=solid];
+  *         Prompt  [label="prompt.h\n(system prompt string constructor/builder)", style=solid];
+  *         Disk    [label="disk.h\n(low level sectors I/O facade)", style=dashed];
+  *         FAT     [label="fat.h\n(file I/O middleware facade)", style=dashed];
+  *
+  *         Console -> Prompt [style=invis];
+  *         Prompt -> Disk [style=invis];
+  *         Disk -> FAT [style=invis];
+  *
+  *         platform_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     subgraph cluster_full {
+  *         label="Full Profile";
+  *         style="filled,dashed";
+  *         fillcolor="#fff2cc";
+  *
+  *         FIO[label="File I/O Subsystem"];
+  *         Journal[label="System Journal"];
+  *
+  *         // Full-only internal dependencies
+  *         FIO -> Journal [style=invis];
+  *
+  *         full_profile_anchor [label="", style=invis, width=0, height=0];
+  *     }
+  *
+  *     Shell -> Signals;
+  *     Shell -> Commands;
+  *     Signals -> Core;
+  *     Core -> Services;
+  *
+  *     Shell -> Console;
+  *     Shell -> Prompt;
+  *
+  *     Shell -> FIO[style=dashed];
+  *     Shell -> Journal[style=dashed];
+  *
+  *     FIO -> Journal;
+  *     FIO -> Disk[style=dashed];
+  *     FIO -> FAT[style=dashed];
+  *
+  *     kernel_anchor -> platform_anchor[style=invis];
+  *     platform_anchor -> full_profile_anchor[style=invis];
+  *
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * \dot 
+  * digraph fio_backend_arch {
+  *	    rankdir=TB;
+  *     label="target file backend implementation example";
+  *     node [shape=box, style=filled];
+  *
+  *     Disk [label="disk.h\n(low level sectors I/O)"];
+  *     FAT [label="fat.h\n(file I/O middleware facade)"];
+  *     FATFS [label="filesystem library e.g. fatfs"];
+  *     Storage [label="Storage Device\ne.g. HD, SD-Card etc.", shape=cylinder, width=1.5, height=2];
+  *
+  *     FAT -> FATFS;
+  *     FATFS -> Disk;
+  *     Disk -> Storage;
+  * }
+  * \enddot
+  *
+  * ---
+  *
+  * @details
+  * Legend: Solid outline presents always existing blocks and links, Dashed is optional and might not exist according to the chosen kernel profile.
+  */

@@ -1,0 +1,67 @@
+/**
+ * \page cmake_int CMake target integration
+ *
+ * Its cmake frendly hence at repo root supplies a CMakeLists.txt and defines the following cmake entities.
+ *
+ * ## properties
+ *
+ * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile 
+ *
+ * ## targets
+ * 
+ * - kernel-core : The core logic.
+ * - kernel-fio  : file I/O subsystem logic.
+ * - kernel-sysj : A system journal logic.
+ * - rpv-kernel  : Combines upper targets depending on profile being set. @note Its a cmake interface target
+ *
+ * ## kernel profiles
+ *
+ * - **lite**: rpv-kernel includes just kernel-core
+ * - **full**: rpv-kernel includes kernl-core, kernel-fio and kernel-sysj i.e. all available targets
+ *
+ * ## target project CMakeList.txt example
+ *
+ * \code{.cmake}
+ * project(kernel_platform_target LANGUAGES C ASM
+ *                                DESCRIPTION "platform target using rpv event driven kernel")
+ *
+ * # by default **lite** profile used unless redefined by the following line
+ * # set(KERNEL_PROFILE full CACHE STRING "" FORCE)
+ *
+ * # event driven kernel
+ *
+ * FetchContent_Declare(
+ *         evtdriven-kernel
+ *         GIT_REPOSITORY git@github.com:pavelreutski/rpv-evt-driven-os.git
+ *         GIT_TAG master
+ * )
+ *
+ * FetchContent_MakeAvailable(evtdriven-kernel)
+ *
+ * add_executable(${PROJECT_NAME})
+ *
+ * target_sources(${PROJECT_NAME} PRIVATE main.c)
+ * target_link_libraries(${PROJECT_NAME} PRIVATE rpv-kernel)
+ * 
+ * target_link_options(${PROJECT_NAME} PRIVATE -Wl,-Tlinker.ld) # linker script containing **__cmd_table, __end_cmd_table** and **__svc_table, __end_svc_table**
+ *
+ * \endcode
+ *
+ * ## linker script example
+ * 
+ * \code{.ld}
+ * ...
+ * __cmd_table = .;
+ * KEEP(*(.cmd_table))
+ * __end_cmd_table = .;
+ *
+ * __svcinit_table = .;
+ * KEEP(*(.service_init))
+ * __end_svcinit_table = .;
+ *
+ * __svc_table = .;
+ * KEEP(*(.service_table))
+ * __end_svc_table = .;
+ * ...
+ * \endcode
+ */

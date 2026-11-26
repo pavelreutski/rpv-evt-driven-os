@@ -1,0 +1,88 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<doxygenlayout version="2.0">
+
+  <!-- Main navigation -->
+  <navindex>
+    <tab type="mainpage" visible="yes"
+         title="Overview"/>
+
+    <tab type="pages" visible="yes"
+         title="Documentation"/>
+
+    <tab type="topics" visible="yes"
+         title="API Reference"/>
+
+    <tab type="modules" visible="no"
+         title="API Reference">
+      <tab type="modulelist" visible="no" title=""/>
+      <tab type="modulemembers" visible="no" title=""/>
+    </tab>
+
+    <tab type="files" visible="yes"
+         title="C Headers">
+      <tab type="filelist" visible="yes" title=""/>
+      <tab type="globals" visible="yes" title=""/>
+    </tab>
+
+    <tab type="classes" visible="no"/>
+    <tab type="namespaces" visible="no"/>
+    <tab type="examples" visible="no"/>
+  </navindex>
+
+  <!-- Group / module page layout -->
+  <group>
+    <briefdescription visible="no"/>
+    <detaileddescription visible="yes" title=""/>
+
+    <memberdecl>
+      <nestedgroups visible="yes" title=""/>
+      <typedefs visible="yes" title=""/>
+      <enums visible="yes" title=""/>
+      <functions visible="yes" title=""/>
+      <variables visible="yes" title=""/>
+      <defines visible="yes" title=""/>
+      <files visible="yes" title=""/>
+      <membergroups visible="yes"/>
+    </memberdecl>
+
+    <memberdef>
+      <pagedocs/>
+      <typedefs visible="yes" title=""/>
+      <enums visible="yes" title=""/>
+      <functions visible="yes" title=""/>
+      <variables visible="yes" title=""/>
+      <defines visible="yes" title=""/>
+    </memberdef>
+
+    <groupgraph visible="yes"/>
+    <authorsection visible="yes"/>
+  </group>
+
+  <!-- File page layout -->
+  <file>
+    <briefdescription visible="yes"/>
+    <includes visible="yes"/>
+    <includegraph visible="yes"/>
+    <includedbygraph visible="yes"/>
+
+    <memberdecl>
+      <defines visible="yes" title=""/>
+      <typedefs visible="yes" title=""/>
+      <enums visible="yes" title=""/>
+      <functions visible="yes" title=""/>
+      <variables visible="yes" title=""/>
+    </memberdecl>
+
+    <detaileddescription visible="yes" title=""/>
+
+    <memberdef>
+      <defines visible="yes" title=""/>
+      <typedefs visible="yes" title=""/>
+      <enums visible="yes" title=""/>
+      <functions visible="yes" title=""/>
+      <variables visible="yes" title=""/>
+    </memberdef>
+  </file>
+
+</doxygenlayout>

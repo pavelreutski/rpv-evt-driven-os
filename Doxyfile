@@ -2,10 +2,11 @@
 PROJECT_NAME           = "RPV Event driven kernel"
 HTML_OUTPUT            = .
 OUTPUT_DIRECTORY       = docs
+LAYOUT_FILE            = dox-layout.xml
 
 # Only scan public headers
-INPUT                  = docs.dox include
-FILE_PATTERNS          = *.h
+INPUT                  = doxygen include
+FILE_PATTERNS          = *.h *.dox
 RECURSIVE              = YES
 
 # DO NOT extract undocumented items

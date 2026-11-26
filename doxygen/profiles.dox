@@ -1,0 +1,43 @@
+/**
+  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel 
+  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. 
+  * There are APIs require implementation within the concrete target platform project. 
+  * There are several compile instance profiles available each defines the number of APIs need in implementation
+  */
+
+ /**
+  * @defgroup kernel_lite Kernel lite profile
+  * @ingroup kernel_needimpl
+  * @brief Kernel lite variant. Includes a core with basic commands. 
+  * @details
+  * Requires implementation of 
+  * - \ref console.h : console output operations.
+  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
+  */
+
+ /**
+  * @defgroup kernel_full Kernel full profile
+  * @ingroup kernel_needimpl
+  * @brief Kernel full variant. Includes a core and all currently available subsystems. 
+  * @details
+  * Requires implementation of 
+  * - \ref console.h : console output operations 
+  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
+  * - \ref disk.h    : low level Disk I/O operations -> called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.
+  * - \ref fat.h     : file system middleware interface -> called by kernel file I/O subsystem for file I/O operations.
+  */
+
+ /**
+  * @defgroup kernel_core Kernel runtime API
+  * @brief Kernel core runtime shell with basic commands and stdio included.
+  */
+ 
+ /**
+  * @defgroup kernel_fio Kernel file I/O subsystem
+  * @brief Kernel filesystem and drive management middleware API extending kernel shell runtime with file mangement commands.
+  */
+ 
+ /**
+  * @defgroup kernel_sysj Kernel system journal subsystem
+  * @brief Kernel system events journal API extending kernel shell runtime with journal manipulation commands.
+  */

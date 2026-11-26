@@ -1,0 +1,54 @@
+/**
+ * @page cmd_svc_table Services and Commands Registration
+ *
+ * @brief Overview of service initialization and shell command registration.
+ *
+ * ## Services Registration
+ *
+ * Services are registered using the @c _SERVICE and @c _SERVICE_INIT (Optional) macros.
+ *
+ * The @c _SERVICE macro declares a service and makes it available to the
+ * kernel's service infrastructure.
+ *
+ * @code
+ * _SERVICE(svc_name, service_name);
+ * @endcode
+ *
+ * ## Services initialization
+ *
+ * The @c _SERVICE_INIT macro associates an initialization function with a
+ * service. The function is called as part of the service initialization
+ * process.
+ *
+ * @code
+ * _SERVICE_INIT(svc_intent_name, service_init_function);
+ * @endcode
+ *
+ * ## Command Registration
+ *
+ * Shell commands are registered using the @c _SHELL_COMMAND macro.
+ *
+ * The @c _SHELL_COMMAND macro registers a command so that it can be invoked
+ * from the kernel shell.
+ *
+ * @code
+ * _SHELL_COMMAND(command_name, command_handler);
+ * @endcode
+ *
+ * ## Registration Workflow
+ *
+ * The registration macros provide a declarative way to expose services and
+ * commands to the kernel:
+ *
+ * - @c _SERVICE declares a service.
+ * - @c _SERVICE_INIT associates an initialization function with a service.
+ * - @c _SHELL_COMMAND registers a shell command and its handler.
+ *
+ * @note The exact macro arguments, handler signatures, and initialization
+ *       order are defined by their implementations in the kernel headers.
+ *
+ * @see \ref kernel_arch
+ * @see \ref kernel_stdio
+ * @see \ref kernel_sgls
+ * @see \ref cmd_list
+ */
