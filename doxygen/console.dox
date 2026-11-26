@@ -27,9 +27,9 @@
  * - Backspace (BS, @c 0x08): translate BS input to DEL (@c 0x7F)
  *   before delivering it to the kernel Shell.
  * - Delete (DEL, @c 0x7F): upon receiving DEL, perform the terminal
- *   erase sequence consisting of Backspace (@c 0x08), Space
- *   (@c 0x20), and Backspace (@c 0x08), visually erasing the
- *   character preceding the cursor and moving it on one char left
+ *   erase sequence Backspace, Space, Backspace (@c 0x08, @c 0x20,
+ *   @c 0x08), visually erasing the character preceding the cursor
+ *   and moving the cursor one character to the left.
  * - Line endings: normalize CRLF (@c 0x0D 0x0A) sequences to a single
  *   LF (@c 0x0A) character before delivering input to the kernel Shell.
  *
@@ -95,6 +95,27 @@
  *     Driver -> UART [label="Transmit"];
  * }
  * @enddot
+ *
+ * ## Example Host Terminal Configuration
+ *
+ * During development, @c picocom can be used as a host-side terminal
+ * to communicate with the target platform over UART.
+ *
+ * A typical invocation is:
+ *
+ * @code
+ * picocom /dev/{tty_dev} -b {bit_rate} --imap lfcrlf --omap crlf,delbs
+ * @endcode
+ *
+ * Where:
+ * - @c /dev/{tty_dev} is the host serial device (e.g. @c /dev/ttyUSB0).
+ * - @c {bit_rate} is the UART baud rate configured on the target.
+ * - @c --imap @c lfcrlf maps received LF characters to CRLF.
+ * - @c --omap @c crlf,delbs maps outgoing LF to CRLF and Backspace
+ *   to DEL, respectively.
+ *
+ * This configuration provides the terminal input/output normalization
+ * expected by the target console implementation.
  *
  * @note UART is an illustrative target implementation. Other console
  *       devices and communication interfaces may be used, provided they
