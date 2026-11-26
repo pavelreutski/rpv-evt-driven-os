@@ -1,30 +1,43 @@
-/**
-  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel 
-  * @brief Kernel can run on any binary system platfrom and compile using target platform toolchain e.g. any gcc variant alike. 
-  * There are APIs require implementation within the concrete target platform project. 
-  * There are several compile instance profiles available each defines the number of APIs need in implementation
+ /**
+  * @defgroup kernel_needimpl Mandatory APIs called by the Kernel
+  * @brief Target-platform APIs requiring implementation by the application
+  *        or platform project.
+  *
+  * The kernel is platform-independent and can be built using a target
+  * platform toolchain. Certain APIs must be implemented by the target
+  * platform project to provide hardware- or platform-specific functionality.
+  * The required API implementations depend on the selected kernel profile.
   */
 
  /**
-  * @defgroup kernel_lite Kernel lite profile
+  * @defgroup kernel_lite Kernel Lite Profile
   * @ingroup kernel_needimpl
-  * @brief Kernel lite variant. Includes a core with basic commands. 
+  * @brief Kernel runtime with basic shell and core functionality.
+  *
   * @details
-  * Requires implementation of 
-  * - \ref console.h : console output operations.
-  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
+  * The Lite profile requires implementation of the following target-platform
+  * APIs:
+  *
+  * - @ref console.h - Console device output and related operations.
+  * - @ref prompt.h - System prompt construction used by the kernel Shell.
   */
 
  /**
-  * @defgroup kernel_full Kernel full profile
+  * @defgroup kernel_full Kernel Full Profile
   * @ingroup kernel_needimpl
-  * @brief Kernel full variant. Includes a core and all currently available subsystems. 
+  * @brief Kernel runtime with all currently available subsystems enabled.
+  *
   * @details
-  * Requires implementation of 
-  * - \ref console.h : console output operations 
-  * - \ref prompt.h  : system prompt constructor called by the kernel shell.
-  * - \ref disk.h    : low level Disk I/O operations -> called by kernel file I/O subsystem for raw disk I/O operations or by file system middleware implementation.
-  * - \ref fat.h     : file system middleware interface -> called by kernel file I/O subsystem for file I/O operations.
+  * The Full profile requires implementation of the following target-platform
+  * APIs:
+  *
+  * - @ref console.h - Console device output and related operations.
+  * - @ref prompt.h - System prompt construction used by the kernel Shell.
+  * - @ref disk.h - Low-level disk I/O operations, providing sector-level
+  *   access to storage devices. Used by the file I/O subsystem or filesystem
+  *   middleware implementation.
+  * - @ref fat.h - Filesystem middleware interface providing file I/O
+  *   operations used by the kernel file I/O subsystem.
   */
 
  /**

@@ -44,7 +44,7 @@
  * _kernel_pubEvt(EVENT_ID, event_data);
  * @endcode
  *
-* ## User Event Data
+* ## User Event Data {#user_event_data}
  *
  * User event payload types are supplied through the file selected by the
  * CMake @c EVENT_DATA_FILE cache variable (see \ref cmake_int). During configuration, CMake

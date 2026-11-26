@@ -5,7 +5,8 @@
  *
  * ## properties
  *
- * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile 
+ * kernel profile (KERNEL_PROFILE). Values: **lite, full** -> kernel variant profile
+ * user event data (EVENT_DATA_FILE). Value: the event data markup file (see \ref user_event_data "User Event Data")
  *
  * ## targets
  * 
@@ -27,6 +28,9 @@
  *
  * # by default **lite** profile used unless redefined by the following line
  * # set(KERNEL_PROFILE full CACHE STRING "" FORCE)
+ *
+ * # by default its empty given no user event data available. So event payload is whats declared by the kernel only. Unless the following property is set
+ * # set(EVENT_DATA_FILE event_data.inc CACHE FILEPATH "event data file" FORCE)
  *
  * # event driven kernel
  *
