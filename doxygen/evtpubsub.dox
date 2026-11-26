@@ -44,6 +44,26 @@
  * _kernel_pubEvt(EVENT_ID, event_data);
  * @endcode
  *
+ * ## User Event Data
+ *
+ * User event payload types are supplied through the file selected by the
+ * CMake `EVENT_DATA_FILE` cache variable. During configuration, CMake reads
+ * this file and collects its declarations into the generated
+ * `autogen/data/event_data.h` header. The input file can provide standard
+ * header `#include` directives, custom payload type declarations between
+ * `/* event types begin */` and `/* event types end */`, and members for
+ * the shared event-data union between `/* event members begin */` and
+ * `/* event members end */`. The generated `USER_EVENT_DATA` macro expands
+ * to those union members, while the custom type declarations are emitted
+ * before the macro so the member types are available when `evt_data_t` is
+ * declared in `events.h`. Event identifiers are declared separately; this
+ * generation flow defines payload types and union members, not user event IDs.
+ *
+ * @note Include only standard C headers in the user event-data input file.
+ *       Define custom payload types using standard C types (for example,
+ *       `uint8_t`, `uint16_t`, `uint32_t`, and `char`) rather than
+ *       project-specific types or dependencies on other project headers.
+ *
  * ## Event Delivery Flow
  *
  * The typical event flow consists of the following steps:
