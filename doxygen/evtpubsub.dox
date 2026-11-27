@@ -115,6 +115,5 @@
  *       event data ownership rules.
  *
  * @see \ref kernel_sgls
- * @see \ref kernel_arch
  * @see \ref cmake_int
  */

@@ -1,5 +1,7 @@
  /**
-  * \page cmd_list Shell commands
+  * @page cmd_list Shell commands
+  *
+  * @brief Lists embedded shell commands 
   *
   * User commands can be added using \ref _SHELL_COMMAND \n
   * Commands input must follow this format:

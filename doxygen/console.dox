@@ -122,7 +122,6 @@
  *       implement the required console interface and input event delivery.
  *
  * @see \ref kernel_lite
- * @see \ref kernel_full
  * @see \ref events_subscription_publish
- * @see \ref kernel_arch
+ * @see \ref cmd_svc_table
  */

@@ -1,0 +1,74 @@
+/**
+ * @page linker_script_integration Linker Script Integration
+ *
+ * @brief Describes the linker-script configuration required by the kernel.
+ *
+ * The kernel uses linker-defined tables to collect command registrations
+ * and service initialization/runtime entries. These tables are emitted into
+ * dedicated input sections and gathered by the linker when building the final
+ * executable.
+ *
+ * For these tables to be available at runtime, the target platform's linker
+ * script must explicitly define and retain the corresponding sections.
+ *
+ * @section required_linker_entries Required Linker-Script Entries
+ *
+ * Add the following definitions to the appropriate output section in the
+ * target platform's linker script:
+ *
+ * @code{.ld}
+ * /* command table */
+ * __cmd_table = .;
+ * KEEP(*(.cmd_table))
+ * __end_cmd_table = .;
+ *
+ * /* service initialization table */
+ * __svcinit_table = .;
+ * KEEP(*(.service_init))
+ * __end_svcinit_table = .;
+ *
+ * /* service runtime table */
+ * __svc_table = .;
+ * KEEP(*(.service_table))
+ * __end_svc_table = .;
+ * @endcode
+ *
+ * The symbols mark the beginning and end of each table:
+ *
+ * - `__cmd_table` and `__end_cmd_table` delimit the command table.
+ * - `__svcinit_table` and `__end_svcinit_table` delimit the service
+ *   initialization table.
+ * - `__svc_table` and `__end_svc_table` delimit the service runtime table.
+ *
+ * The `KEEP()` directives prevent the linker from discarding these input
+ * sections during garbage collection (for example, when linking with
+ * `--gc-sections`).
+ *
+ * @section platform_specific_integration Platform-Specific Integration
+ *
+ * Linker scripts vary between platforms and toolchains. Therefore, these
+ * definitions must be integrated into the linker script used by the target
+ * application. A single framework-provided linker script cannot be assumed
+ * to work across all target platforms.
+ *
+ * When integrating the entries, ensure that:
+ *
+ * - The table sections are included in the final executable.
+ * - The start and end symbols correctly delimit their respective tables.
+ * - The sections have suitable alignment for the types stored in each table.
+ * - The entries are retained when linker section garbage collection is
+ *   enabled.
+ *
+ * The exact output-section placement and alignment requirements are
+ * platform-specific. Consult the target platform's linker-script conventions
+ * before adding the definitions.
+ *
+ * @note This integration is required for the framework to discover and
+ * iterate over registered commands and services correctly. If the required
+ * symbols or sections are missing, the corresponding tables may be empty or
+ * unavailable at runtime.
+ *
+ * @warning The linker-script fragment assumes that the location counter (`.`)
+ * is already positioned within the intended output section. Do not insert the
+ * fragment at an arbitrary location in the linker script. But use exact symbols and section names provided.
+ */

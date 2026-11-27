@@ -1,0 +1,8 @@
+ /**
+  * @page kernel_interactive_shell Interacting with Target Platform
+  *
+  * @brief Kernel interactive shell topics
+  *
+  * - @subpage kernel_console
+  * - @subpage cmd_list
+  */

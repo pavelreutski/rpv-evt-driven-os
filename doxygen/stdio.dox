@@ -1,5 +1,7 @@
  /**
-  * \page kernel_stdio Kernel STDIO
+  * @page kernel_stdio Kernel STDIO
+  *
+  * @brief Describes standard IO mechanism based on signals (flags) notified from the event bus
   * 
   * STDIN works in a following loop:
   * 
@@ -26,7 +28,7 @@
   *
   * ## STDIN target platform service example
   *
-  * \code{.c}
+  * @code{.c}
   *
   * #include <stdbool.h>
   *
@@ -62,6 +64,8 @@
   *                ((c == ' ') || (c == '\n') || (c == '\t') || (c == '\b') || (c == '\x7f'));
   * }
   * 
-  * \endcode
+  * @endcode
+  *
+  * @see \ref kernel_sgls
   *
   */

@@ -1,0 +1,9 @@
+ /**
+  * @page kernel_int Integration Guide
+  *
+  * @brief Target platfom kernel integration topics
+  *
+  * - @subpage cmake_int
+  * - @subpage linker_script_integration
+  * - @subpage target_project_main
+  */
