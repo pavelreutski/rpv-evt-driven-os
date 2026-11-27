@@ -1,5 +1,7 @@
 /**
- * \page cmake_int CMake target integration
+ * @page cmake_int CMake target integration
+ *
+ * @brief Describes CMake integration into the target platform
  *
  * Its cmake frendly hence at repo root supplies a CMakeLists.txt and defines the following cmake entities.
  *
@@ -22,7 +24,7 @@
  *
  * ## target project CMakeList.txt example
  *
- * \code{.cmake}
+ * @code{.cmake}
  * project(kernel_platform_target LANGUAGES C ASM
  *                                DESCRIPTION "platform target using rpv event driven kernel")
  *
@@ -49,23 +51,5 @@
  * 
  * target_link_options(${PROJECT_NAME} PRIVATE -Wl,-Tlinker.ld) # linker script containing **__cmd_table, __end_cmd_table** and **__svc_table, __end_svc_table**
  *
- * \endcode
- *
- * ## linker script example
- * 
- * \code{.ld}
- * ...
- * __cmd_table = .;
- * KEEP(*(.cmd_table))
- * __end_cmd_table = .;
- *
- * __svcinit_table = .;
- * KEEP(*(.service_init))
- * __end_svcinit_table = .;
- *
- * __svc_table = .;
- * KEEP(*(.service_table))
- * __end_svc_table = .;
- * ...
- * \endcode
+ * @endcode
  */

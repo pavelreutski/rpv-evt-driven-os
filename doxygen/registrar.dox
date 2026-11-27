@@ -46,9 +46,4 @@
  *
  * @note The exact macro arguments, handler signatures, and initialization
  *       order are defined by their implementations in the kernel headers.
- *
- * @see \ref kernel_arch
- * @see \ref kernel_stdio
- * @see \ref kernel_sgls
- * @see \ref cmd_list
  */

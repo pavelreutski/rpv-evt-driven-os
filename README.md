@@ -4,9 +4,9 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Architecture](https://img.shields.io/badge/arch-any-lightgrey)
 
-> An experimental event-driven kernel for deterministic and reactive operating system research.
+> An event-driven kernel for deterministic and reactive operating system.
 
-⚠️ **Disclaimer:** This project is a research prototype and is not production-ready.
+⚠️ **Disclaimer:** This project is on prototype stage and mostly production-ready - requires real usage cases and community contribution for outer mindset feedbacks and/or rection
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## Usage example
 
-[Event Driven Platforms Kernel](https://github.com/pavelreutski/rpv_platforms-evt-driven-os)
+[Event Driven Platforms](https://github.com/pavelreutski/rpv_platforms-evt-driven-os)
 
 ## Documentation (Doxygen style)
 [Event Driven Kernel pages](https://pavelreutski.github.io/rpv-evt-driven-os/)

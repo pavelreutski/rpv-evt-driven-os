@@ -1,5 +1,7 @@
 /**
-  * \page kernel_sgls Signals processing
+  * @page kernel_sgls Signals processing
+  * 
+  * @brief Describes simple flags based notify mechanism
   *
   * There are 32 signals total (see \ref kernel_signal.h). They defined as order numbers [1 - 32].\n
   * 
@@ -35,7 +37,7 @@
   *
   * ## signals set usage code snippets
   *
-  * \code{.c}
+  * @code{.c}
   *
   * ...
   *
@@ -81,7 +83,7 @@
   *
   * ...
   *
-  * \endcode 
+  * @endcode 
   *
   * @note signals logic usage doesnt affect/alter the behaviour of a kernel event loop 
   *       it designed to help introduce a separation between target software design and system level events (e.g. interrupts) 
@@ -95,7 +97,7 @@
   *
   * It reserved a special meaning and such signals flow scheme can be presented on a following diagram 
   *
-  * \dot
+  * @dot
   * digraph kernel_sigs_diag {
   *     rankdir=LR;
   *     splines=false;
@@ -145,7 +147,7 @@
   *     hwn -> kernel;
   *
   * }
-  * \enddot
+  * @enddot
   *
   * The scheme presents a number of target peripherals and each its driver raises SIGINT, SIGBUS (see \ref _kernel_raise() with (SIGINT | SIGBUS)). 
   * The service either use \ref _kernel_sigwait() blocking or \ref _kernel_sigpending() none-blocking call 
@@ -167,7 +169,7 @@
   *          Its not designed reserving a special meaning for signals different from SIGINT, SIGBUS and SIGIO yet and maybe shall not in a future.
   *
   * ## blocking call usage example
-  * \code{.c}
+  * @code{.c}
   *
   * /******************* blocking call ************************/
   *
@@ -200,11 +202,11 @@
   *
   *    ...
   *
-  * \endcode
+  * @endcode
   *
   * ## none-blocking call usage example
   *
-  * \code{.c} 
+  * @code{.c} 
   *
   * /****************** none-blocking call *********************/
   *
@@ -233,11 +235,11 @@
   *
   *   ...
   *
-  * \endcode
+  * @endcode
   *
   * ## driver isr example
   *
-  * \code{.c}
+  * @code{.c}
   *
   * /************************ driver isr **********************/
   *
@@ -270,5 +272,5 @@
   *    _kernel_raise(sgl);
   * }
   *
-  * \endcode
+  * @endcode
   */
